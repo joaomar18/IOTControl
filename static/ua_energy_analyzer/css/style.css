@@ -1,0 +1,379 @@
+html{
+    font-size:14px;
+}
+
+body{
+background-color: whitesmoke;
+}
+
+#section_title{
+    height:3.1rem;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    background-color: #83a7c99a;
+}
+
+.drop-button{
+    height:100%;
+    aspect-ratio: 1/1;
+    left:0;
+    position:absolute;
+    border-radius: 1px;
+    padding:8px;
+    background-color: #83c9af9a;
+    border: 1px solid rgb(216, 216, 216);
+    flex-direction: column;
+    justify-content: space-between;
+    cursor:pointer;
+}
+
+.line-drop-button{
+    width: 100%;
+    height: 5px;
+    background-color:white;
+}
+
+#title{
+    color:rgb(23, 39, 68);
+    text-align: center;
+    margin:0;
+}
+
+.nav-bar{
+    display: none;
+}
+
+.nav_button{
+    min-height: 4rem;
+    width: 100%;
+    background-color: rgb(215, 215, 215);
+    border:1px solid whitesmoke;
+    font-size: 1rem;
+}
+
+.nav_button:hover{
+    cursor:pointer;
+    background-color: rgb(183, 208, 255);
+}
+
+#content{
+    width:100%;
+    margin-top: 2rem;
+    margin-bottom: 5.1rem;
+    z-index: -2;
+}
+
+.popup-state{
+    background-color: rgb(245, 245, 245);
+    position:fixed;
+    left: calc(10.5px + 1rem);
+    bottom:3.1rem;
+    width: 19.5rem;
+    display:none;
+}
+
+.popup-rows{
+    border: 1px solid rgb(216, 216, 216);
+    height:2rem;
+}
+
+#footer{
+    height:3.1rem;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom:0;
+    left:10.5px;
+    right:10.5px;
+    background-color: #83a7c99a;
+}
+
+#footer-content{
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.controller-state-tab{
+    height: 100%;
+    position: absolute;
+    left: 1rem;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 10.5rem;
+    text-align: center;
+    background-color: white;
+    padding:0;
+    margin:0;
+}
+
+.controller-state-tab:hover{
+    cursor:pointer
+}
+
+.logo-tab{
+    position: absolute;
+    height:100%;
+    right: 1rem;
+    background-color: white;
+}
+
+#school-logo{
+    height:100%;
+    aspect-ratio: 3089 / 1453;
+}
+
+#state_controller{
+    height:1rem;
+    width:1rem;
+    background-color: rgb(255, 73, 73);
+    border-radius: 50%;
+}
+
+.footer_text{
+    color:rgb(23, 39, 68);
+    text-align: center;
+    font-size: 1rem;
+    margin:0;
+    padding:0;
+    margin-left:5px;
+    font-weight: 600;
+    width:70%;
+}
+
+#footer_main_text{
+    margin:auto;
+    font-size: 1rem;
+    width:40%;
+}
+
+.dot{
+    margin-left:15px;
+    margin-right: 5px;
+    height: 20px;
+    width: 20px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+#estgv_logo{
+    width:106px;
+    height:50px;
+    position: fixed;
+    right: 0%;
+}
+
+#full-loader{
+    width:100%;
+    height:100vh;
+    padding:0;
+    margin:0;
+    background-color: whitesmoke;
+    position:fixed;
+    top:0;
+    bottom:0;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-header{
+    width: 100%;
+    height:4rem;
+    top:0;
+    position: fixed;
+    background-color: #83a7c99a;
+}
+
+.loader-footer{
+    width: 100%;
+    height: 4rem;
+    bottom:0;
+    position: fixed;
+    background-color: #83a7c99a;
+}
+
+#connecting-div{
+    width: 100%;
+    height:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#connect-error-div{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    display: none;
+}
+
+#mask_wPriority{
+    display:none;
+    width:100%;
+    left:0%;
+    top:0%;
+    right:0%;
+    bottom:0%;
+    margin:0;
+    padding:0;
+    opacity: 0;
+    position:fixed;
+}
+
+#mask_woPriority{
+    display:none;
+    width:100%;
+    left:0%;
+    top:0%;
+    right:0%;
+    bottom:0%;
+    margin:0;
+    padding:0;
+    opacity:0;
+    position:fixed;
+}
+
+#popup_error{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    left:0%;
+    top:0%;
+    right:0%;
+    bottom:0%;
+    margin:0;
+    padding:0;
+    position: fixed;
+    z-index: 10;
+}
+
+#popup_wPriority{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: auto;
+    border: 1px solid rgb(195, 195, 195);
+    width: 35%;
+    min-width: 21rem;
+    top: 25%;
+    bottom: 25%;
+    background-color: white;
+    z-index: 11;
+}
+
+#popup_woPriority{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: auto;
+    border: 1px solid rgb(195, 195, 195);
+    width: 35%;
+    min-width: 21rem;
+    top: 25%;
+    bottom: 25%;
+    background-color: white;
+    z-index: 12;
+}
+
+.popup_text{
+    color:rgb(23, 39, 68);
+    text-align: center;
+    font-size: 1rem;
+    margin:0;
+    padding:0;
+    margin-bottom: 2%;
+    font-weight: 600;
+}
+
+#loader{
+    margin-top: 5%;
+    border: 1rem solid #f3f3f3; /* Light grey */
+    border-top: 1rem solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 7.5rem;
+    height: 7.5rem;
+    animation: spin 2s linear infinite;
+}
+
+#connect_error_warning{
+    width:7.5rem;
+    height: auto;
+}
+
+#image_error_wPriority{
+    width:5.5rem;
+    height: auto;    
+    margin:1rem;
+}
+
+#image_error_woPriority{
+    width:5.5rem;
+    height: auto;    
+    margin: 3rem;
+}
+
+#error_text_message{
+    margin: 1rem;
+}
+
+.button-error {
+    display: inline-block;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    background-color: #39a8a9;
+    border: none;
+    border-radius: 4px;
+    margin:2rem;
+    transition: background-color 0.3s ease;
+}
+  
+.button-error:hover {
+    background-color: #e0e0e0;
+}
+  
+.button-error:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #888;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+.info-popup-image{
+    width: 2rem;
+    height: 2rem;
+}
+
+
+@media screen and (min-width: 992px) { /* Above Large Screen */
+    html{
+        font-size: 16px;
+    }
+    .nav_button{
+        min-height: 2rem;
+    }
+}

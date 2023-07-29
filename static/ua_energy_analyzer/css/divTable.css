@@ -1,0 +1,209 @@
+.hour-control-table{
+    border-left: 1px solid #b9b9b9;
+    border-bottom: 1px solid #b9b9b9;
+    margin-top:3.5rem;
+    margin-left:7.1rem;
+    height:21rem;
+    width:80%;
+    position: relative;
+    display: none;
+  }
+  
+  .table-title{
+    width:100%;
+    height:3.5rem;
+    text-align: center;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top:-3.5rem;
+  }
+  
+  .table-content{
+    width:100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+  }
+  .table-bar{
+    height:30px;
+    background-color: red;
+    width: 3.9%;
+  }
+
+  .table-title-text{
+    font-weight: 600;
+    font-size: 1.15rem;
+    color:rgb(23, 39, 68);
+  }
+  
+  .table-y-axis-identifiers{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    position: absolute;
+    left:-7.1rem;
+    height: 100%;
+    text-align: right;
+    width:7.1rem;
+  }
+  
+  .table-x-axis-identifiers{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    position: absolute;
+    bottom:-2.5rem;
+    width: 100%;
+    height:2.5rem;
+  }
+  
+  .table-x-axis-legend{
+    width:100%;
+    height:2.5rem;
+    text-align: center;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom:-5rem;
+  }
+  
+  .y-axis-identifier{
+    height:30px;
+    margin-bottom:calc(14.3%);
+    margin-right:7.5px;
+    font-weight: 500;
+  }
+  
+  .first-y-axis-identifier{
+    margin-top:calc(14.3%);
+  }
+  
+  .x-axis-identifier{
+    width:20px;
+    margin-right:calc(3.9% - 20px);
+    margin-top:10px;
+    font-weight: 500;
+  }
+  
+  .last-x-axis-identifier{
+    margin-right:0;
+  }
+  
+  @media screen and (min-width: 1281px) {
+    .hour-control-table{
+      display:block;
+    }
+  }
+
+  .add-table-period-btn{
+    position: absolute;
+    top:0%;
+    right:0%;
+  }
+
+  .remove-table-period-btn{
+    position: absolute;
+    top:calc(1rem + 50px);
+    right:0%;
+  }
+
+  .add-period-popup{
+    position: absolute;
+    background-color: white;
+    width: 30%;
+    height:30rem;
+    min-width:27.5rem;
+    border:1px solid #b9b9b9;
+    margin:auto;
+    top:calc(50% - 15rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    display: none;
+  }
+
+
+  .remove-period-popup{
+    position: absolute;
+    background-color: white;
+    width: 30%;
+    height:17.5rem;
+    min-width:27.5rem;
+    border:1px solid #b9b9b9;
+    margin:auto;
+    top:calc(50% - 8.75rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    display: none;
+  }
+
+  .add-period-popup-title{
+    font-weight: 600;
+    margin:1rem;
+    font-size:1.15rem;
+  }
+
+  .remove-period-popup-title{
+    font-weight: 600;
+    margin:1rem;
+  }
+
+  .element-first-col{
+    width:50%;
+    min-width:14.5rem;
+    text-align: right;
+  }
+  .element-second-col{
+    width:50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .element-only-col{
+    width: 100%;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    padding-left:2.5rem;
+  }
+
+  .element-first-only-col{
+    margin-top:1rem;
+  }
+
+  .element-input-number{
+    width:3.5rem;
+    margin-left:0.5rem;
+  }
+
+  .unit-seconds-label{
+    margin-left:0.5rem;
+  }
+
+  #hour_period_mask{
+    display: none;
+    width:100%;
+    left:0%;
+    top:0%;
+    right:0%;
+    bottom:0%;
+    margin:0;
+    padding:0;
+    opacity:0;
+    position:fixed;
+  }
+
+.daily-time-period-picker{
+  margin-right:1rem;
+  width:70%;
+  height: 2rem;
+}

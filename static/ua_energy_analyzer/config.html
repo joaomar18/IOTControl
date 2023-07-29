@@ -1,0 +1,290 @@
+<div id = "config-content">
+    <div class = "vertical_selection_menu" id = "vertical_config_submenu">
+        <div class = "vertical-selection-menu-buttons" id = "vertical_config_submenu_buttons">
+            <input type = "button" value = "Controlo de carga" class = "sub-nav-button" id = "b_SC" onclick="setControl()"></input>
+            <input type = "button" value = "Proteção e Limitação" class = "sub-nav-button" id = "b_PL" onclick="setSafeLimit()"></input>
+        </div>
+        <div class="vertical-slider" id = "vertical_config_slider">
+            <button class="slider-button">
+                <span class = "left-arrow" id = "config_slider_left_arrow"></span>
+                <span class = "right-arrow" id = "config_slider_right_arrow"></span>
+            </button>
+        </div>
+    </div>
+    <div class = "config-subcontent">
+        <div class="container-fluid">
+            <div class = "col-12" id = "config-subcontent-title-div">
+                <h5 id = "config-subcontent-title">Controlo de Carga</h5>
+            </div>
+            <div id = "config-subcontent-div">
+                <div class = "flex-row">
+                    <div class = "manual-control-div">
+                        <h6 id = "manual-control-title">Controlo Manual</h6>
+                        <div class = "control-element">
+                            <span class = "element">
+                                <span class = "element-name">OFF</span>
+                                <div class="checkbox-selector">
+                                    <input type="checkbox" id = "manual_selector">
+                                </div>
+                                <span class = "element-name">ON</span>
+                            </span>
+                            <span class = "element">
+                                <input type = "button" value = "Ligar" class="btn btn-secondary" id = "manual_button" onclick="outputManualInvert()"></input>
+                            </span>
+                        </div>
+                    </div>
+    
+                    <div class = "hour-control-div">
+                        <h6 id = "hour-control-title">Controlo Horário</h6>
+                        <div class = "control-element">
+                            <span class = "element">
+                                <span class = "element-name">OFF</span>
+                                <div class="checkbox-selector">
+                                    <input type="checkbox" id = "hour_control_selector">
+                                </div>
+                                <span class = "element-name">ON</span>
+                            </span>
+                            <!--
+                            <span class = "element">
+                                <div class="checkbox-wrapper-1">
+                                    <input id="start-inside-control-hour" class="substituted" type="checkbox" aria-hidden="true" />
+                                    <label for="start-inside-control-hour">Ativar arranque após início de período</label>
+                                </div>
+                            </span>
+                            -->
+                        </div>
+                    </div>
+    
+                    <div class = "special-control-div">
+                        <h6 id = "hour-control-title">Controlo Especial</h6>
+                        <div class = "control-element">
+                            <span class = "element">
+                                <span class = "element-name">OFF</span>
+                                <div class="checkbox-selector">
+                                    <input type="checkbox" id = "special_control_selector">
+                                </div>
+                                <span class = "element-name">ON</span>
+                            </span>
+                            <span class = "element">
+                                <span class = "element-name">Tipo:</span>
+                                <select class="form-select form-select-sm select-control" name="special_control_options" id="special_control_select_type">
+                                    <option value="step">Passo</option>
+                                    <!--<option value="active-treshhold">Energia Ativa</option>-->
+                                    <!--<option value="reactive-treshold">Energia Reativa</option>-->
+                                    <option value="persistent">Persistente</option>
+                                </select>
+                            </span>
+                            <!--STEP CONTROL-->
+                            <!--
+                            <div class = "special-control-category">
+                                <span class = "element">
+                                    <span class = "element-name element-input-name">Período ON</span>
+                                    <input type="text" class= "element-input">
+                                    <select class="form-select form-select-sm unit-select" name="time_unit_options" id="time_unit_options_ton_selector">
+                                        <option value="seconds">s</option>
+                                        <option value="minutes">m</option>
+                                        <option value="hours">h</option>
+                                    </select>
+                                </span>
+                                <span class = "element">
+                                    <span class = "element-name element-input-name">Período OFF</span>
+                                    <input type="text" class= "element-input">
+                                    <select class="form-select form-select-sm unit-select" name="time_unit_options" id="time_unit_options_toff_selector">
+                                        <option value="seconds">s</option>
+                                        <option value="minutes">m</option>
+                                        <option value="hours">h</option>
+                                    </select>
+                                </span>
+                                <span class = "element">
+                                    <div class="checkbox-wrapper-1">
+                                        <input id="step-control-first-ton" class="substituted" type="checkbox" aria-hidden="true" />
+                                        <label for="step-control-first-ton">Iniciar o controlo no período ON</label>
+                                    </div>
+                                </span>
+                                <span class = "element">
+                                    <input type = "button" class = "btn btn-primary element-button" value = "Aplicar">
+                                    <input type = "button" class = "btn btn-light element-button" value = "Cancelar">
+                                </span>
+                                
+                            </div>
+                            -->
+                            <!--ACTIVE ENERGY CONTROL-->
+    
+                            <!--REACTIVE ENERGY CONTROL-->
+    
+                            <!--ON/OFF CONTROL-->
+    
+                        </div>
+                    </div>
+                </div>
+
+                <div class = "flex-row second-flex-row">
+                    <div class = "hour-control-table">
+                        <div class = "table-title">
+                            <span class = "table-title-text">Períodos de tempo para o controlo horário</span>
+                        </div>
+                        <div class = "table-y-axis-identifiers">
+                            <span class = "y-axis-identifier first-y-axis-identifier">Segunda-Feira</span>
+                            <span class = "y-axis-identifier">Terça-Feira</span>
+                            <span class = "y-axis-identifier">Quarta-Feira</span>
+                            <span class = "y-axis-identifier">Quinta-Feira</span>
+                            <span class = "y-axis-identifier">Sexta-Feira</span>
+                            <span class = "y-axis-identifier">Sábado</span>
+                            <span class = "y-axis-identifier last-y-axis-identifier">Domingo</span>
+                        </div>
+                        <div class = "table-x-axis-identifiers">
+                            <span class = "x-axis-identifier">00</span>
+                            <span class = "x-axis-identifier">01</span>
+                            <span class = "x-axis-identifier">02</span>
+                            <span class = "x-axis-identifier">03</span>
+                            <span class = "x-axis-identifier">04</span>
+                            <span class = "x-axis-identifier">05</span>
+                            <span class = "x-axis-identifier">06</span>
+                            <span class = "x-axis-identifier">07</span>
+                            <span class = "x-axis-identifier">08</span>
+                            <span class = "x-axis-identifier">09</span>
+                            <span class = "x-axis-identifier">10</span>
+                            <span class = "x-axis-identifier">11</span>
+                            <span class = "x-axis-identifier">12</span>
+                            <span class = "x-axis-identifier">13</span>
+                            <span class = "x-axis-identifier">14</span>
+                            <span class = "x-axis-identifier">15</span>
+                            <span class = "x-axis-identifier">16</span>
+                            <span class = "x-axis-identifier">17</span>
+                            <span class = "x-axis-identifier">18</span>
+                            <span class = "x-axis-identifier">19</span>
+                            <span class = "x-axis-identifier">20</span>
+                            <span class = "x-axis-identifier">21</span>
+                            <span class = "x-axis-identifier">22</span>
+                            <span class = "x-axis-identifier">23</span>
+                            <span class = "x-axis-identifier last-x-axis-identifier">24</span>
+                        </div>
+                        <div class = "table-x-axis-legend">
+                            <span class = "x-axis-legend-text">Horas do dia (h)</span>
+                        </div>
+                        <div class = "table-content">
+                                <button class="icon-btn add-btn add-table-period-btn" id = "show_add_period_popup_btn">
+                                  <div class="add-icon"></div>
+                                  <div class="btn-txt">Adicionar Período</div>
+                                </button>
+                                <button class="icon-btn add-btn remove-table-period-btn" id = "show_remove_period_popup_btn">  
+                                    <div class="btn-txt">Remover Período</div>
+                                </button>
+                        </div> 
+                    </div>
+                </div>
+                <div id = "hour_period_mask"></div>
+                <div class = "add-period-popup" id = "add_period_popup">
+                    <span class = "add-period-popup-title">Adicionar novo período horário</span>
+                    <span class = "element">
+                        <span class = "element-first-col">
+                            <span class = "element-name">Período inicial</span>
+                        </span>
+                        <span class = "element-second-col">
+                            <!--<input type="time" name="time" id = "add_initial_period_time">
+                            <input class = "element-input-number" type="number" pattern="\d{2}" value = "00" id = "add_initial_period_seconds">-->
+                            <input type="text" class="daily-time-period-picker" id="add_initial_hour_period">
+                            <img src="/static/ua_energy_analyzer/img/info_popup.png" class = "info-popup-image"/>
+                        </span>
+                    </span>
+                    <span class = "element">
+                        <span class = "element-first-col">
+                            <span class = "element-name">Período final</span>
+                        </span>
+                        <span class = "element-second-col">
+                            <!--<input type="time" name="time" id = "add_final_period_time">
+                            <input class = "element-input-number" type="number" pattern="\d{2}" value = "00" id = "add_final_period_seconds">-->
+                            <input type="text" class="daily-time-period-picker" id = "add_final_hour_period">
+                            <img src="/static/ua_energy_analyzer/img/info_popup.png" class = "info-popup-image"/>
+                        </span>
+                    </span>
+                    <span class = "element">
+                        <span class = "element-first-col">
+                            <span class = "element-name">Limite de potência ativa</span>
+                        </span>
+                        <span class = "element-second-col">
+                            <input type = "number" class = "element-input" id = "hour_period_active_energy_limit">
+                            <select class="form-select form-select-sm unit-select" name="active_power_unit_options" id="active_power_unit_options_selector">
+                                <option value="w">W</option>
+                                <option value="kW" selected>kW</option>
+                                <option value="MW">MW</option>
+                            </select>
+                        </span>
+                    </span>
+                    <span class = "element">
+                        <span class = "element-first-col">
+                            <span class = "element-name">Limite de potência reativa</span>
+                        </span>
+                        <span class = "element-second-col">
+                            <input type = "number" class = "element-input" id = "hour_period_reactive_energy_limit">  
+                            <select class="form-select form-select-sm unit-select" name="reactive_power_unit_options" id="reactive_power_unit_options_selector">
+                                <option value="VAr">VAr</option>
+                                <option value="kVAr" selected>kVAr</option>
+                                <option value="MVAr">MVAr</option>
+                            </select>   
+                        </span>
+                    </span>
+                    <span class = "element">
+                        <span class = "element-only-col element-first-only-col">
+                            <div class="checkbox-wrapper-1">
+                                <input id="add_hour_period_active_energy_limit_enabled" class="substituted" type="checkbox" aria-hidden="true" />
+                                <label for="add_hour_period_active_energy_limit_enabled">Ativar o limite de potência ativa</label>
+                            </div>
+                        </span>
+                    </span>
+                    <span class = "element">
+                        <span class = "element-only-col">
+                            <div class="checkbox-wrapper-1">
+                                <input id="add_hour_period_reactive_energy_limit_enabled" class="substituted" type="checkbox" aria-hidden="true" />
+                                <label for="add_hour_period_reactive_energy_limit_enabled">Ativar o limite de potência reativa</label>
+                            </div>
+                        </span>
+                    </span>
+                    <span class = "element">
+                        <input type = "button" id = "add_hour_period_btn" class = "btn btn-primary element-button" value = "Adicionar" onclick = "addHourPeriod()">
+                        <input type = "button" id = "cancel_add_hour_period_btn" class = "btn btn-secondary element-button" value = "Cancelar">
+                    </span>
+                </div>
+                <div class = "remove-period-popup" id = "remove_period_popup">
+                    <span class = "remove-period-popup-title">Remover período horário</span>
+                    <span class = "element">
+                        <span class = "element-first-col">
+                            <span class = "element-name">Período inicial</span>
+                        </span>
+                        <span class = "element-second-col">
+                            <input type="time" name="time"/>
+                            <input class = "element-input-number" type="number">
+                            <span class = "unit-seconds-label">s</span>
+                        </span>
+                    </span>
+                    <span class = "element">
+                        <span class = "element-first-col">
+                            <span class = "element-name">Período final</span>
+                        </span>
+                        <span class = "element-second-col">
+                            <input type="time" name="time"/>
+                            <input class = "element-input-number" type="number">
+                            <span class = "unit-seconds-label">s</span>
+                        </span>
+                    </span>    
+                    <span class = "element">
+                        <input type = "button" id = "remove_hour_period_btn" class = "btn btn-danger element-button" value = "Remover" onclick = "removeHourPeriod()">
+                        <input type = "button" id = "cancel_remove_hour_period_btn" class = "btn btn-secondary element-button" value = "Cancelar">
+                    </span>                
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = "horizontal_selection_menu" id = "horizontal_config_submenu">
+        <div class = "horizontal-selection-menu-buttons" id = "horizontal_config_submenu_buttons">
+            <input type = "button" value = "Controlo de carga" class = "sub-nav-button" id = "b_SC" onclick="setControl()"></input>
+            <input type = "button" value = "Proteção e Limitação" class = "sub-nav-button" id = "b_PL" onclick="setSafeLimit()"></input>
+        </div>
+    </div>
+    <div class="horizontal-slider" id = "horizontal_config_slider">
+        <button class="slider-button-horizontal">
+            <span class = "down-arrow" id = "config_slider_down_arrow"></span>
+            <span class = "up-arrow" id = "config_slider_up_arrow"></span>
+        </button>
+    </div>
+</div>

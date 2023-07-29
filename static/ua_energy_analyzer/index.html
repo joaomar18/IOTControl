@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="icon" type="image/x-icon" href="/static/ua_energy_analyzer/img/app_icon.ico">
+    <link rel="stylesheet" href="/static/ua_energy_analyzer/css/lib/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href = "/static/ua_energy_analyzer/css/buttons.css">
+    <link rel="stylesheet" href = "/static/ua_energy_analyzer/css/selectButton.css">
+    <link rel="stylesheet" href = "/static/ua_energy_analyzer/css/divTable.css">
+    <link rel="stylesheet" href="/static/ua_energy_analyzer/css/style.css">
+    <link rel="stylesheet" href="/static/ua_energy_analyzer/css/realTime.css">
+    <link rel="stylesheet" href ="/static/ua_energy_analyzer/css/consumption.css">
+    <link rel="stylesheet" href ="/static/ua_energy_analyzer/css/config.css">
+    <title>Controlador de carga</title>
+</head>
+<body>
+    <div class = "container-fluid">
+        <div class = "d-flex justify-content-center align-content-center">
+            <div id= "section_title">
+                <div class="d-flex d-lg-none drop-button" id = "main-drop-button">
+                    <div class="line-drop-button"></div>
+                    <div class="line-drop-button"></div>
+                    <div class="line-drop-button"></div>
+                </div>
+                <h5 id ="title"></h5>
+            </div>
+        </div>
+    </div>
+    <div class = "container-fluid" class = "nav-bar" id = "main-nav-bar">
+        <div class = "d-flex flex-column flex-lg-row justify-content-evenly align-content-center">
+            <input type="button" class="nav_button" value="Dados em tempo real" onclick="loadRealTime()"></input>
+            <input type="button" class="nav_button" value="Consumo energético" onclick="loadConsumption()"></input>
+            <input type="button" class="nav_button" value="Qualidade de energia" onclick="loadQuality()"></input>
+            <input type="button" class="nav_button" value="Parâmetros" onclick="loadConfig()"></input>
+            <input type="button" class="nav_button" value="Histórico" onclick="loadHistory()"></input>
+        </div>
+    </div>
+    <div class = "container-fluid" id= "content">
+    </div>
+    <div class = "container-fluid">
+        <div class = "d-flex flex-row justify-content-evenly align-content-center">
+            <div id = "footer">
+                <div class = "controller-state-tab" id = "controller-state-footer">
+                    <span class = "footer_text" >Conexão:</span>
+                    <div id = "state_controller"></div>
+                </div>
+                <div class = "logo-tab">
+                    <img id = "school-logo" src="/static/ua_energy_analyzer/img/estgv_logo.png">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = "popup-state" id = "state-footer">
+        <div class = "container">
+            <div class = "row popup-rows">
+                <div class = "col-4">
+                    <span class = "footer_text">ID:</span>
+                </div>
+                <div class = "col-8">
+                    <span class = "footer_text" id = "device_id"></span>
+                </div>
+            </div>
+            <div class = "row popup-rows">
+                <div class = "col-4">
+                    <span class = "footer_text">Nome:</span>
+                </div>
+                <div class = "col-8">
+                    <span class = "footer_text" id = "device_name">{{ device_name }}</span>
+                </div>
+            </div>
+            <div class = "row popup-rows">
+                <div class = "col-4">
+                    <span class = "footer_text">Protocolo:</span>
+                </div>
+                <div class = "col-8">
+                    <span class = "footer_text" id = "device_protocol"></span>
+                </div>
+            </div>            
+            <div class = "row popup-rows">
+                <div class = "col-4">
+                    <span class = "footer_text">Tipo:</span>
+                </div>
+                <div class = "col-8">
+                    <span class = "footer_text" id = "device_type">Analisador de Energia</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id = "full-loader">
+        <div class = "loader-header">
+
+        </div>
+        <div id = "connecting-div">
+            <span class = "popup_text">A Carregar</span>
+            <div id = "loader" ></div>
+        </div>
+        <div id = "connect-error-div">
+            <img src="/static/ua_energy_analyzer/img/warning.png" id = "connect_error_warning">
+            <span class = "popup_text" id = "error_text_message"></span>
+        </div>
+        <div class = "loader-footer">
+
+        </div>
+    </div>
+    <div id = "mask_wPriority">
+    </div>
+    <div id = "mask_woPriority">
+    </div>
+    <div id = "popup_error">
+        <div id = "popup_wPriority">
+            <img src="/static/ua_energy_analyzer/img/warning.png" id = "image_error_wPriority">
+            <span class = "popup_text" id = "error_wPriority"></span>
+            <input type = "button" value = "Confirmar" class = "button-error" id = "confirm_error_wPriority">
+        </div>
+        <div id = "popup_woPriority">
+            <img src="/static/ua_energy_analyzer/img/info.png" id = "image_error_woPriority">
+            <span class = "popup_text" id = "error_woPriority"></span>
+            <input type = "button" value = "Confirmar" class = "button-error" id = "confirm_error_woPriority">
+        </div>
+    </div>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/lib/bootstrap/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/error/messages.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/realtime.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/config.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/data/nodes.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/data/controllers.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/com/ws_messages.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/com/ws_com.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/com/http_messages.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/com/http_com.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/screens.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/visual.js"></script>
+</body>
+</html>

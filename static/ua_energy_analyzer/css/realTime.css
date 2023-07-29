@@ -1,0 +1,301 @@
+.L_container{
+    margin:1%;
+    width:25%;
+    min-width: 21rem;
+    border-radius: 1%;
+    border:1px solid rgb(216, 216, 216);
+    text-align: center;
+    height: fit-content;
+    background-color: #83c9af9a;
+}
+
+.container-title{
+    font-size:1rem;
+    color:rgb(23, 39, 68);
+    font-weight: 600;
+    margin-top: 1rem;
+}
+
+
+.measure{
+    margin:1%;
+    margin-top:3%;
+}
+
+.m_identifier_div{
+    width:50%;
+}
+
+.m_value_div{
+    width:50%;
+}
+
+.m_identifier{
+    width:60%;
+    font-size: 0.875rem;
+    font-weight: bold;
+    color:rgb(23, 39, 68);
+}
+
+.m_value{
+    width:40%;
+    min-width:8rem;
+    text-align: center;
+    font-size: 0.875rem;
+    border:1px solid rgb(235, 235, 235);
+    background-color: white;
+    font-weight: 600;
+    color:rgb(23, 39, 68);
+}
+
+.realtime-animation{
+    margin:1%;
+    width:25%;
+    height:400px;
+    min-width: 21rem;
+    text-align: center;
+    display: none;
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
+    padding:0;
+}
+
+.realtime-animation-content{
+    position: relative;
+    height: 100%;
+    width: 400px;
+    padding:0;
+    margin:0;
+}
+
+.vertical-dashed-line{
+    width: 4px;
+    height: 75px;
+    background-position: 0 0;
+    background-size: 100% 20px;
+    animation: vertical-dashed-line-animation 2s linear infinite;
+    position: absolute;
+}
+  
+@keyframes vertical-dashed-line-animation {
+    0%{
+        background-position: 0 0;
+    }
+    100%{
+        background-position: 0 20px;
+    }
+}
+
+.horizontal-left-dashed-line {
+    width: 150px;
+    height: 4px;
+    background-position: 0 0;
+    background-size: 20px 100%;
+    animation: horizontal-left-dashed-line-animation 2s linear infinite;
+    position: absolute;
+}
+  
+@keyframes horizontal-left-dashed-line-animation {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: -20px 0;
+    }
+}
+
+.horizontal-right-dashed-line {
+    width: 150px;
+    height: 4px;
+    background-position: 0 0;
+    background-size: 20px 100%;
+    animation: horizontal-right-dashed-line-animation 2s linear infinite;
+    position: absolute;
+}
+  
+@keyframes horizontal-right-dashed-line-animation {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 20px 0;
+    }
+}
+
+.l1-vertical-line{
+    top:135px;
+    left:155px
+}
+
+.l2-vertical-line{
+    top:135px;
+    left:197px;
+    height:246px;
+}
+
+.l3-vertical-line{
+    top:135px;
+    left:239px;
+}
+
+.l1-horizontal-line{
+    top:206px;
+    left:9px;
+}
+
+.l3-horizontal-line{
+    top:206px;
+    left:239px;
+}
+
+.l1-end-vertical-line{
+    top:206px;
+    left:9px;
+    height:175px;
+}
+
+.l3-end-vertical-line{
+    top: 206px;;
+    right:9px;
+    height:175px;
+}
+
+
+.openc-line{
+    background-color: black;
+}
+
+.closec-line{
+    display: none;
+}
+
+.warning-line{
+    display: none;
+}
+
+.closec-vertical-line{
+    background-image: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.704) 50%);
+
+}
+
+.closec-horizontal-left-line{
+    background-image: linear-gradient(to left, transparent 50%, rgba(0, 0, 0, 0.704) 50%);
+}
+
+.closec-horizontal-right-line{
+    background-image: linear-gradient(to right, transparent 50%, rgba(0, 0, 0, 0.704) 50%);
+
+}
+
+.warning-vertical-line{
+    background-image: linear-gradient(to bottom, transparent 50%, rgba(225, 5, 5, 0.704) 50%);
+
+}
+
+.warning-horizontal-left-line{
+    background-image: linear-gradient(to left, transparent 50%, rgba(225, 5, 5, 0.704) 50%);
+}
+
+
+.warning-horizontal-right-line{
+    background-image: linear-gradient(to right, transparent 50%, rgba(225, 5, 5, 0.704) 50%);    
+}
+
+
+.down-animation-arrow{
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    margin: 0 auto;
+    position: absolute;
+}
+
+
+
+.closec-arrow{
+    border-top: 20px solid rgba(0, 0, 0, 0.704);
+    display: none;
+}
+
+.warning-arrow{
+    border-top: 20px solid rgba(225, 5, 5, 0.704);
+    display: none;
+}
+
+
+.l1-arrow{
+    top:381px;
+    left:1px;
+}
+
+.l2-arrow{
+    top:381px;
+    left:189px;
+}
+
+.l3-arrow{
+    top:381px;
+    right:1px;
+}
+
+.amperimeter-instrument-animation{
+    border-radius: 1px solid rgb(225, 225, 225);
+    background-color: rgb(175, 175, 175);
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    position: absolute;
+}
+
+#l1_amperimeter_animation{
+    top:240px;
+    left:-39px;
+}
+
+#l2_amperimeter_animation{
+    top:240px;
+    left:149px;
+}
+
+#l3_amperimeter_animation{
+    top:240px;
+    right:-39px;
+}
+
+.instument-identifier{
+    color:white;
+    font-weight: 600;
+    position: absolute;
+    width: 50px;
+    font-size: 16px;
+    text-align: center;
+    left:25px;
+    top: 10px;
+}
+
+.animation-measure{
+    position: absolute;
+    width:75px;
+    background-color: white;
+    border-radius: 50px;
+    height:30px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    top:50px;
+    left:12.5px;
+    outline: none;
+}
+
+#realtime-image-animation{
+    position: absolute;
+    left:72px;
+}
+
+@media screen and (min-width: 1115px) {
+    .realtime-animation{
+        display: flex;
+    }
+  }
