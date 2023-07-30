@@ -157,7 +157,6 @@ class DeviceAnimation{
     }
 
     set_elements_open(){
-        console.log("debug");
         let openc_elements = this.document.getElementsByClassName(this.openc_lines);
         let closec_elements = this.document.getElementsByClassName(this.closec_lines);
         let closec_elements_arrows = this.document.getElementsByClassName(this.closec_arrows);
