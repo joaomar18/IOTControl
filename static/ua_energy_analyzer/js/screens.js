@@ -11,6 +11,14 @@ let mainDropButton = document.getElementById("main-drop-button");
 let statePopup = document.getElementById("state-footer");
 let buttonState = document.getElementById("controller-state-footer");
 
+
+function update_dynamic_elements(){
+    let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    let popoverList = popoverTriggerList.map( function (popoverTrigger){
+        return new bootstrap.Popover(popoverTrigger);
+    });
+}
+
 class DropDownMenu{
     constructor(window, drop_down_element, button_element){
         this.window = window;
@@ -188,6 +196,7 @@ class ContentScreen{
             active_device.valid_elements = true;
             active_device.set_active_section(screen_number);
             this.screen_number = screen_number;
+            update_dynamic_elements(); //update popover elements
         } 
     }
 }

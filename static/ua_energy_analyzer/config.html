@@ -176,16 +176,13 @@
                 <div id = "hour_period_mask"></div>
                 <div class = "add-period-popup" id = "add_period_popup">
                     <span class = "add-period-popup-title">Adicionar novo período horário</span>
-                    <span class="label">Formato: HH:mm:ss</span>
                     <span class = "element">
                         <span class = "element-first-col">
                             <span class = "element-name">Período inicial</span>
                         </span>
                         <span class = "element-second-col">
-                            <!--<input type="time" name="time" id = "add_initial_period_time">
-                            <input class = "element-input-number" type="number" pattern="\d{2}" value = "00" id = "add_initial_period_seconds">-->
                             <input type="text" class="daily-time-period-picker" id="add_initial_hour_period">
-                            <img src="/static/ua_energy_analyzer/img/info_popup.png" class = "info-popup-image"/>
+                            <img src="/static/ua_energy_analyzer/img/info_popup.png" class = "info-popup-image" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Formato em HH:mm:ss"/>
                         </span>
                     </span>
                     <span class = "element">
@@ -193,35 +190,33 @@
                             <span class = "element-name">Período final</span>
                         </span>
                         <span class = "element-second-col">
-                            <!--<input type="time" name="time" id = "add_final_period_time">
-                            <input class = "element-input-number" type="number" pattern="\d{2}" value = "00" id = "add_final_period_seconds">-->
                             <input type="text" class="daily-time-period-picker" id = "add_final_hour_period">
-                            <img src="/static/ua_energy_analyzer/img/info_popup.png" class = "info-popup-image"/>
+                            <img src="/static/ua_energy_analyzer/img/info_popup.png" class = "info-popup-image" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Formato em HH:mm:ss"/>
                         </span>
                     </span>
                     <span class = "element">
                         <span class = "element-first-col">
-                            <span class = "element-name">Limite de potência ativa</span>
+                            <span class = "element-name">Limite de energia ativa</span>
                         </span>
                         <span class = "element-second-col">
                             <input type = "number" class = "element-input" id = "hour_period_active_energy_limit">
                             <select class="form-select form-select-sm unit-select" name="active_power_unit_options" id="active_power_unit_options_selector">
-                                <option value="w">W</option>
-                                <option value="kW" selected>kW</option>
-                                <option value="MW">MW</option>
+                                <option value="w">Wh</option>
+                                <option value="kW" selected>kWh</option>
+                                <option value="MW">MWh</option>
                             </select>
                         </span>
                     </span>
                     <span class = "element">
                         <span class = "element-first-col">
-                            <span class = "element-name">Limite de potência reativa</span>
+                            <span class = "element-name">Limite de energia reativa</span>
                         </span>
                         <span class = "element-second-col">
                             <input type = "number" class = "element-input" id = "hour_period_reactive_energy_limit">  
                             <select class="form-select form-select-sm unit-select" name="reactive_power_unit_options" id="reactive_power_unit_options_selector">
-                                <option value="VAr">VAr</option>
-                                <option value="kVAr" selected>kVAr</option>
-                                <option value="MVAr">MVAr</option>
+                                <option value="VAr">VArh</option>
+                                <option value="kVAr" selected>kVArh</option>
+                                <option value="MVAr">MVArh</option>
                             </select>   
                         </span>
                     </span>
@@ -229,7 +224,7 @@
                         <span class = "element-only-col element-first-only-col">
                             <div class="checkbox-wrapper-1">
                                 <input id="add_hour_period_active_energy_limit_enabled" class="substituted" type="checkbox" aria-hidden="true" />
-                                <label for="add_hour_period_active_energy_limit_enabled">Ativar o limite de potência ativa</label>
+                                <label for="add_hour_period_active_energy_limit_enabled">Ativar o limite de energia ativa</label>
                             </div>
                         </span>
                     </span>
@@ -237,7 +232,7 @@
                         <span class = "element-only-col">
                             <div class="checkbox-wrapper-1">
                                 <input id="add_hour_period_reactive_energy_limit_enabled" class="substituted" type="checkbox" aria-hidden="true" />
-                                <label for="add_hour_period_reactive_energy_limit_enabled">Ativar o limite de potência reativa</label>
+                                <label for="add_hour_period_reactive_energy_limit_enabled">Ativar o limite de energia reativa</label>
                             </div>
                         </span>
                     </span>
