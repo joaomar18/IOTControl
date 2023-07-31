@@ -12,11 +12,46 @@ let statePopup = document.getElementById("state-footer");
 let buttonState = document.getElementById("controller-state-footer");
 
 
-function update_dynamic_elements(){
-    let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-    let popoverList = popoverTriggerList.map( function (popoverTrigger){
-        return new bootstrap.Popover(popoverTrigger);
-    });
+class PopoverUtil{
+    constructor(document){
+        this.document = document;
+        this.active_popover = false; //true: there is an active popover
+        this.check_active_popover = setInterval(this.check_active_popover_handler.bind(this), 10);
+        this.active_popovers = [];
+        this.document.addEventListener("click", (event) => {
+            if(this.active_popover){
+                if (!event.target.closest(".popover") && !event.target.closest(".popover-body") && !event.target.closest(".info-popup-image")){
+                    this.active_popovers.forEach((element) => {
+                        element.hide();
+                    });
+                }
+            }
+        });
+    }
+
+
+    check_active_popover_handler = () => {
+        let activePopovers = document.getElementsByClassName('popover');
+        let activePopoversArray = Array.from(activePopovers);
+        if(activePopoversArray.length>0){
+            this.active_popover = true;
+        }
+        else{
+            this.active_popover = false;
+        }
+    }
+
+    update_dynamic_elements() {
+        this.active_popovers.splice(0);
+    
+        let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    
+        let popoverList = popoverTriggerList.map((popoverTrigger) => {
+            let new_popover = new bootstrap.Popover(popoverTrigger);
+            this.active_popovers.push(new_popover);
+            return new_popover;
+        });
+    }
 }
 
 class DropDownMenu{
@@ -196,11 +231,12 @@ class ContentScreen{
             active_device.valid_elements = true;
             active_device.set_active_section(screen_number);
             this.screen_number = screen_number;
-            update_dynamic_elements(); //update popover elements
+            popovers.update_dynamic_elements(); //update popover elements
         } 
     }
 }
 
+let popovers = new PopoverUtil(document);
 let screen_loader = new ScreenLoader(full_loader, connect_display, warning_display, connect_error_message, 5000);
 let content_screen = new ContentScreen(window, screen_loader, title, content_div, 1);
 let nav_drop_down = new DropDownMenu(window, mainNavBar, mainDropButton);

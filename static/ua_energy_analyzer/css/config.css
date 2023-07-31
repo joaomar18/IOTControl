@@ -323,8 +323,9 @@
 
 .element-input{
   width: 70%;
+  border-radius:7.5%;
   min-width: 5.5rem;
-  border: 1px solid #b9b9b9;
+  border: 1px solid #dee2e6;;
   margin:0.5rem;
   margin-left:0rem;
 }
@@ -334,7 +335,7 @@
 }
 
 .unit-select{
-  width: 5.75rem;
+  width:7rem;
   margin-right:1rem;
 }
 
