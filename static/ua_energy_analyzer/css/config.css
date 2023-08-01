@@ -323,7 +323,10 @@
 
 .element-input{
   width: 70%;
-  border-radius:7.5%;
+  border-radius:5px;
+  font-family: var(--bs-body-font-family);
+  font-weight: var(--bs-body-font-weight);
+  color: var(--bs-body-color);
   min-width: 5.5rem;
   border: 1px solid #dee2e6;;
   margin:0.5rem;
