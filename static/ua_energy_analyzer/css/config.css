@@ -329,8 +329,11 @@
   color: var(--bs-body-color);
   min-width: 5.5rem;
   border: 1px solid #dee2e6;;
+  padding:2px;
+  padding-left:12px;
   margin:0.5rem;
   margin-left:0rem;
+  outline: none;
 }
 
 .element-input-name{
@@ -357,8 +360,22 @@
   cursor:pointer;
 }
 
+.config-temporary-alert{
+  position:fixed;
+  top:5.1rem;
+  margin:auto;
+  left:50%;
+  transform: translate(-50%, -50%); /* Center the element relative to its own width and height */
+  width:30%;
+  min-width:27.5rem;
+  z-index: 9999;
+}
+
 @media screen and (min-width: 992px) { /* Above Large Screen */
   #config-content{
       margin-bottom: 0rem;
+  }
+  .config-temporary-alert{
+    top: 7.1rem;
   }
 }

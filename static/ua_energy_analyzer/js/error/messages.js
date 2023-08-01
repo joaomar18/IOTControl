@@ -46,6 +46,25 @@ class NoPriorityErrorHandling{
     }
 }
 
+class TemporaryWarning{
+    constructor(document, element){
+        this.document = document;
+        this.element = element;
+    }
+    create_temporary_warning(type, message){
+        let new_warning = document.createElement('div');
+        new_warning.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            '</div>'
+        ].join('');
+        this.document.getElementById(this.element).appendChild(new_warning);
+    }
+}
+
+let config_temporary_warnings = new TemporaryWarning(document, "config-subcontent-div");
+
 let prio_errors = new PriorityErrorHandling(document, "mask_wPriority", "popup_error", "popup_wPriority", "error_wPriority", "confirm_error_wPriority");
 
 let no_prio_errors = new NoPriorityErrorHandling(document, "mask_woPriority", "popup_error", "popup_woPriority" , "error_woPriority", "confirm_error_woPriority");

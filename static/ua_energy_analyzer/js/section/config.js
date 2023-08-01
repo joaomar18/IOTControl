@@ -610,7 +610,7 @@ function addHourPeriod(){
     //-3: Invalid final period
 
     if(hour_period_valid != 0){ //Invalid period
-        //Alert message
+        config_temporary_warnings.create_temporary_warning("danger", "AVISO!!");
         return;   
     }
 
