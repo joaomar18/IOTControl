@@ -51,10 +51,10 @@ class TemporaryWarning{
         this.document = document;
         this.element = element;
     }
-    create_temporary_warning(type, message){
+    create_temporary_warning(type,section, message){
         let new_warning = document.createElement('div');
         new_warning.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+            `<div class="alert alert-${type} alert-dismissible fade show temporary-alert ${section}-temporary-alert" role="alert">`,
             `   <div>${message}</div>`,
             '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
             '</div>'
