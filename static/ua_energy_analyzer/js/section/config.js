@@ -23,7 +23,8 @@ class ControlButton{
             //communication error
             clearInterval(this.check_feedback);
             clearTimeout(this.check_feedback_timeout);
-            no_prio_errors.set_error("Erro de comunicação");
+            //no_prio_errors.set_error("Erro de comunicação");
+            config_temporary_alerts.create_temporary_warning("danger", "config", "Erro de comunicação");
             this.feedback_done();
         }
     }
@@ -61,11 +62,13 @@ class ControlButton{
                     }
                 }
                 else{
-                    no_prio_errors.set_error("O seletor de permissão não está ativo.");
+                    //no_prio_errors.set_error("O seletor de permissão não está ativo.");
+                    config_temporary_alerts.create_temporary_warning("info", "config", "O seletor de permissão não está ativo.");
                 }
             }
             else{
-                no_prio_errors.set_error("O dispositivo "+ active_device.name +" não está conectado.");
+                //no_prio_errors.set_error("O dispositivo "+ active_device.name +" não está conectado.");
+                config_temporary_alerts.create_temporary_warning("warning", "config", "O dispositivo "+ active_device.name +" não está conectado.");
             }
         }
     }
@@ -130,7 +133,8 @@ class ControlSelector{
             //communication error
             clearInterval(this.check_feedback);
             clearTimeout(this.check_feedback_timeout);
-            no_prio_errors.set_error("Erro de comunicação");
+            config_temporary_alerts.create_temporary_warning("danger", "config", "Erro de comunicação");
+            //no_prio_errors.set_error("Erro de comunicação");
             this.feedback_done();
         }
     }
@@ -159,7 +163,8 @@ class ControlSelector{
                 }
                 else{
                     console.log("not connected");
-                    no_prio_errors.set_error("O dispositivo "+ active_device.name +" não está conectado.");
+                    //no_prio_errors.set_error("O dispositivo "+ active_device.name +" não está conectado.");
+                    config_temporary_alerts.create_temporary_warning("warning", "config", "O dispositivo "+ active_device.name +" não está conectado.");
                     this.set_selector_off();
                 }
             }
@@ -610,7 +615,27 @@ function addHourPeriod(){
     //-3: Invalid final period
 
     if(hour_period_valid != 0){ //Invalid period
-        config_temporary_warnings.create_temporary_warning("danger", "config", "AVISO!!");
+        if(hour_period_valid == 1){
+            config_temporary_alerts.create_temporary_warning("info", "config", "Insira um período horário válido.");
+        }
+        else if(hour_period_valid == 2){
+            config_temporary_alerts.create_temporary_warning("info", "config", "Insira um período inicial válido.");
+        }
+        else if(hour_period_valid == 3){
+            config_temporary_alerts.create_temporary_warning("info", "config", "Insira um período final válido.");
+        }
+        else if(hour_period_valid == 4){
+            config_temporary_alerts.create_temporary_warning("warning", "config", "O período final deve suceder o período inicial.");
+        }
+        else if(hour_period_valid == -1){
+            config_temporary_alerts.create_temporary_warning("danger", "config", "Os períodos inseridos são inválidos.");
+        }
+        else if(hour_period_valid == -2){
+            config_temporary_alerts.create_temporary_warning("danger", "config", "O período inicial é inválido.");
+        }
+        else if(hour_period_valid == -3){
+            config_temporary_alerts.create_temporary_warning("danger", "config", "O período final é inválido.");
+        }
         return;   
     }
 

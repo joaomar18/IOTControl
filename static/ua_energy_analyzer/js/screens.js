@@ -238,7 +238,7 @@ class ContentScreen{
 
 let popovers = new PopoverUtil(document);
 let screen_loader = new ScreenLoader(full_loader, connect_display, warning_display, connect_error_message, 5000);
-let content_screen = new ContentScreen(window, screen_loader, title, content_div, 1);
+let content_screen = new ContentScreen(window, screen_loader, title, content_div, 4);
 let nav_drop_down = new DropDownMenu(window, mainNavBar, mainDropButton);
 let footer_drop_down = new DropDownMenuExit(document, statePopup, buttonState);
 let device_info = new DeviceInfo(document, "device_name", "device_type");
