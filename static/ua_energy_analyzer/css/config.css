@@ -364,7 +364,6 @@
   position:fixed;
   top:5.1rem;
   margin:auto;
-  left:50%;
   transform: translate(-50%, -50%); /* Center the element relative to its own width and height */
   width:30%;
   min-width:27.5rem;

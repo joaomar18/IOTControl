@@ -47,23 +47,31 @@ class NoPriorityErrorHandling{
 }
 
 class TemporaryWarning{
-    constructor(document, element){
+    constructor(document, align_element){
         this.document = document;
-        this.element = element;
+        this.align_element = align_element;
+        this.update_position_array = [];
     }
     create_temporary_warning(type,section, message){
         let new_warning = document.createElement('div');
+        new_warning.className = "alert alert-" + type +" alert-dismissible fade show temporary-alert " + section + "-temporary-alert";
+        new_warning.role = "alert";
         new_warning.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible fade show temporary-alert ${section}-temporary-alert" role="alert">`,
             `   <div>${message}</div>`,
             '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-            '</div>'
         ].join('');
-        this.document.getElementById(this.element).appendChild(new_warning);
+        let rect = this.document.getElementById(this.align_element).getBoundingClientRect();
+        let middle_pos = (Number(rect.left) + Number(rect.right))/2;
+        new_warning.style.left = String(middle_pos+"px");
+        this.document.body.appendChild(new_warning);
+        //this.update_position_array.push(setInterval(this.update_position_handler.bind(this), 10));
+    }
+
+    update_position_handler = () => {
     }
 }
 
-let config_temporary_warnings = new TemporaryWarning(document, "config-subcontent-div");
+let config_temporary_warnings = new TemporaryWarning(document, "add_period_popup");
 
 let prio_errors = new PriorityErrorHandling(document, "mask_wPriority", "popup_error", "popup_wPriority", "error_wPriority", "confirm_error_wPriority");
 
