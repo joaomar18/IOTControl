@@ -55,6 +55,7 @@ class AlertProps{
         this.alert = null;
         this.element_id = null;
         this.id = null;
+        this.removed = false; //remove process has started
     }
 
     set_current_position(current_position){
@@ -72,6 +73,10 @@ class AlertProps{
 
     set_id(id){
         this.id = id;
+    }
+
+    set_removed(){
+        this.removed = true;
     }
 
     compare(other_alert_props){
@@ -219,13 +224,14 @@ class TemporaryAlert{
         while(!this.active_alerts_ready);
         if(this.document.getElementById(new_alert_props.element_id) != null){
             try{
-                if(new_alert_props.alert != null){
+                if(new_alert_props.alert != null && !new_alert_props.removed){
                     new_alert_props.alert.close();
                     clearInterval(this.update_position_array[new_alert_props.id]);
                     this.update_position_array.splice(new_alert_props.id, 1);
                     clearTimeout(this.remove_alert_array[new_alert_props.id]);
                     this.remove_alert_array.splice(new_alert_props.id, 1);
                     this.remove_active_alert(new_alert_props.id);
+                    new_alert_props.set_removed();
                 }
             }
             catch(error){
