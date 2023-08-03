@@ -438,6 +438,7 @@ function outputManualInvert(){
 const config_section_display_checker = setInterval(config_section_display_checker_handler, 10);
 
 let config_section_display_valid = false;
+let datetime_pickers = null;
 
 function config_section_display_checker_handler(){
     let show_add_period_popup_btn = document.getElementById("show_add_period_popup_btn");
@@ -451,7 +452,8 @@ function config_section_display_checker_handler(){
                 if (!event.target.closest("#add_period_popup")){
                     document.getElementById("add_period_popup").style.display = "none";
                     document.getElementById("remove_period_popup").style.display = "none";
-                    document.getElementById("hour_period_mask").style.display = "none";                            
+                    document.getElementById("hour_period_mask").style.display = "none";    
+                    cleanHourPeriodPopup(datetime_pickers);                        
                 }
             });
             show_add_period_popup_btn.addEventListener('click', function() {
@@ -465,6 +467,7 @@ function config_section_display_checker_handler(){
                 if(document.getElementById("add_period_popup").style.display == "flex"){
                     document.getElementById("add_period_popup").style.display = "none";
                     document.getElementById("hour_period_mask").style.display = "none";
+                    cleanHourPeriodPopup(datetime_pickers);
                 }
             });
             
@@ -481,7 +484,7 @@ function config_section_display_checker_handler(){
                     document.getElementById("hour_period_mask").style.display = "none";
                 }
             });
-            flatpickr(".daily-time-period-picker", {
+            datetime_pickers = flatpickr(".daily-time-period-picker", {
                 enableTime: true,
                 time_24hr: true,
                 altInput: true,
@@ -641,16 +644,16 @@ function addHourPeriod(){
 
     let check_valid_active_energy = checkValidEnergyLimit(limit_active_energy, limit_active_energy_enabled);
     let check_valid_reactive_energy = checkValidEnergyLimit(limit_reactive_energy, limit_reactive_energy_enabled);
-    if(!check_valid_active_energy || !check_valid_reactive_energy){
-        //Alert message
+    if(!check_valid_active_energy && !check_valid_reactive_energy){
+        config_temporary_alerts.create_temporary_warning("danger", "config", "Quando ativos, os limites de energia devem ser superiores a 0.");
         return;
     }
     else if(!check_valid_active_energy){
-        //Alert message
+        config_temporary_alerts.create_temporary_warning("danger", "config", "Quando ativo, o limite de energia ativa deve ser superior a 0.");
         return;
     }
     else if(!check_valid_reactive_energy){
-        //Alert message
+        config_temporary_alerts.create_temporary_warning("danger", "config", "Quando ativo, o limite de energia reativa deve ser superior a 0.");
         return;
     }
 
@@ -660,6 +663,25 @@ function addHourPeriod(){
 
 
     ws_client.send(message);
+}
+
+function cleanHourPeriodPopup(datetime_pickers){
+
+    for(let datetime_picker in datetime_pickers){
+        datetime_pickers[datetime_picker].setDate("");
+    }
+
+    document.getElementById("hour_period_active_energy_limit").value = "";
+
+    document.getElementById("active_power_unit_options_selector").selectedIndex = 1;
+
+    document.getElementById("hour_period_reactive_energy_limit").value = "";
+
+    document.getElementById("reactive_power_unit_options_selector").selectedIndex = 1;
+
+    document.getElementById("add_hour_period_active_energy_limit_enabled").checked = false;
+
+    document.getElementById("add_hour_period_reactive_energy_limit_enabled").checked = false;    
 }
 
 

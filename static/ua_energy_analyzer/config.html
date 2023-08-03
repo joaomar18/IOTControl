@@ -199,7 +199,7 @@
                             <span class = "element-name">Limite de energia ativa</span>
                         </span>
                         <span class = "element-second-col">
-                            <input type = "number" class = "element-input" id = "hour_period_active_energy_limit">
+                            <input type = "number" class = "element-input" id = "hour_period_active_energy_limit" min="0">
                             <select class="form-select form-select-sm unit-select" name="active_power_unit_options" id="active_power_unit_options_selector">
                                 <option value="wh">Wh</option>
                                 <option value="kWh" selected>kWh</option>
@@ -212,7 +212,7 @@
                             <span class = "element-name">Limite de energia reativa</span>
                         </span>
                         <span class = "element-second-col">
-                            <input type = "number" class = "element-input" id = "hour_period_reactive_energy_limit">  
+                            <input type = "number" class = "element-input" id = "hour_period_reactive_energy_limit" min="0">  
                             <select class="form-select form-select-sm unit-select" name="reactive_power_unit_options" id="reactive_power_unit_options_selector">
                                 <option value="VArh">VArh</option>
                                 <option value="kVArh" selected>kVArh</option>
