@@ -17,7 +17,7 @@ import data.queues
 import data.ws
 import data.device
 
-
+import db.database as db
 
 import gui.app as gui
 
@@ -52,6 +52,10 @@ async def send_messages(ws_server: ws.WebsocketsServer):
 
 async def main(): #Main coroutine
     data.general.main_loop = asyncio.get_event_loop()
+
+    database = db.Database()
+
+    print(database.table_exists("plc_1"))
     
     data.ws.ws_server = ws.WebsocketsServer("127.0.0.1", 9001, data.queues.ws_server_send_queue, data.general.main_loop) #initializes a websockets server on localhost, port 9001 and passes it it's message queue to send
     #data.ws.ws_server = ws.WebsocketsServer(str(util.ip.get_local_ipv4_address()), 9001, data.queues.ws_server_send_queue, data.general.main_loop) #initializes a websockets server on localhost, port 9001 and passes it it's message queue to send
