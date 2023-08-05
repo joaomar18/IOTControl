@@ -11,6 +11,17 @@
 #######################################
 
 class HourPeriod():
+    def __init__(self):
+        self.initial_period = ""
+        self.final_period = ""
+        self.active_energy_limit = 0
+        self.reactive_energy_limit = 0
+        self.active_energy_limit_unit = ""
+        self.reactive_energy_limit_unit = ""
+        self.active_energy_limit_enabled = False
+        self.reactive_energy_limit_enabled = False
+
+
     def set_initial_period(self, initial_period):
         self.initial_period = initial_period
     
@@ -36,7 +47,7 @@ class HourPeriod():
         self.reactive_energy_limit_enabled = reactive_energy_limit_enabled   
     
     def stringify(self) ->  str:
-        return_string = "Initial Hour Period: "+self.initial_period+"\n"+"Final Hour Period: "+self.final_period+"\n"+"Active Energy Limit: "+self.active_energy_limit+"\n"
-        return_string = return_string + "Reactive Energy Limit: "+self.reactive_energy_limit+"\n"+ "Active Energy Limit Unit: "+self.active_energy_limit_unit+"\n" + "Reactive Energy Limit Unit: "+self.reactive_energy_limit_unit+"\n" + "Active Energy Limit Enabled: "+self.active_energy_limit_enabled+"\n"
-        return_string = return_string + "Reactive Energy Limit Enabled: "+self.reactive_energy_limit_enabled+"\n"
+        return_string = "Initial Hour Period: "+self.initial_period+"\n"+"Final Hour Period: "+self.final_period+"\n"+"Active Energy Limit: "+str(self.active_energy_limit)+"\n"
+        return_string = return_string + "Reactive Energy Limit: "+ str(self.reactive_energy_limit) + "\n"+ "Active Energy Limit Unit: "+self.active_energy_limit_unit+"\n" + "Reactive Energy Limit Unit: "+self.reactive_energy_limit_unit+"\n" + "Active Energy Limit Enabled: "+ str(self.active_energy_limit_enabled) +"\n"
+        return_string = return_string + "Reactive Energy Limit Enabled: "+ str(self.reactive_energy_limit_enabled) +"\n"
         return return_string

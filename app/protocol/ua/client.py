@@ -115,7 +115,6 @@ class UAClient(UADevice):
         elif(message[0] == "add_hour_period"):
             new_hour_period = HourPeriod()
             message_content = message[1].split(",")
-            print(message_content)
             for content in message_content:
                 message_type = content[:content.find(":")]
                 message_info = content[content.find(":")+1:]
@@ -124,18 +123,30 @@ class UAClient(UADevice):
                 elif(message_type == "final_hour_period"):
                     new_hour_period.set_final_period(message_info)
                 elif(message_type == "active_energy_limit"):
-                    new_hour_period.set_active_energy_limit(message_info)
+                    new_hour_period.set_active_energy_limit(float(message_info))
                 elif(message_type == "reactive_energy_limit"):
-                    new_hour_period.set_reactive_energy_limit(message_info)
+                    new_hour_period.set_reactive_energy_limit(float(message_info))
                 elif(message_type == "limit_active_energy_unit"):
                     new_hour_period.set_active_energy_limit_unit(message_info)
                 elif(message_type == "limit_reactive_energy_unit"):
                     new_hour_period.set_reactive_energy_limit_unit(message_info)
                 elif(message_type == "active_energy_limit_enabled"):
-                    new_hour_period.set_active_energy_limit_enabled(message_info)
+                    new_hour_period.set_active_energy_limit_enabled(bool(message_info))
                 elif(message_type == "reactive_energy_limit_enabled"):
-                    new_hour_period.set_reactive_energy_limit_enabled(message_info)
+                    new_hour_period.set_reactive_energy_limit_enabled(bool(message_info))
             print(new_hour_period.stringify())
+        elif(message[0] == "remove_hour_period"):
+            remove_period = HourPeriod()
+            print(message[1])
+            message_content = message[1].split(",")
+            for content in message_content:
+                message_type = content[:content.find(":")]
+                message_info = content[content.find(":")+1:]
+                if(message_type == "initial_hour_period"):
+                    remove_period.set_initial_period(message_info)
+                elif(message_type == "final_hour_period"):
+                    remove_period.set_final_period(message_info)
+            print(remove_period.stringify())
 
     async def receiver(self):
         while not self.stop_event.is_set():
