@@ -687,5 +687,48 @@ function cleanHourPeriodPopup(datetime_pickers){
 
 //REMOVE HOUR PERIOD FUNCTION
 function removeHourPeriod(){
-    let initial_hour_period = document.getElementById("");
+    let initial_period_time = document.getElementById("remove_initial_hour_period").value;
+
+    let final_period_time = document.getElementById("remove_final_hour_period").value;
+
+    let hour_period_valid = checkValidHourPeriod(initial_period_time, final_period_time);
+    
+    //hour_period_valid possible values:
+    //0: valid hour periods
+    //1: insert valid hour periods
+    //2: insert a valid initial period
+    //3: insert a valid final period
+    //4: the initial period must start before the final period
+    //-1: Invalid Periods
+    //-2: Invalid initial period
+    //-3: Invalid final period
+
+    if(hour_period_valid != 0){ //Invalid period
+        if(hour_period_valid == 1){
+            config_temporary_alerts.create_temporary_warning("info", "config", "Insira um período horário válido.");
+        }
+        else if(hour_period_valid == 2){
+            config_temporary_alerts.create_temporary_warning("info", "config", "Insira um período inicial válido.");
+        }
+        else if(hour_period_valid == 3){
+            config_temporary_alerts.create_temporary_warning("info", "config", "Insira um período final válido.");
+        }
+        else if(hour_period_valid == 4){
+            config_temporary_alerts.create_temporary_warning("warning", "config", "O período final deve suceder o período inicial.");
+        }
+        else if(hour_period_valid == -1){
+            config_temporary_alerts.create_temporary_warning("danger", "config", "Os períodos inseridos são inválidos.");
+        }
+        else if(hour_period_valid == -2){
+            config_temporary_alerts.create_temporary_warning("danger", "config", "O período inicial é inválido.");
+        }
+        else if(hour_period_valid == -3){
+            config_temporary_alerts.create_temporary_warning("danger", "config", "O período final é inválido.");
+        }
+        return;   
+    }
+
+    let message = active_device.name+";"+"remove_hour_period"+";"+"initial_hour_period:"+initial_period_time+","+"final_hour_period:"+final_period_time;
+
+    ws_client.send(message);
 }
