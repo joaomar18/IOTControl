@@ -591,6 +591,8 @@ function checkValidEnergyLimit(limit_energy, limit_energy_enabled){
 
 //ADD HOUR PERIOD FUNCTION
 function addHourPeriod(){
+    let day_of_week = document.getElementById("add_day_of_week_selector").value;
+
     let initial_period_time = document.getElementById("add_initial_hour_period").value;
 
     let final_period_time = document.getElementById("add_final_hour_period").value;
@@ -657,7 +659,7 @@ function addHourPeriod(){
         return;
     }
 
-    let message = active_device.name+";"+"add_hour_period"+";"+"initial_hour_period:"+initial_period_time+","+"final_hour_period:"+final_period_time+",";
+    let message = active_device.name+";"+"add_hour_period"+";"+"day_of_week:"+day_of_week+","+"initial_hour_period:"+initial_period_time+","+"final_hour_period:"+final_period_time+",";
     message += "active_energy_limit:"+limit_active_energy+","+"reactive_energy_limit:"+limit_reactive_energy+","+"limit_active_energy_unit:"+limit_active_energy_unit+","+"limit_reactive_energy_unit:"+limit_reactive_energy_unit+",";
     message += "active_energy_limit_enabled:"+limit_active_energy_enabled+","+"reactive_energy_limit_enabled:"+limit_reactive_energy_enabled;
 
@@ -670,6 +672,10 @@ function cleanHourPeriodPopup(datetime_pickers){
     for(let datetime_picker in datetime_pickers){
         datetime_pickers[datetime_picker].setDate("");
     }
+
+    document.getElementById("add_day_of_week_selector").selectedIndex = 0;
+
+    document.getElementById("remove_day_of_week_selector").selectedIndex = 0;
 
     document.getElementById("hour_period_active_energy_limit").value = "";
 
@@ -687,6 +693,9 @@ function cleanHourPeriodPopup(datetime_pickers){
 
 //REMOVE HOUR PERIOD FUNCTION
 function removeHourPeriod(){
+
+    let day_of_week = document.getElementById("remove_day_of_week_selector").value;
+
     let initial_period_time = document.getElementById("remove_initial_hour_period").value;
 
     let final_period_time = document.getElementById("remove_final_hour_period").value;
@@ -728,7 +737,7 @@ function removeHourPeriod(){
         return;   
     }
 
-    let message = active_device.name+";"+"remove_hour_period"+";"+"initial_hour_period:"+initial_period_time+","+"final_hour_period:"+final_period_time;
+    let message = active_device.name+";"+"remove_hour_period"+";"+"day_of_week:"+day_of_week+","+"initial_hour_period:"+initial_period_time+","+"final_hour_period:"+final_period_time;
 
     ws_client.send(message);
 }

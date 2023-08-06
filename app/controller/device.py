@@ -10,7 +10,7 @@ from abc import ABC, abstractmethod
 
 #############LOCAL IMPORTS#############
 
-
+import db.database as db
 
 #######################################
 
@@ -41,6 +41,7 @@ class Device(ABC): #ABSTRACT DEVICE CLASS
         self.port = port #Port of the device
         self.connected = False #connection status: True-> Connected, False-> Disconnected
         self.event_loop = event_loop #Event loop for handler functions
+        self.database = db.Database(self.name) #creates a database for the Device
         self.stop_event = asyncio.Event() #Stop event for enabling/disabling the Device
         self.stop_event.set() #Initiates the Device in disabled mode
         self.start_lock = threading.Lock()  #creates a lock object so that the start method can only be called in a thread at a time (Child Method)

@@ -12,6 +12,7 @@
 
 class HourPeriod():
     def __init__(self):
+        self.day_of_week = ""
         self.initial_period = ""
         self.final_period = ""
         self.active_energy_limit = 0
@@ -21,6 +22,8 @@ class HourPeriod():
         self.active_energy_limit_enabled = False
         self.reactive_energy_limit_enabled = False
 
+    def set_day_of_week(self, day_of_week):
+        self.day_of_week = day_of_week
 
     def set_initial_period(self, initial_period):
         self.initial_period = initial_period
@@ -47,7 +50,14 @@ class HourPeriod():
         self.reactive_energy_limit_enabled = reactive_energy_limit_enabled   
     
     def stringify(self) ->  str:
-        return_string = "Initial Hour Period: "+self.initial_period+"\n"+"Final Hour Period: "+self.final_period+"\n"+"Active Energy Limit: "+str(self.active_energy_limit)+"\n"
+        return_string = "Day of Week: "+self.day_of_week+"\n"+"Initial Hour Period: "+self.initial_period+"\n"+"Final Hour Period: "+self.final_period+"\n"+"Active Energy Limit: "+str(self.active_energy_limit)+"\n"
         return_string = return_string + "Reactive Energy Limit: "+ str(self.reactive_energy_limit) + "\n"+ "Active Energy Limit Unit: "+self.active_energy_limit_unit+"\n" + "Reactive Energy Limit Unit: "+self.reactive_energy_limit_unit+"\n" + "Active Energy Limit Enabled: "+ str(self.active_energy_limit_enabled) +"\n"
         return_string = return_string + "Reactive Energy Limit Enabled: "+ str(self.reactive_energy_limit_enabled) +"\n"
         return return_string
+
+
+def get_hour_periods_from_list(hour_periods : list[HourPeriod]):
+    hour_periods_list = list()
+    for hour_period in hour_periods:
+        hour_periods_list.append([hour_period.initial_period, hour_period.final_period])
+    return hour_periods_list
