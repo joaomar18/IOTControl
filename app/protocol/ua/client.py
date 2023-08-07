@@ -118,7 +118,9 @@ class UAClient(UADevice):
             for content in message_content:
                 message_type = content[:content.find(":")]
                 message_info = content[content.find(":")+1:]
-                if(message_type == "initial_hour_period"):
+                if(message_type == "day_of_week"):
+                    new_hour_period.set_day_of_week(message_info)
+                elif(message_type == "initial_hour_period"):
                     new_hour_period.set_initial_period(message_info)
                 elif(message_type == "final_hour_period"):
                     new_hour_period.set_final_period(message_info)
@@ -131,10 +133,23 @@ class UAClient(UADevice):
                 elif(message_type == "limit_reactive_energy_unit"):
                     new_hour_period.set_reactive_energy_limit_unit(message_info)
                 elif(message_type == "active_energy_limit_enabled"):
-                    new_hour_period.set_active_energy_limit_enabled(bool(message_info))
+                    if message_info.lower() == "true":
+                        new_hour_period.set_active_energy_limit_enabled(True)
+                    elif message_info.lower() == "false":
+                        new_hour_period.set_active_energy_limit_enabled(False)
                 elif(message_type == "reactive_energy_limit_enabled"):
-                    new_hour_period.set_reactive_energy_limit_enabled(bool(message_info))
-            print(new_hour_period.stringify())
+                    if message_info.lower() == "true":
+                        new_hour_period.set_reactive_energy_limit_enabled(True)
+                    elif message_info.lower() == "false":
+                        new_hour_period.set_reactive_energy_limit_enabled(False)
+            existing_hour_periods = get_hour_periods_from_list(self.database.get_day_hour_periods(new_hour_period.day_of_week))
+            new_hour_period_str = [new_hour_period.initial_period, new_hour_period.final_period]
+            hour_periods_relation = get_hour_periods_relation(new_hour_period_str, existing_hour_periods)
+            print(hour_periods_relation)
+            await self.send_queue.put([2, self.name, "add_hour_period_fb", "OFF"])
+            #self.database.insert_hour_period(new_hour_period)
+            #print(new_hour_period.stringify())
+
         elif(message[0] == "remove_hour_period"):
             remove_period = HourPeriod()
             print(message[1])
@@ -142,7 +157,9 @@ class UAClient(UADevice):
             for content in message_content:
                 message_type = content[:content.find(":")]
                 message_info = content[content.find(":")+1:]
-                if(message_type == "initial_hour_period"):
+                if(message_type == "day_of_week"):
+                    remove_period.set_day_of_week(message_info)
+                elif(message_type == "initial_hour_period"):
                     remove_period.set_initial_period(message_info)
                 elif(message_type == "final_hour_period"):
                     remove_period.set_final_period(message_info)

@@ -345,6 +345,10 @@
   margin-right:1rem;
 }
 
+.element-select{
+  margin-right: 1rem;
+}
+
 .flex-row{
   width: 100%;
   display: flex;
