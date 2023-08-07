@@ -146,7 +146,7 @@ class UAClient(UADevice):
             new_hour_period_str = [new_hour_period.initial_period, new_hour_period.final_period]
             hour_periods_relation = get_hour_periods_relation(new_hour_period_str, existing_hour_periods)
             print(hour_periods_relation)
-            #await self.send_queue.put([2, self.name, "add_hour_period_fb", "OFF"])
+            await self.send_queue.put([4, self.name, "add_hour_period_rel", {1,2,3,4,5}, str(hour_periods_relation)])
             #self.database.insert_hour_period(new_hour_period)
             #print(new_hour_period.stringify())
 

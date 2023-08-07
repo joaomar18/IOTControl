@@ -103,10 +103,12 @@ class DeviceAnimation{
         if(this.check_elements_valid()){
             if(this.contactor_state != this.last_contactor_state || !this.first_update){
                 if(this.contactor_state){
-                    this.set_elements_closed();
+                    //this.set_elements_closed();
+                    this.set_elements_open();
                 }
                 else{
-                    this.set_elements_open();
+                    //this.set_elements_open();
+                    this.set_elements_closed();
                 }
                 this.last_contactor_state = this.contactor_state;
                 this.first_update = true;
@@ -356,6 +358,7 @@ class Device{
                 }
             }
             else if(this.active_section == 4){
+                console.log(node);
                 if(node == "ModeManual"){
                     if(value == "False"){
                         manual_selector.set_selector_off();
@@ -374,6 +377,9 @@ class Device{
                     else{
                         manual_control.set_control_on();
                     }
+                }
+                else if(node == "add_hour_period_rel"){
+                    console.log("received feedback");    
                 }
             }
             if(node == "OutputContactor"){

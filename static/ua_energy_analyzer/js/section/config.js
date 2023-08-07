@@ -665,6 +665,11 @@ function addHourPeriod(){
 
 
     ws_client.send(message);
+
+    //let first_response_timeout = setTimeout(first_response_timeout_handler, 3000);
+    //let first_response_check = setInterval(first_response_check_handler, 10);
+
+
 }
 
 function cleanHourPeriodPopup(datetime_pickers){
