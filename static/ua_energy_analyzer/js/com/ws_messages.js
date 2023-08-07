@@ -54,7 +54,6 @@ async function process_node(controller, node, value){
 
 
 async function process_message(message) {
-    console.log(message);
     let message_elements = await decode_message(message);
     let message_code = Number(message_elements[0]);
     let controller = null;

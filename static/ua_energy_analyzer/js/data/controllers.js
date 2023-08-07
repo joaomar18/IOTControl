@@ -301,7 +301,7 @@ class Device{
     }
 
     receive_node_messages(node, value){
-        if(this.connected && this.valid_elements){
+        if(this.connected && this.valid_elements){ //nodes to be received only when device is connected
             if(this.active_section == 1){
                 let first_letter = node.charAt(0);
                 let unit_change = node.includes("unit");
@@ -378,9 +378,6 @@ class Device{
                         manual_control.set_control_on();
                     }
                 }
-                else if(node == "add_hour_period_rel"){
-                    console.log("received feedback");    
-                }
             }
             if(node == "OutputContactor"){
                 if(value == "False"){
@@ -392,6 +389,20 @@ class Device{
                     this.device_animation.set_contactor_closed();
                 }
                 manual_control.feedback_done();
+            }
+        }
+        else if(this.valid_elements){ //nodes that can be received when the device is not connected
+            if(this.active_section == 1){
+
+            }
+            else if(this.active_section == 4){
+                if(node == "add_hour_period_rel"){
+                    console.log(value);
+                    let value_final = value.substring(1);
+                    value_final = value_final.substring(0 ,value_final.length-1);
+                    let topics = value_final.split(",");
+                    console.log(topics);
+                }
             }
         }
     }
