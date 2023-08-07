@@ -131,4 +131,3 @@ def get_hour_periods_relation(new_hour_period: str, existing_hour_periods: list[
             #4th situation
             hour_periods_relation[tuple(existing_hour_period)] = 4
     return hour_periods_relation
-
