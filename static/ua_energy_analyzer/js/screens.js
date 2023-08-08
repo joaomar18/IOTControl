@@ -147,7 +147,7 @@ class ScreenLoader{
     }
 
     timeout_handler = () => {
-        alert("Não foi possível inicar a aplicação!");
+        this.set_error_message("Não foi possível iniciar a aplicação.");
         clearInterval(this.check_loading);
         clearTimeout(this.loader_timeout);
     }

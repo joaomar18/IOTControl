@@ -146,13 +146,13 @@ class UAClient(UADevice):
             new_hour_period_str = [new_hour_period.initial_period, new_hour_period.final_period]
             hour_periods_relation = get_hour_periods_relation(new_hour_period_str, existing_hour_periods)
             print(hour_periods_relation)
+            #enviar periodos horarios com limite ativo de energia ativa ou reativa com relação com o novo periodo
             await self.send_queue.put([4, self.name, "add_hour_period_rel", {1,2,3,4,5}, str(hour_periods_relation)])
             #self.database.insert_hour_period(new_hour_period)
             #print(new_hour_period.stringify())
 
         elif(message[0] == "remove_hour_period"):
             remove_period = HourPeriod()
-            print(message[1])
             message_content = message[1].split(",")
             for content in message_content:
                 message_type = content[:content.find(":")]
