@@ -128,14 +128,9 @@ class UAClient(UADevice):
             new_hour_period_str = [new_hour_period.initial_period, new_hour_period.final_period]
             hour_periods_with_relation = get_hour_periods_with_relation(new_hour_period_str, existing_hour_periods)
             self.database.update_hour_period_db(new_hour_period, hour_periods_with_relation)
-            send_string = new_hour_period.day_of_week+";"
-            first_par = True
+            send_string = new_hour_period.day_of_week
             for hour_period in get_hour_periods_from_list(self.database.get_day_hour_periods(new_hour_period.day_of_week)):
-                if first_par:
-                    send_string += "init:"+hour_period[0]+",end:"+hour_period[1]
-                else:
-                    send_string += ",init:"+hour_period[0]+",end:"+hour_period[1]
-                first_par = False
+                send_string += ";init:"+hour_period[0]+",end:"+hour_period[1]
             await self.send_queue.put([4, self.name, "add_hour_period_fb", {4}, send_string])
 
         elif(message[0] == "remove_hour_period"):

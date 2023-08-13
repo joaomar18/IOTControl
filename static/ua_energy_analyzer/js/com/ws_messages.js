@@ -54,7 +54,6 @@ async function process_node(controller, node, value){
 
 
 async function process_message(message) {
-    console.log(message);
     let message_elements = await decode_message(message);
     let message_code = Number(message_elements[0]);
     let controller = null;
@@ -69,12 +68,26 @@ async function process_message(message) {
         controller = message_elements[1];
         parameter = message_elements[2];
         value = message_elements[3];
+        let i = message_elements.length;
+        let j = 4;
+        while(i > 4){
+            value += ";"+message_elements[j];
+            i--;
+            j++;
+        }
         await process_controller(controller, parameter, value);
     }
     else if(message_code == 4){ //about a node: [controller: string, node: string, value: any]
         controller = message_elements[1];
         node = message_elements[2];
         value = message_elements[3];
+        let i = message_elements.length;
+        let j = 4;
+        while(i > 4){
+            value += ";"+message_elements[j];
+            i--;
+            j++;
+        }
         await process_node(controller, node, value);
     }
 }

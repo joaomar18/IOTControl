@@ -396,12 +396,16 @@ class Device{
 
             }
             else if(this.active_section == 4){
-                if(node == "add_hour_period_rel"){
-                    console.log(value);
-                    let value_final = value.substring(1);
-                    value_final = value_final.substring(0 ,value_final.length-1);
-                    let topics = value_final.split(",");
-                    console.log(topics);
+                if(node == "add_hour_period_fb"){
+                    let week_day = value.substring(0, value.indexOf(";"));
+                    let hour_periods = value.substring(value.indexOf(";")+1);
+                    hour_periods = hour_periods.split(";");
+                    for(let hour_period of hour_periods){
+                        let initial_period = hour_period.substring(hour_period.indexOf("init:")+5, hour_period.indexOf(","));
+                        let final_period = hour_period.substring(hour_period.indexOf("end:")+4);
+                        console.log(initial_period);
+                        console.log(final_period);
+                    }
                 }
             }
         }
