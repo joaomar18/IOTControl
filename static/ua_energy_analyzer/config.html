@@ -44,14 +44,6 @@
                                 </div>
                                 <span class = "element-name">ON</span>
                             </span>
-                            <!--
-                            <span class = "element">
-                                <div class="checkbox-wrapper-1">
-                                    <input id="start-inside-control-hour" class="substituted" type="checkbox" aria-hidden="true" />
-                                    <label for="start-inside-control-hour">Ativar arranque após início de período</label>
-                                </div>
-                            </span>
-                            -->
                         </div>
                     </div>
     
@@ -69,51 +61,9 @@
                                 <span class = "element-name">Tipo:</span>
                                 <select class="form-select form-select-sm select-control" name="special_control_options" id="special_control_select_type">
                                     <option value="step">Passo</option>
-                                    <!--<option value="active-treshhold">Energia Ativa</option>-->
-                                    <!--<option value="reactive-treshold">Energia Reativa</option>-->
                                     <option value="persistent">Persistente</option>
                                 </select>
                             </span>
-                            <!--STEP CONTROL-->
-                            <!--
-                            <div class = "special-control-category">
-                                <span class = "element">
-                                    <span class = "element-name element-input-name">Período ON</span>
-                                    <input type="text" class= "element-input">
-                                    <select class="form-select form-select-sm unit-select" name="time_unit_options" id="time_unit_options_ton_selector">
-                                        <option value="seconds">s</option>
-                                        <option value="minutes">m</option>
-                                        <option value="hours">h</option>
-                                    </select>
-                                </span>
-                                <span class = "element">
-                                    <span class = "element-name element-input-name">Período OFF</span>
-                                    <input type="text" class= "element-input">
-                                    <select class="form-select form-select-sm unit-select" name="time_unit_options" id="time_unit_options_toff_selector">
-                                        <option value="seconds">s</option>
-                                        <option value="minutes">m</option>
-                                        <option value="hours">h</option>
-                                    </select>
-                                </span>
-                                <span class = "element">
-                                    <div class="checkbox-wrapper-1">
-                                        <input id="step-control-first-ton" class="substituted" type="checkbox" aria-hidden="true" />
-                                        <label for="step-control-first-ton">Iniciar o controlo no período ON</label>
-                                    </div>
-                                </span>
-                                <span class = "element">
-                                    <input type = "button" class = "btn btn-primary element-button" value = "Aplicar">
-                                    <input type = "button" class = "btn btn-light element-button" value = "Cancelar">
-                                </span>
-                                
-                            </div>
-                            -->
-                            <!--ACTIVE ENERGY CONTROL-->
-    
-                            <!--REACTIVE ENERGY CONTROL-->
-    
-                            <!--ON/OFF CONTROL-->
-    
                         </div>
                     </div>
                 </div>
@@ -208,48 +158,6 @@
                         <span class = "element-second-col">
                             <input type="text" class="daily-time-period-picker" id = "add_final_hour_period">
                             <img src="/static/ua_energy_analyzer/img/info_popup.png" class = "info-popup-image" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Formato em HH:mm:ss"/>
-                        </span>
-                    </span>
-                    <span class = "element">
-                        <span class = "element-first-col">
-                            <span class = "element-name">Limite de energia ativa</span>
-                        </span>
-                        <span class = "element-second-col">
-                            <input type = "number" class = "element-input" id = "hour_period_active_energy_limit" min="0">
-                            <select class="form-select form-select-sm unit-select" name="active_power_unit_options" id="active_power_unit_options_selector">
-                                <option value="wh">Wh</option>
-                                <option value="kWh" selected>kWh</option>
-                                <option value="MWh">MWh</option>
-                            </select>
-                        </span>
-                    </span>
-                    <span class = "element">
-                        <span class = "element-first-col">
-                            <span class = "element-name">Limite de energia reativa</span>
-                        </span>
-                        <span class = "element-second-col">
-                            <input type = "number" class = "element-input" id = "hour_period_reactive_energy_limit" min="0">  
-                            <select class="form-select form-select-sm unit-select" name="reactive_power_unit_options" id="reactive_power_unit_options_selector">
-                                <option value="VArh">VArh</option>
-                                <option value="kVArh" selected>kVArh</option>
-                                <option value="MVArh">MVArh</option>
-                            </select>   
-                        </span>
-                    </span>
-                    <span class = "element">
-                        <span class = "element-only-col element-first-only-col">
-                            <div class="checkbox-wrapper-1">
-                                <input id="add_hour_period_active_energy_limit_enabled" class="substituted" type="checkbox" aria-hidden="true" />
-                                <label for="add_hour_period_active_energy_limit_enabled">Ativar o limite de energia ativa</label>
-                            </div>
-                        </span>
-                    </span>
-                    <span class = "element">
-                        <span class = "element-only-col">
-                            <div class="checkbox-wrapper-1">
-                                <input id="add_hour_period_reactive_energy_limit_enabled" class="substituted" type="checkbox" aria-hidden="true" />
-                                <label for="add_hour_period_reactive_energy_limit_enabled">Ativar o limite de energia reativa</label>
-                            </div>
                         </span>
                     </span>
                     <span class = "element">

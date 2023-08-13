@@ -124,24 +124,6 @@ class UAClient(UADevice):
                     new_hour_period.set_initial_period(message_info)
                 elif(message_type == "final_hour_period"):
                     new_hour_period.set_final_period(message_info)
-                elif(message_type == "active_energy_limit"):
-                    new_hour_period.set_active_energy_limit(float(message_info))
-                elif(message_type == "reactive_energy_limit"):
-                    new_hour_period.set_reactive_energy_limit(float(message_info))
-                elif(message_type == "limit_active_energy_unit"):
-                    new_hour_period.set_active_energy_limit_unit(message_info)
-                elif(message_type == "limit_reactive_energy_unit"):
-                    new_hour_period.set_reactive_energy_limit_unit(message_info)
-                elif(message_type == "active_energy_limit_enabled"):
-                    if message_info.lower() == "true":
-                        new_hour_period.set_active_energy_limit_enabled(True)
-                    elif message_info.lower() == "false":
-                        new_hour_period.set_active_energy_limit_enabled(False)
-                elif(message_type == "reactive_energy_limit_enabled"):
-                    if message_info.lower() == "true":
-                        new_hour_period.set_reactive_energy_limit_enabled(True)
-                    elif message_info.lower() == "false":
-                        new_hour_period.set_reactive_energy_limit_enabled(False)
             existing_hour_periods = get_hour_periods_from_list(self.database.get_day_hour_periods(new_hour_period.day_of_week))
             new_hour_period_str = [new_hour_period.initial_period, new_hour_period.final_period]
             hour_periods_relation = get_hour_periods_relation(new_hour_period_str, existing_hour_periods)

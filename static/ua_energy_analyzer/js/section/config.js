@@ -597,16 +597,6 @@ function addHourPeriod(){
 
     let final_period_time = document.getElementById("add_final_hour_period").value;
 
-    let limit_active_energy = Number(document.getElementById("hour_period_active_energy_limit").value);
-    let limit_active_energy_unit = document.getElementById("active_power_unit_options_selector").value;
-
-    let limit_reactive_energy = Number(document.getElementById("hour_period_reactive_energy_limit").value);
-    let limit_reactive_energy_unit = document.getElementById("reactive_power_unit_options_selector").value;
-
-    let limit_active_energy_enabled = document.getElementById("add_hour_period_active_energy_limit_enabled").checked;
-    let limit_reactive_energy_enabled = document.getElementById("add_hour_period_reactive_energy_limit_enabled").checked;
-
-
     let hour_period_valid = checkValidHourPeriod(initial_period_time, final_period_time);
     
     //hour_period_valid possible values:
@@ -644,24 +634,7 @@ function addHourPeriod(){
         return;   
     }
 
-    let check_valid_active_energy = checkValidEnergyLimit(limit_active_energy, limit_active_energy_enabled);
-    let check_valid_reactive_energy = checkValidEnergyLimit(limit_reactive_energy, limit_reactive_energy_enabled);
-    if(!check_valid_active_energy && !check_valid_reactive_energy){
-        config_temporary_alerts.create_temporary_warning("danger", "config", "Quando ativos, os limites de energia devem ser superiores a 0.");
-        return;
-    }
-    else if(!check_valid_active_energy){
-        config_temporary_alerts.create_temporary_warning("danger", "config", "Quando ativo, o limite de energia ativa deve ser superior a 0.");
-        return;
-    }
-    else if(!check_valid_reactive_energy){
-        config_temporary_alerts.create_temporary_warning("danger", "config", "Quando ativo, o limite de energia reativa deve ser superior a 0.");
-        return;
-    }
-
-    let message = active_device.name+";"+"add_hour_period"+";"+"day_of_week:"+day_of_week+","+"initial_hour_period:"+initial_period_time+","+"final_hour_period:"+final_period_time+",";
-    message += "active_energy_limit:"+limit_active_energy+","+"reactive_energy_limit:"+limit_reactive_energy+","+"limit_active_energy_unit:"+limit_active_energy_unit+","+"limit_reactive_energy_unit:"+limit_reactive_energy_unit+",";
-    message += "active_energy_limit_enabled:"+limit_active_energy_enabled+","+"reactive_energy_limit_enabled:"+limit_reactive_energy_enabled;
+    let message = active_device.name+";"+"add_hour_period"+";"+"day_of_week:"+day_of_week+","+"initial_hour_period:"+initial_period_time+","+"final_hour_period:"+final_period_time;
 
 
     ws_client.send(message);
@@ -681,18 +654,6 @@ function cleanHourPeriodPopup(datetime_pickers){
     document.getElementById("add_day_of_week_selector").selectedIndex = 0;
 
     document.getElementById("remove_day_of_week_selector").selectedIndex = 0;
-
-    document.getElementById("hour_period_active_energy_limit").value = "";
-
-    document.getElementById("active_power_unit_options_selector").selectedIndex = 1;
-
-    document.getElementById("hour_period_reactive_energy_limit").value = "";
-
-    document.getElementById("reactive_power_unit_options_selector").selectedIndex = 1;
-
-    document.getElementById("add_hour_period_active_energy_limit_enabled").checked = false;
-
-    document.getElementById("add_hour_period_reactive_energy_limit_enabled").checked = false;    
 }
 
 

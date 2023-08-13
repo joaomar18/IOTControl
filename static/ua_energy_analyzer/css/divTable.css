@@ -115,11 +115,11 @@
     position: absolute;
     background-color: white;
     width: 30%;
-    height:33rem;
+    height:19rem;
     min-width:27.5rem;
     border:1px solid #b9b9b9;
     margin:auto;
-    top:calc(50% - 16.5rem);
+    top:calc(50% - 9.5rem);
     display: flex;
     flex-direction: column;
     align-items: center;
