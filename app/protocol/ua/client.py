@@ -126,12 +126,17 @@ class UAClient(UADevice):
                     new_hour_period.set_final_period(message_info)
             existing_hour_periods = get_hour_periods_from_list(self.database.get_day_hour_periods(new_hour_period.day_of_week))
             new_hour_period_str = [new_hour_period.initial_period, new_hour_period.final_period]
-            hour_periods_relation = get_hour_periods_relation(new_hour_period_str, existing_hour_periods)
-            print(hour_periods_relation)
-            #enviar periodos horarios com limite ativo de energia ativa ou reativa com relação com o novo periodo
-            await self.send_queue.put([4, self.name, "add_hour_period_rel", {1,2,3,4,5}, str(hour_periods_relation)])
-            #self.database.insert_hour_period(new_hour_period)
-            #print(new_hour_period.stringify())
+            hour_periods_with_relation = get_hour_periods_with_relation(new_hour_period_str, existing_hour_periods)
+            self.database.update_hour_period_db(new_hour_period, hour_periods_with_relation)
+            send_string = new_hour_period.day_of_week+";"
+            first_par = True
+            for hour_period in get_hour_periods_from_list(self.database.get_day_hour_periods(new_hour_period.day_of_week)):
+                if first_par:
+                    send_string += "init:"+hour_period[0]+",end:"+hour_period[1]
+                else:
+                    send_string += ",init:"+hour_period[0]+",end:"+hour_period[1]
+                first_par = False
+            await self.send_queue.put([4, self.name, "add_hour_period_fb", {4}, send_string])
 
         elif(message[0] == "remove_hour_period"):
             remove_period = HourPeriod()

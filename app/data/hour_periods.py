@@ -65,43 +65,43 @@ def higher_hour_period(first_hour_period : str, second_hour_period : str) -> int
             else:
                 return -1
 
-def get_hour_periods_relation(new_hour_period: str, existing_hour_periods: list[str]) -> dict:
-    hour_periods_relation = dict()
+def get_hour_periods_with_relation(new_hour_period: str, existing_hour_periods: list[str]) -> list:
+    hour_periods_with_relation = list()
     for existing_hour_period in existing_hour_periods:
 
         statement_1 = ((higher_hour_period(new_hour_period[0], existing_hour_period[0]) == 1 or higher_hour_period(new_hour_period[0], existing_hour_period[0]) == -1)
-        and (higher_hour_period(new_hour_period[0], existing_hour_period[1]) == 1)
-        and (higher_hour_period(new_hour_period[1], existing_hour_period[0]) == 0)
+        and (higher_hour_period(new_hour_period[0], existing_hour_period[1]) == 1 or higher_hour_period(new_hour_period[0], existing_hour_period[1]) == -1)
+        and (higher_hour_period(new_hour_period[1], existing_hour_period[0]) == 0 or higher_hour_period(new_hour_period[1], existing_hour_period[0]) == -1) 
         and (higher_hour_period(new_hour_period[1], existing_hour_period[1]) == 1 or higher_hour_period(new_hour_period[1], existing_hour_period[1]) == -1))
 
 
         statement_2 = ((higher_hour_period(new_hour_period[0], existing_hour_period[0]) == 0 or higher_hour_period(new_hour_period[0], existing_hour_period[0]) == -1)
-        and (higher_hour_period(new_hour_period[0], existing_hour_period[1]) == 1)
-        and (higher_hour_period(new_hour_period[1], existing_hour_period[0]) == 0)
+        and (higher_hour_period(new_hour_period[0], existing_hour_period[1]) == 1 or higher_hour_period(new_hour_period[0], existing_hour_period[1]) == -1)
+        and (higher_hour_period(new_hour_period[1], existing_hour_period[0]) == 0 or higher_hour_period(new_hour_period[1], existing_hour_period[0]) == -1)
         and (higher_hour_period(new_hour_period[1], existing_hour_period[1]) == 0 or higher_hour_period(new_hour_period[1], existing_hour_period[1]) == -1))
 
 
         statement_3 = ((higher_hour_period(new_hour_period[0], existing_hour_period[0]) == 1 or higher_hour_period(new_hour_period[0], existing_hour_period[0]) == -1)
-        and (higher_hour_period(new_hour_period[0], existing_hour_period[1]) == 1)
-        and (higher_hour_period(new_hour_period[1], existing_hour_period[0]) == 0)
+        and (higher_hour_period(new_hour_period[0], existing_hour_period[1]) == 1 or higher_hour_period(new_hour_period[0], existing_hour_period[1]) == -1)
+        and (higher_hour_period(new_hour_period[1], existing_hour_period[0]) == 0 or higher_hour_period(new_hour_period[1], existing_hour_period[0]) == -1)
         and (higher_hour_period(new_hour_period[1], existing_hour_period[1]) == 0 or higher_hour_period(new_hour_period[1], existing_hour_period[1]) == -1))
 
 
         statement_4 = ((higher_hour_period(new_hour_period[0], existing_hour_period[0]) == 0 or higher_hour_period(new_hour_period[0], existing_hour_period[0]) == -1)
-        and (higher_hour_period(new_hour_period[0], existing_hour_period[1]) == 1)
-        and (higher_hour_period(new_hour_period[1], existing_hour_period[0]) == 0)
+        and (higher_hour_period(new_hour_period[0], existing_hour_period[1]) == 1 or higher_hour_period(new_hour_period[0], existing_hour_period[1]) == -1)
+        and (higher_hour_period(new_hour_period[1], existing_hour_period[0]) == 0 or higher_hour_period(new_hour_period[1], existing_hour_period[0]) == -1)
         and (higher_hour_period(new_hour_period[1], existing_hour_period[1]) == 1 or higher_hour_period(new_hour_period[1], existing_hour_period[1]) == -1))
 
         if statement_1:
             #1st situation
-            hour_periods_relation[tuple(existing_hour_period)] = 1
+            hour_periods_with_relation.append(existing_hour_period)
         elif statement_2:
             #2nd situation
-            hour_periods_relation[tuple(existing_hour_period)] = 2
+            hour_periods_with_relation.append(existing_hour_period)
         elif statement_3:
             #3rd situation
-            hour_periods_relation[tuple(existing_hour_period)] = 3
+            hour_periods_with_relation.append(existing_hour_period)
         elif statement_4:
             #4th situation
-            hour_periods_relation[tuple(existing_hour_period)] = 4
-    return hour_periods_relation
+            hour_periods_with_relation.append(existing_hour_period)
+    return hour_periods_with_relation
