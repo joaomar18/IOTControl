@@ -464,23 +464,23 @@ function config_section_display_checker_handler(){
             left_scroll_monday.addEventListener('mousedown', () => {
                 left_interval = setInterval(() => {
                     monday_entries.scrollLeft -= 1;
-                    console.log(monday_entries.scrollLeft);
-                }, 1); // Adjust the interval as needed
-            });
-            
-            left_scroll_monday.addEventListener('mouseup', () => {
-              clearInterval(left_interval);
-            });    
-            
+                }, 1);
+                document.addEventListener('mouseup', buttonReleaseHandler);
+                function buttonReleaseHandler() {
+                    clearInterval(left_interval);
+                    document.removeEventListener('mouseup', buttonReleaseHandler);
+                }
+            });  
             
             right_scroll_monday.addEventListener('mousedown', () => {
                 right_interval = setInterval(() => {
                     monday_entries.scrollLeft += 1;
-                }, 1); // Adjust the interval as needed
-            });
-            
-            right_scroll_monday.addEventListener('mouseup', () => {
-              clearInterval(right_interval);
+                }, 1);
+                document.addEventListener('mouseup', buttonReleaseHandler);
+                function buttonReleaseHandler() {
+                    clearInterval(right_interval);
+                    document.removeEventListener('mouseup', buttonReleaseHandler);
+                }
             });
 
             hour_period_mask.addEventListener("click", (event) => {
