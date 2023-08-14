@@ -222,6 +222,7 @@ class ContentScreen{
             }
             else if(screen_number == 4){ //Ecra de parametros
                 this.screen_element.innerHTML = await this.fetch_html_as_text("/static/ua_energy_analyzer/config.html");
+                await this.fetch_html_as_text("/static/ua_energy_analyzer/css/config.css");
                 this.title_element.innerText = "Parâmetros";
             }
             else if(screen_number == 5){ //Ecra de historico

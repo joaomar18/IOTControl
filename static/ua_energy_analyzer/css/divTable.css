@@ -1,12 +1,14 @@
 .hour-control-table{
     border-left: 1px solid #b9b9b9;
-    border-bottom: 1px solid #b9b9b9;
+    border-right: 1px solid #b9b9b9;
+    border-top: 1px solid #b9b9b9;
     margin-top:3.5rem;
     margin-left:7.1rem;
-    height:21rem;
-    width:80%;
+    height:24rem;
+    width: calc( 80% - 3.1rem );
     position: relative;
     display: none;
+    white-space: nowrap;
   }
   
   .table-title{
@@ -47,53 +49,40 @@
     left:-7.1rem;
     height: 100%;
     text-align: right;
-    width:7.1rem;
-  }
-  
-  .table-x-axis-identifiers{
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    position: absolute;
-    bottom:-2.5rem;
-    width: 100%;
-    height:2.5rem;
-  }
-  
-  .table-x-axis-legend{
-    width:100%;
-    height:2.5rem;
-    text-align: center;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    bottom:-5rem;
+    width:7.5rem;
   }
   
   .y-axis-identifier{
-    height:30px;
-    margin-bottom:calc(14.3%);
-    margin-right:7.5px;
+    height:14.3%;
     font-weight: 500;
+    display:flex;
+    justify-content: right;
+    align-items: center;
+    padding-right:15px;
   }
   
-  .first-y-axis-identifier{
-    margin-top:calc(14.3%);
+  .table-horizontal-row{
+    position:relative;
+    width:100%;
+    border-bottom: 1px solid #b9b9b9;
+    height:14.3%;
+    padding-left:30px;
+    padding-right:30px;
+    overflow: hidden;
+    white-space:nowrap;
+  }
+
+  .table-horizontal-row-content{
+    width:100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    overflow: hidden;
+    white-space:nowrap;
   }
   
-  .x-axis-identifier{
-    width:20px;
-    margin-right:calc(3.9% - 20px);
-    margin-top:10px;
-    font-weight: 500;
-  }
-  
-  .last-x-axis-identifier{
-    margin-right:0;
-  }
-  
-  @media screen and (min-width: 1281px) {
+  @media screen and (min-width: 1300px) {
     .hour-control-table{
       display:block;
     }
@@ -102,13 +91,25 @@
   .add-table-period-btn{
     position: absolute;
     top:0%;
-    right:0%;
+    right:-75px;
+  }
+
+  .hour-period-entry{
+    background-color: rgba(250, 250, 250, 0.8);
+    width:fit-content;
+    white-space: nowrap;
+    padding:10px;
+    border:1px solid #a3a3a3;
+    border-radius: 5px;
+    font-weight: 400;
+    margin-right: 10px;
+    cursor:pointer;
   }
 
   .remove-table-period-btn{
     position: absolute;
-    top:calc(1rem + 50px);
-    right:0%;
+    top: calc(1rem + 50px);
+    right: -75px;
   }
 
   .add-period-popup{

@@ -11,7 +11,7 @@
             </button>
         </div>
     </div>
-    <div class = "config-subcontent">
+    <div class = "config-subcontent" id = "config_subcontent">
         <div class="container-fluid">
             <div class = "col-12" id = "config-subcontent-title-div">
                 <h5 id = "config-subcontent-title">Controlo de Carga</h5>
@@ -69,7 +69,7 @@
                 </div>
 
                 <div class = "flex-row second-flex-row">
-                    <div class = "hour-control-table">
+                    <div class = "hour-control-table" id = "hour_control_table">
                         <div class = "table-title">
                             <span class = "table-title-text">Períodos de tempo para o controlo horário</span>
                         </div>
@@ -82,36 +82,6 @@
                             <span class = "y-axis-identifier">Sábado</span>
                             <span class = "y-axis-identifier last-y-axis-identifier">Domingo</span>
                         </div>
-                        <div class = "table-x-axis-identifiers">
-                            <span class = "x-axis-identifier">00</span>
-                            <span class = "x-axis-identifier">01</span>
-                            <span class = "x-axis-identifier">02</span>
-                            <span class = "x-axis-identifier">03</span>
-                            <span class = "x-axis-identifier">04</span>
-                            <span class = "x-axis-identifier">05</span>
-                            <span class = "x-axis-identifier">06</span>
-                            <span class = "x-axis-identifier">07</span>
-                            <span class = "x-axis-identifier">08</span>
-                            <span class = "x-axis-identifier">09</span>
-                            <span class = "x-axis-identifier">10</span>
-                            <span class = "x-axis-identifier">11</span>
-                            <span class = "x-axis-identifier">12</span>
-                            <span class = "x-axis-identifier">13</span>
-                            <span class = "x-axis-identifier">14</span>
-                            <span class = "x-axis-identifier">15</span>
-                            <span class = "x-axis-identifier">16</span>
-                            <span class = "x-axis-identifier">17</span>
-                            <span class = "x-axis-identifier">18</span>
-                            <span class = "x-axis-identifier">19</span>
-                            <span class = "x-axis-identifier">20</span>
-                            <span class = "x-axis-identifier">21</span>
-                            <span class = "x-axis-identifier">22</span>
-                            <span class = "x-axis-identifier">23</span>
-                            <span class = "x-axis-identifier last-x-axis-identifier">24</span>
-                        </div>
-                        <div class = "table-x-axis-legend">
-                            <span class = "x-axis-legend-text">Horas do dia (h)</span>
-                        </div>
                         <div class = "table-content">
                                 <button class="icon-btn add-btn add-table-period-btn" id = "show_add_period_popup_btn">
                                   <div class="add-icon"></div>
@@ -120,6 +90,41 @@
                                 <button class="icon-btn add-btn remove-table-period-btn" id = "show_remove_period_popup_btn">  
                                     <div class="btn-txt">Remover Período</div>
                                 </button>
+                                <div class = "table-horizontal-row" id = "monday_horizontal_row">
+                                    <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_monday_hp"><span class="arrow arrow-left"></span></div>
+                                    <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_monday_hp"><span class="arrow arrow-right"></span></div>
+                                    <div class = "table-horizontal-row-content" id = "monday_horizontal_row-content">
+                                        <span class = "hour-period-entry">08:00:00 - 12:00:00</span>
+                                        <span class = "hour-period-entry">08:00:00 - 12:00:00</span>
+                                        <span class = "hour-period-entry">08:00:00 - 12:00:00</span>
+                                        <span class = "hour-period-entry">08:00:00 - 12:00:00</span>
+                                        <span class = "hour-period-entry">08:00:00 - 12:00:00</span>
+                                        <span class = "hour-period-entry">08:00:00 - 12:00:00</span>
+                                        <span class = "hour-period-entry">08:00:00 - 12:00:00</span>
+                                        <span class = "hour-period-entry">08:00:00 - 12:00:00</span>
+                                        <span class = "hour-period-entry">08:00:00 - 12:00:00</span>
+                                        <span class = "hour-period-entry">08:00:00 - 12:00:00</span>
+                                        <span class = "hour-period-entry">08:00:00 - 12:00:00</span>
+                                    </div>
+                                </div>
+                                <div class = "table-horizontal-row" id = "tuesday_horizontal_row">
+
+                                </div>
+                                <div class = "table-horizontal-row" id = "wednesday_horizontal_row">
+
+                                </div>
+                                <div class = "table-horizontal-row" id = "thursday_horizontal_row">
+
+                                </div>
+                                <div class = "table-horizontal-row" id = "friday_horizontal_row">
+
+                                </div>
+                                <div class = "table-horizontal-row" id = "saturday_horizontal_row">
+
+                                </div>
+                                <div class = "table-horizontal-row" id = "sunday_horizontal_row">
+
+                                </div>
                         </div> 
                     </div>
                 </div>

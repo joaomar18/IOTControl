@@ -433,6 +433,7 @@ function outputManualInvert(){
 }
 
 
+
 ////////////////////////////////HOUR PERIOD DISPLAY MANAGEMENT///////////////////////////////
 
 const config_section_display_checker = setInterval(config_section_display_checker_handler, 10);
@@ -443,11 +444,45 @@ let datetime_pickers = null;
 function config_section_display_checker_handler(){
     let show_add_period_popup_btn = document.getElementById("show_add_period_popup_btn");
     if(show_add_period_popup_btn != null){
+
         let show_remove_period_popup_btn = document.getElementById("show_remove_period_popup_btn");
         let cancel_add_hour_period_btn = document.getElementById("cancel_add_hour_period_btn");
         let cancel_remove_hour_period_btn = document.getElementById("cancel_remove_hour_period_btn");
         let hour_period_mask = document.getElementById("hour_period_mask");
-        if(!config_section_display_valid){
+
+        let monday_entries = document.getElementById("monday_horizontal_row-content");
+        let left_scroll_monday = document.getElementById("btn_left_scroll_monday_hp");
+        let right_scroll_monday = document.getElementById("btn_right_scroll_monday_hp");
+      
+
+        if(!config_section_display_valid){        
+            
+
+            let left_interval;
+            let right_interval;
+
+            left_scroll_monday.addEventListener('mousedown', () => {
+                left_interval = setInterval(() => {
+                    monday_entries.scrollLeft -= 1;
+                    console.log(monday_entries.scrollLeft);
+                }, 1); // Adjust the interval as needed
+            });
+            
+            left_scroll_monday.addEventListener('mouseup', () => {
+              clearInterval(left_interval);
+            });    
+            
+            
+            right_scroll_monday.addEventListener('mousedown', () => {
+                right_interval = setInterval(() => {
+                    monday_entries.scrollLeft += 1;
+                }, 1); // Adjust the interval as needed
+            });
+            
+            right_scroll_monday.addEventListener('mouseup', () => {
+              clearInterval(right_interval);
+            });
+
             hour_period_mask.addEventListener("click", (event) => {
                 if (!event.target.closest("#add_period_popup")){
                     document.getElementById("add_period_popup").style.display = "none";

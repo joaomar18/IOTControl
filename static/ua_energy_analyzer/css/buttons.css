@@ -12,10 +12,13 @@
     overflow: hidden;
     position: relative;
     transition: width 0.2s ease-in-out;
+    z-index: 1;
   }
+
   .add-btn:hover {
     width: 175px;
   }
+
   .add-btn::before,
   .add-btn::after {
     transition: width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
@@ -117,3 +120,69 @@
     height: 20px;
     fill: #555;
   }
+
+
+/*ARROW BUTTONS*/
+
+
+.arrow-container{
+  position: absolute;
+  width: fit-content;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.arrow-container-left{
+  left:10px;
+}
+
+.arrow-container-right{
+  right:10px;
+}
+
+.arrow-container:hover{
+  cursor: pointer;
+}
+
+/* arrow common style */
+.arrow {
+  top:7.5px;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-top: 2px solid #000;
+  border-right: 2px solid #000;
+}
+
+.arrow-top {
+  transform: rotate(-45deg);
+}
+.arrow-right {
+  transform: rotate(45deg);
+}
+.arrow-bottom {
+  transform: rotate(135deg);
+}
+.arrow-left {
+  transform: rotate(-135deg);
+}
+.arrow-top-narrow {
+  transform: rotate(-45deg) skew(-15deg, -15deg);
+}
+.arrow-top-wide {
+  transform: rotate(-45deg) skew(7deg, 7deg);
+}
+.arrow-top-left {
+  transform: rotate(-90deg) skew(-10deg, -10deg);
+}
+.arrow-top-right {
+  transform: rotate(0) skew(-10deg, -10deg);
+}
+.arrow-bottom-left {
+  transform: rotate(180deg) skew(-10deg, -10deg);
+}
+.arrow-bottom-right {
+  transform: rotate(90deg) skew(-10deg, -10deg);
+}

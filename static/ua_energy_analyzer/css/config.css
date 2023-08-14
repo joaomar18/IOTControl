@@ -4,6 +4,7 @@
   height: fit-content;
   min-height: 300px;
   margin-bottom: 7.1rem;
+  width: 100%;
   position:relative;
 }
 
@@ -168,7 +169,7 @@
 .config-subcontent{
   margin-left:1rem;
   flex-grow: 1;
-  width: auto;
+  width: calc(100% - 204px - 1rem);
   position:relative;
 }
 
@@ -182,6 +183,7 @@
   justify-content: space-evenly;
   align-items: stretch;
   flex-wrap: wrap;
+  width: auto;
 }
 
 .sub-nav-button {

@@ -77,7 +77,7 @@ input[type="number"] {
     width:100%;
     margin-top: 2rem;
     margin-bottom: 5.1rem;
-    z-index: -2;
+    z-index: 2;
 }
 
 .popup-state{
@@ -200,6 +200,7 @@ input[type="number"] {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 3;
 }
 
 .loader-header{
