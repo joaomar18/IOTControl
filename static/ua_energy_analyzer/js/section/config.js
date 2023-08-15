@@ -765,9 +765,39 @@ function addHourPeriod(){
 
     ws_client.send(message);
 
-    //let first_response_timeout = setTimeout(first_response_timeout_handler, 3000);
-    //let first_response_check = setInterval(first_response_check_handler, 10);
+    device_hour_periods.set_waiting_fb();
 
+
+    let first_response_timeout = setTimeout(first_response_timeout_handler, 10000);
+    let first_response_check = setInterval(first_response_check_handler, 10);
+    let processing_alert = null;
+
+    function first_response_timeout_handler(){
+        if(device_hour_periods.waiting_fb){
+            if(processing_alert != null){
+                config_temporary_alerts.remove_temporary_warning(processing_alert);
+                processing_alert = null;
+            }            
+            config_temporary_alerts.create_temporary_warning("danger", "config", "O servidor não respondeu ao pedido.");
+            device_hour_periods.reset_waiting_fb();
+            clearInterval(first_response_check);
+            clearTimeout(first_response_timeout);
+        }
+    }
+
+    function first_response_check_handler(){
+        if(!device_hour_periods.waiting_fb){
+            clearInterval(first_response_check);
+            clearTimeout(first_response_timeout);
+            if(processing_alert != null){
+                config_temporary_alerts.remove_temporary_warning(processing_alert);
+                processing_alert = null;
+            }
+        }
+        else{
+            processing_alert = config_temporary_alerts.create_temporary_warning("waiter-info", "config", "Processando o pedido...");
+        }
+    }
 
 }
 
@@ -832,4 +862,37 @@ function removeHourPeriod(){
     let message = active_device.name+";"+"remove_hour_period"+";"+"day_of_week:"+day_of_week+","+"initial_hour_period:"+initial_period_time+","+"final_hour_period:"+final_period_time;
 
     ws_client.send(message);
+
+    device_hour_periods.set_waiting_fb();
+
+    let first_response_timeout = setTimeout(first_response_timeout_handler, 10000);
+    let first_response_check = setInterval(first_response_check_handler, 10);
+    let processing_alert = null;
+
+    function first_response_timeout_handler(){
+        if(device_hour_periods.waiting_fb){
+            if(processing_alert != null){
+                config_temporary_alerts.remove_temporary_warning(processing_alert);
+                processing_alert = null;
+            }            
+            config_temporary_alerts.create_temporary_warning("danger", "config", "O servidor não respondeu ao pedido.");
+            device_hour_periods.reset_waiting_fb();
+            clearInterval(first_response_check);
+            clearTimeout(first_response_timeout);
+        }
+    }
+
+    function first_response_check_handler(){
+        if(!device_hour_periods.waiting_fb){
+            clearInterval(first_response_check);
+            clearTimeout(first_response_timeout);
+            if(processing_alert != null){
+                config_temporary_alerts.remove_temporary_warning(processing_alert);
+                processing_alert = null;
+            }
+        }
+        else{
+            processing_alert = config_temporary_alerts.create_temporary_warning("waiter-info", "config", "Processando o pedido...");
+        }
+    }
 }

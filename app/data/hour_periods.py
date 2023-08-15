@@ -65,7 +65,7 @@ def higher_hour_period(first_hour_period : str, second_hour_period : str) -> int
             else:
                 return -1
 
-def get_hour_periods_with_relation(new_hour_period: str, existing_hour_periods: list[str]) -> list:
+def get_hour_periods_with_relation_for_insert(new_hour_period: str, existing_hour_periods: list[str]) -> list:
     hour_periods_with_relation = list()
     for existing_hour_period in existing_hour_periods:
 

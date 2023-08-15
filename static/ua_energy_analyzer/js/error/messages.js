@@ -114,18 +114,43 @@ class TemporaryAlert{
                 this.remove_alert_array.splice(alert.id, 1);
                 this.remove_alert_array.splice(alert.id, 0, setTimeout(() => this.remove_alert_handler(alert), 3000));
                 update_only = true;    
+                return alert;
             }
         }
         if(!update_only){
             let new_warning = document.createElement('div');
-            new_warning.className = "alert alert-" + type +" alert-dismissible fade show temporary-alert " + section + "-temporary-alert";
+            let proc_type;
+            let waiter_on = false;
+            if(type.includes("waiter")){
+                waiter_on = true;
+                proc_type = type.substring(type.indexOf("-")+1);
+                console.log(proc_type);
+            }
+            else{
+                proc_type = type;
+            }
+            new_warning.className = "alert alert-" + proc_type +" alert-dismissible fade show temporary-alert " + section + "-temporary-alert";
             new_warning.id = section+"_"+"alert-"+type+String(this.active_alerts.length);
+            new_warning.style.display = "flex";
+            new_warning.style.flexDirection = "row";
             new_warning.role = "alert";
-            new_warning.innerHTML = [
-                `   <div>${message}</div>`,
-                //'   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-                //'   <button type="button" class="btn-close" aria-label="Close"></button>',
-            ].join('');
+            if(waiter_on){
+                new_warning.innerHTML = [
+                    `<div class="spinner-border text-secondary" role="status">`,
+                    `</div>`,
+                    `   <div>${message}</div>`,
+                    //'   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                    //'   <button type="button" class="btn-close" aria-label="Close"></button>',
+                ].join('');                    
+            }
+            else{
+                new_warning.innerHTML = [
+
+                    `   <div>${message}</div>`,
+                    //'   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                    //'   <button type="button" class="btn-close" aria-label="Close"></button>',
+                ].join('');
+            }
             let rect = this.document.getElementById(this.align_element).getBoundingClientRect();
             let middle_pos = (Number(rect.left) + Number(rect.right))/2;
             new_warning.style.left = String(middle_pos+"px");
@@ -146,6 +171,28 @@ class TemporaryAlert{
             this.active_alerts.push(new_alert_props);
             this.update_position_array.push(setInterval(() => this.update_position_handler(new_alert_props), 10));
             this.remove_alert_array.push(setTimeout(() => this.remove_alert_handler(new_alert_props), 3000));
+
+            return new_alert_props;
+        }
+    }
+
+    remove_temporary_warning(alert){
+        while(!this.active_alerts_ready);
+        if(this.document.getElementById(alert.element_id) != null){
+            try{
+                if(alert.alert != null && !alert.removed){
+                    alert.alert.close();
+                    clearInterval(this.update_position_array[alert.id]);
+                    this.update_position_array.splice(alert.id, 1);
+                    clearTimeout(this.remove_alert_array[alert.id]);
+                    this.remove_alert_array.splice(alert.id, 1);
+                    this.remove_active_alert(alert.id);
+                    alert.set_removed();
+                }
+            }
+            catch(error){
+                console.error("An error occurred removing a temporary warning:", error.message);
+            }            
         }
     }
 

@@ -93,9 +93,8 @@ class UAClient(UADevice):
 
     async def handler_received_message(self, message: list[str]):
         if(message[0] == "update_section"):
-            if self.connected:
-                updated_section = int(message[1])
-                await self.update_section(updated_section)
+            updated_section = int(message[1])
+            await self.update_section(updated_section)
         elif(message[0] == "manual_button"):
             if(message[1] == "true"):
                 command = True
@@ -126,12 +125,12 @@ class UAClient(UADevice):
                     new_hour_period.set_final_period(message_info)
             existing_hour_periods = get_hour_periods_from_list(self.database.get_day_hour_periods(new_hour_period.day_of_week))
             new_hour_period_str = [new_hour_period.initial_period, new_hour_period.final_period]
-            hour_periods_with_relation = get_hour_periods_with_relation(new_hour_period_str, existing_hour_periods)
-            self.database.update_hour_period_db(new_hour_period, hour_periods_with_relation)
+            hour_periods_with_relation = get_hour_periods_with_relation_for_insert(new_hour_period_str, existing_hour_periods)
+            self.database.insert_hour_period_update_db(new_hour_period, hour_periods_with_relation)
             send_string = new_hour_period.day_of_week
             for hour_period in get_hour_periods_from_list(self.database.get_day_hour_periods(new_hour_period.day_of_week)):
                 send_string += ";init:"+hour_period[0]+",end:"+hour_period[1]
-            await self.send_queue.put([4, self.name, "add_hour_period_fb", {4}, send_string])
+            await self.send_queue.put([4, self.name, "hour_period_info", {4}, send_string])
 
         elif(message[0] == "remove_hour_period"):
             remove_period = HourPeriod()
@@ -145,7 +144,12 @@ class UAClient(UADevice):
                     remove_period.set_initial_period(message_info)
                 elif(message_type == "final_hour_period"):
                     remove_period.set_final_period(message_info)
-            print(remove_period.stringify())
+            existing_hour_periods = get_hour_periods_from_list(self.database.get_day_hour_periods(remove_period.day_of_week))
+            self.database.remove_hour_period_update_db(remove_period, existing_hour_periods)
+            send_string = remove_period.day_of_week
+            for hour_period in get_hour_periods_from_list(self.database.get_day_hour_periods(remove_period.day_of_week)):
+                send_string += ";init:"+hour_period[0]+",end:"+hour_period[1]
+            await self.send_queue.put([4, self.name, "hour_period_info", {4}, send_string])
 
     async def receiver(self):
         while not self.stop_event.is_set():
@@ -178,12 +182,21 @@ class UAClient(UADevice):
         await self.subscription.subscribe_data_change(uaNodes)
 
     async def update_section(self, updated_section):
-        for node in self.nodes.values():
-            for section in node.sections:
-                if section == updated_section:
-                    message = [4, self.name, node.node_name, node.sections, node.value]
-                    await self.send_queue.put(message)
-                    break
+        if self.connected:
+            for node in self.nodes.values():
+                for section in node.sections:
+                    if section == updated_section:
+                        message = [4, self.name, node.node_name, node.sections, node.value]
+                        await self.send_queue.put(message)
+                        break
+        if updated_section == 4:
+            days_of_week = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+            for day_of_week in days_of_week:
+                send_string = day_of_week
+                for hour_period in get_hour_periods_from_list(self.database.get_day_hour_periods(day_of_week)):
+                    send_string += ";init:"+hour_period[0]+",end:"+hour_period[1]
+                await self.send_queue.put([4, self.name, "hour_period_info", {4}, send_string])
+
 
     async def give_info(self):
         if self.connected:

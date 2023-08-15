@@ -194,11 +194,129 @@ class DeviceAnimation{
 
 }
 
-
-class HourPeriods{
-    constructor(monday_content, tuesday_content, )
+class HourPeriod{
+    constructor(init, end){
+        this.init = init;
+        this.end = end;
+    }
 }
 
+class HourPeriods{
+    constructor(document, content){
+        this.monday_periods = [];
+        this.tuesday_periods = [];
+        this.wednesday_periods = [];
+        this.thursday_periods = [];
+        this.friday_periods = [];
+        this.saturday_periods = [];
+        this.sunday_periods = [];
+        this.document = document;
+        this.content = content;
+        this.waiting_fb = false;
+    }
+
+
+    update_periods(week_day, new_periods){
+        if(week_day == "monday"){
+            this.monday_periods = new_periods;
+        }
+        else if(week_day == "tuesday"){
+            this.tuesday_periods = new_periods;
+        }
+        else if(week_day == "wednesday"){
+            this.wednesday_periods = new_periods;
+        }
+        else if(week_day == "thursday"){
+            this.thursday_periods = new_periods;
+        }
+        else if(week_day == "friday"){
+            this.friday_periods = new_periods;
+        }
+        else if(week_day == "saturday"){
+            this.saturday_periods = new_periods;
+        }
+        else if(week_day == "sunday"){
+            this.sunday_periods = new_periods;
+        }
+    }
+
+    set_waiting_fb(){
+        this.waiting_fb = true;
+    }
+
+    reset_waiting_fb(){
+        this.waiting_fb = false;
+    }
+
+    update_container(week_day){
+        if(this.document.getElementsByClassName(this.content) != null){
+            let content_element = null;
+            let new_hour_periods = [];
+            if(week_day == "monday"){
+                content_element = (this.document.getElementsByClassName(this.content))[0];
+                new_hour_periods = this.monday_periods;
+            }
+            else if(week_day == "tuesday"){
+                content_element = (this.document.getElementsByClassName(this.content))[1];
+                new_hour_periods = this.tuesday_periods;
+            }
+            else if(week_day == "wednesday"){
+                content_element = (this.document.getElementsByClassName(this.content))[2];
+                new_hour_periods = this.wednesday_periods;
+            }
+            else if(week_day == "thursday"){
+                content_element = (this.document.getElementsByClassName(this.content))[3];
+                new_hour_periods = this.thursday_periods;
+            }
+            else if(week_day == "friday"){
+                content_element = (this.document.getElementsByClassName(this.content))[4];
+                new_hour_periods = this.friday_periods;
+            }
+            else if(week_day == "saturday"){
+                content_element = (this.document.getElementsByClassName(this.content))[5];
+                new_hour_periods = this.saturday_periods;
+            }
+            else if(week_day == "sunday"){
+                content_element = (this.document.getElementsByClassName(this.content))[6];
+                new_hour_periods = this.sunday_periods;
+            }
+            if(content_element != null){
+                while (content_element.firstChild) {
+                    content_element.removeChild(content_element.firstChild);
+                }
+            }
+            for(let hour_period of new_hour_periods){
+                let new_hour_period = document.createElement("div");
+                new_hour_period.className = "hour-period-entry";
+                new_hour_period.innerText = hour_period.init + " - " + hour_period.end;
+                content_element.appendChild(new_hour_period);
+            } 
+        }
+    }
+}
+
+function sort_hour_periods(hour_periods){
+    hour_periods_to_order = hour_periods;
+    hours_periods_ordered = [];
+
+    let current_smaller_hour_period = null;
+
+    while(hour_periods_to_order.length > 0){
+        for(let hour_period of hour_periods_to_order){
+            if(current_smaller_hour_period == null || hour_period.init < current_smaller_hour_period.init){
+                current_smaller_hour_period = hour_period;
+            }
+        }
+        let index_to_remove = hour_periods_to_order.indexOf(current_smaller_hour_period);
+        if(index_to_remove != -1){
+            hour_periods_to_order.splice(index_to_remove, 1);
+        }
+        hours_periods_ordered.push(current_smaller_hour_period);
+        current_smaller_hour_period = null;
+    }
+
+    return hours_periods_ordered;
+}
 
 class Device{
     constructor(document, id, name, url, port, protocol, state_element, id_element, protocol_element, device_animation){
@@ -259,13 +377,12 @@ class Device{
     }
 
     send_initial_data_handler = () => {
-        if (typeof ws_client === "undefined") {
+        if (typeof ws_client === undefined) {
         }
         else{
             if(ws_client.connected){
-                if(!this.init_sent && this.active_section != null){
+                if(!this.init_sent){
                     ws_client.send(this.name+";"+"info"+";"+"ask");
-                    ws_client.send(this.name+";"+"update_section"+";"+String(this.active_section)); //COMPOR, ESTÁ A MANDAR 2 VEZES NO INICIO DA CONEXAO
                     this.init_sent = true;
                 }
             }
@@ -284,6 +401,7 @@ class Device{
             else{
                 if(ws_client.connected){
                     let message = this.name+";"+"update_section"+";"+String(this.active_section);
+                    console.log(message);
                     ws_client.send(message);
                 }
             }
@@ -401,15 +519,30 @@ class Device{
 
             }
             else if(this.active_section == 4){
-                if(node == "add_hour_period_fb"){
-                    let week_day = value.substring(0, value.indexOf(";"));
-                    let hour_periods = value.substring(value.indexOf(";")+1);
-                    hour_periods = hour_periods.split(";");
+                if(node == "hour_period_info"){
+                    let week_day;
+                    let hour_periods;
+                    if(value.includes(";")){
+                        week_day = value.substring(0, value.indexOf(";"));
+                        hour_periods = value.substring(value.indexOf(";")+1);
+                        hour_periods = hour_periods.split(";");
+                    }
+                    else{
+                        week_day = value;
+                        hour_periods = [];
+                    }                    
+                    let new_hour_periods = [];
                     for(let hour_period of hour_periods){
                         let initial_period = hour_period.substring(hour_period.indexOf("init:")+5, hour_period.indexOf(","));
                         let final_period = hour_period.substring(hour_period.indexOf("end:")+4);
-                        console.log(initial_period);
-                        console.log(final_period);
+                        new_hour_periods.push(new HourPeriod(initial_period, final_period));
+                    }
+                    new_hour_periods = sort_hour_periods(new_hour_periods);
+                    device_hour_periods.update_periods(week_day, new_hour_periods);
+                    device_hour_periods.update_container(week_day);
+                    if(device_hour_periods.waiting_fb){
+                        config_temporary_alerts.create_temporary_warning("success", "config", "Os períodos horários foram atualizados com exito.");
+                        device_hour_periods.reset_waiting_fb();
                     }
                 }
             }
@@ -447,6 +580,7 @@ class Device{
 
 
 let device_animation = new DeviceAnimation(document, "realtime-image-animation", "openc-line", "closec-line", "warning-line", "closec-arrow", "warning-arrow");
+let device_hour_periods = new HourPeriods(document, "table-horizontal-row-content");
 
 let devices = {}; //dictionary with all working devices
 let active_device = null;

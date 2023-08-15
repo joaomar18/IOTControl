@@ -126,6 +126,7 @@
     align-items: center;
     justify-content: start;
     display: none;
+    z-index: 3;
   }
 
 
@@ -143,6 +144,7 @@
     align-items: center;
     justify-content: start;
     display: none;
+    z-index: 3;
   }
 
   .add-period-popup-title{
@@ -201,6 +203,7 @@
     padding:0;
     opacity:0;
     position:fixed;
+    z-index:2;
   }
 
 .daily-time-period-picker{

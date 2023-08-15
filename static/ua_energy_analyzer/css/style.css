@@ -383,6 +383,12 @@ input[type="number"] {
     height: 2rem;
 }
 
+.spinner-border{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right:2rem;
+}
+
 
 @media screen and (min-width: 992px) { /* Above Large Screen */
     html{
