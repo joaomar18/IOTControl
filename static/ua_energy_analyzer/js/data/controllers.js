@@ -195,6 +195,11 @@ class DeviceAnimation{
 }
 
 
+class HourPeriods{
+    constructor(monday_content, tuesday_content, )
+}
+
+
 class Device{
     constructor(document, id, name, url, port, protocol, state_element, id_element, protocol_element, device_animation){
         this.document = document;

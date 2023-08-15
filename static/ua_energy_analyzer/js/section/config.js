@@ -450,38 +450,129 @@ function config_section_display_checker_handler(){
         let cancel_remove_hour_period_btn = document.getElementById("cancel_remove_hour_period_btn");
         let hour_period_mask = document.getElementById("hour_period_mask");
 
-        let monday_entries = document.getElementById("monday_horizontal_row-content");
-        let left_scroll_monday = document.getElementById("btn_left_scroll_monday_hp");
-        let right_scroll_monday = document.getElementById("btn_right_scroll_monday_hp");
+
+        let entries = document.getElementsByClassName("table-horizontal-row-content");
+        let left_scrolls = document.getElementsByClassName("arrow-container-left");
+        let right_scrolls = document.getElementsByClassName("arrow-container-right");
       
 
         if(!config_section_display_valid){        
             
 
-            let left_interval;
-            let right_interval;
+            let left_interval = null;
+            let left_interval_step = 0;
+            let right_interval = null;
+            let right_interval_step = 0
 
-            left_scroll_monday.addEventListener('mousedown', () => {
-                left_interval = setInterval(() => {
-                    monday_entries.scrollLeft -= 1;
-                }, 1);
-                document.addEventListener('mouseup', buttonReleaseHandler);
-                function buttonReleaseHandler() {
-                    clearInterval(left_interval);
-                    document.removeEventListener('mouseup', buttonReleaseHandler);
-                }
-            });  
-            
-            right_scroll_monday.addEventListener('mousedown', () => {
-                right_interval = setInterval(() => {
-                    monday_entries.scrollLeft += 1;
-                }, 1);
-                document.addEventListener('mouseup', buttonReleaseHandler);
-                function buttonReleaseHandler() {
-                    clearInterval(right_interval);
-                    document.removeEventListener('mouseup', buttonReleaseHandler);
-                }
-            });
+            for(let left_scroll of left_scrolls){
+                left_scroll.addEventListener('mousedown', function(event) {
+                    let left_scroll_speedup = null;
+                    let i = -1;
+                    if(left_interval == null){
+                        left_interval = setInterval(left_scoll_monday_handler, 1); 
+                        left_interval_step = 1;
+                        document.addEventListener('mouseup', buttonReleaseHandler); 
+                    }
+                    function left_scoll_monday_handler(){
+                        if (i == -1){
+                            let element_id = event.target.id;
+                            if(element_id == "btn_left_scroll_monday_hp"){
+                                i = 0;
+                            }
+                            else if(element_id == "btn_left_scroll_tuesday_hp"){
+                                i = 1;
+                            }
+                            else if(element_id == "btn_left_scroll_wednesday_hp"){
+                                i = 2;
+                            }
+                            else if(element_id == "btn_left_scroll_thursday_hp"){
+                                i = 3;
+                            }
+                            else if(element_id == "btn_left_scroll_friday_hp"){
+                                i = 4;
+                            }
+                            else if(element_id == "btn_left_scroll_saturday_hp"){
+                                i = 5;
+                            }
+                            else if(element_id == "btn_left_scroll_sunday_hp"){
+                                i = 6;
+                            }
+                        }
+                        entries.item(i).scrollLeft -= left_interval_step;
+                        if(left_scroll_speedup == null){
+                            left_scroll_speedup = setTimeout(left_scroll_speedup_handler, 1500);
+                        }
+                        function left_scroll_speedup_handler(){
+                            left_interval_step = 2;
+                        }
+                    }
+                    function buttonReleaseHandler() {
+                        while(left_interval != null){
+                            clearInterval(left_interval);
+                            clearInterval(left_scroll_speedup);
+                            left_interval = null;
+                            left_scroll_speedup = null;
+                        }
+                        document.removeEventListener('mouseup', buttonReleaseHandler);
+                    }
+                });  
+            }
+
+
+            for(let right_scroll of right_scrolls){
+                right_scroll.addEventListener('mousedown', function(event) {
+                    let right_scroll_speedup = null;
+                    let i = -1;
+                    if(right_interval == null){
+                        right_interval = setInterval(right_scroll_monday_handler, 1);
+                        right_interval_step = 1;
+                        document.addEventListener('mouseup', buttonReleaseHandler);
+                    }
+                    function right_scroll_monday_handler(){
+                        if (i == -1){
+                            let element_id = event.target.id;
+                            if(element_id == "btn_right_scroll_monday_hp"){
+                                i = 0;
+                            }
+                            else if(element_id == "btn_right_scroll_tuesday_hp"){
+                                i = 1;
+                            }
+                            else if(element_id == "btn_right_scroll_wednesday_hp"){
+                                i = 2;
+                            }
+                            else if(element_id == "btn_right_scroll_thursday_hp"){
+                                i = 3;
+                            }
+                            else if(element_id == "btn_right_scroll_friday_hp"){
+                                i = 4;
+                            }
+                            else if(element_id == "btn_right_scroll_saturday_hp"){
+                                i = 5;
+                            }
+                            else if(element_id == "btn_right_scroll_sunday_hp"){
+                                i = 6;
+                            }
+                        }
+                        entries.item(i).scrollLeft += right_interval_step;
+                        if(right_scroll_speedup == null){
+                            right_scroll_speedup = setTimeout(right_scroll_speedup_handler, 1500);
+                        }
+                        function right_scroll_speedup_handler(){
+                            right_interval_step = 2;
+                        }
+                    }
+                    function buttonReleaseHandler() {
+                        while(right_interval != null){
+                            clearInterval(right_interval);
+                            clearInterval(right_scroll_speedup);
+                            right_interval = null;
+                            right_scroll_speedup = null;
+                        }
+                        document.removeEventListener('mouseup', buttonReleaseHandler);
+                    }
+                });
+            }
+
 
             hour_period_mask.addEventListener("click", (event) => {
                 if (!event.target.closest("#add_period_popup")){
