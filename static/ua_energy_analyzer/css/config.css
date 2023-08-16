@@ -371,8 +371,9 @@
   top:5.1rem;
   margin:auto;
   transform: translate(-50%, -50%); /* Center the element relative to its own width and height */
-  width:30%;
-  min-width:27.5rem;
+  max-width:500px;
+  min-width:300px;
+  width:50%;
   z-index: 9999;
 }
 

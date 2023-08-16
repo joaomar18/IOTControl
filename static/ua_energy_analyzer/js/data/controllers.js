@@ -202,7 +202,7 @@ class HourPeriod{
 }
 
 class HourPeriods{
-    constructor(document, content){
+    constructor(document, window, content, xs_content, xs_week_day){
         this.monday_periods = [];
         this.tuesday_periods = [];
         this.wednesday_periods = [];
@@ -211,32 +211,101 @@ class HourPeriods{
         this.saturday_periods = [];
         this.sunday_periods = [];
         this.document = document;
+        this.window = window;
         this.content = content;
+        this.extra_small_view = false;
+        this.last_xs_week_day = null;
+        this.xs_content = xs_content; 
+        this.xs_week_day = xs_week_day;
         this.waiting_fb = false;
+        this.update_xs_content = setInterval(this.update_xs_content_handler.bind(this), 10);
+        this.init_hour_periods = [false, false, false, false, false, false, false];
     }
+
+
+    update_xs_content_handler = () => {
+        let screenWidth = this.window.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth;
+        if(screenWidth < 729){
+            this.extra_small_view = true;
+        }
+        else{
+            this.extra_small_view = false;
+        }
+        if(this.document.getElementById(this.xs_content) != null){
+            if(this.extra_small_view){
+                if(this.document.getElementById(this.xs_week_day).selectedIndex != this.last_xs_week_day){
+                    let week_day = this.document.getElementById(this.xs_week_day).selectedIndex;
+                    let str_week_day = null;
+                    if(week_day == 0 && this.init_hour_periods[0]){
+                        str_week_day = "monday";
+                    }
+                    else if(week_day == 1 && this.init_hour_periods[1]){
+                        str_week_day = "tuesday";
+                    }
+                    else if(week_day == 2 && this.init_hour_periods[2]){
+                        str_week_day = "wednesday";
+                    }
+                    else if(week_day == 3 && this.init_hour_periods[3]){
+                        str_week_day = "thursday";
+                    }
+                    else if(week_day == 4 && this.init_hour_periods[4]){
+                        str_week_day = "friday";
+                    }
+                    else if(week_day == 5 && this.init_hour_periods[5]){
+                        str_week_day = "saturday";
+                    }
+                    else if(week_day == 6 && this.init_hour_periods[6]){
+                        str_week_day = "sunday";
+                    }
+                    if(str_week_day != null){
+                        this.last_xs_week_day = week_day;
+                        this.update_xs_container(str_week_day);
+                    }
+                }
+            }
+            else{
+                this.last_xs_week_day = null;
+            }
+        }
+        else{
+            for(let i = 0; i < this.init_hour_periods.length; i++){
+                this.init_hour_periods[i] = false;
+            }
+            this.last_xs_week_day = null;
+        }
+    }    
+
+
 
 
     update_periods(week_day, new_periods){
         if(week_day == "monday"){
             this.monday_periods = new_periods;
+            this.init_hour_periods[0] = true;
         }
         else if(week_day == "tuesday"){
             this.tuesday_periods = new_periods;
+            this.init_hour_periods[1] = true;
         }
         else if(week_day == "wednesday"){
             this.wednesday_periods = new_periods;
+            this.init_hour_periods[2] = true;
         }
         else if(week_day == "thursday"){
             this.thursday_periods = new_periods;
+            this.init_hour_periods[3] = true;
         }
         else if(week_day == "friday"){
             this.friday_periods = new_periods;
+            this.init_hour_periods[4] = true;
         }
         else if(week_day == "saturday"){
             this.saturday_periods = new_periods;
+            this.init_hour_periods[5] = true;
         }
         else if(week_day == "sunday"){
             this.sunday_periods = new_periods;
+            this.init_hour_periods[6] = true;
         }
     }
 
@@ -246,6 +315,70 @@ class HourPeriods{
 
     reset_waiting_fb(){
         this.waiting_fb = false;
+    }
+
+    update_xs_container(week_day){
+        if(this.document.getElementById(this.xs_content) != null){
+            let week_day_index = null;
+            if(week_day == "monday"){
+                week_day_index = 0;
+            }
+            else if(week_day == "tuesday"){
+                week_day_index = 1;
+            }
+            else if(week_day == "wednesday"){
+                week_day_index = 2;
+            }
+            else if(week_day == "thursday"){
+                week_day_index = 3;
+            }
+            else if(week_day == "friday"){
+                week_day_index = 4;
+            }
+            else if(week_day == "saturday"){
+                week_day_index = 5;
+            }
+            else if(week_day == "sunday"){
+                week_day_index = 6;
+            }
+            if (week_day_index == this.last_xs_week_day && week_day_index != null){
+                let content_element = this.document.getElementById(this.xs_content);
+                let new_hour_periods = [];
+                if(week_day == "monday" && this.init_hour_periods[0]){
+                    new_hour_periods = this.monday_periods;
+                    console.log(new_hour_periods);
+                }
+                else if(week_day == "tuesday" && this.init_hour_periods[1]){
+                    new_hour_periods = this.tuesday_periods;
+                }
+                else if(week_day == "wednesday" && this.init_hour_periods[2]){
+                    new_hour_periods = this.wednesday_periods;
+                }
+                else if(week_day == "thursday" && this.init_hour_periods[3]){
+                    new_hour_periods = this.thursday_periods;
+                }
+                else if(week_day == "friday" && this.init_hour_periods[4]){
+                    new_hour_periods = this.friday_periods;
+                }
+                else if(week_day == "saturday" && this.init_hour_periods[5]){
+                    new_hour_periods = this.saturday_periods;
+                }
+                else if(week_day == "sunday" && this.init_hour_periods[6]){
+                    new_hour_periods = this.sunday_periods;
+                }
+                if(content_element != null){
+                    while (content_element.firstChild) {
+                        content_element.removeChild(content_element.firstChild);
+                    }
+                }
+                for(let hour_period of new_hour_periods){
+                    let new_hour_period = document.createElement("div");
+                    new_hour_period.className = "hour-period-entry-xs";
+                    new_hour_period.innerText = hour_period.init + " - " + hour_period.end;
+                    content_element.appendChild(new_hour_period);
+                } 
+            }
+        }
     }
 
     update_container(week_day){
@@ -540,6 +673,9 @@ class Device{
                     new_hour_periods = sort_hour_periods(new_hour_periods);
                     device_hour_periods.update_periods(week_day, new_hour_periods);
                     device_hour_periods.update_container(week_day);
+                    if(device_hour_periods.extra_small_view){
+                        device_hour_periods.update_xs_container(week_day);
+                    }
                     if(device_hour_periods.waiting_fb){
                         config_temporary_alerts.create_temporary_warning("success", "config", "Os períodos horários foram atualizados com exito.");
                         device_hour_periods.reset_waiting_fb();
@@ -580,7 +716,7 @@ class Device{
 
 
 let device_animation = new DeviceAnimation(document, "realtime-image-animation", "openc-line", "closec-line", "warning-line", "closec-arrow", "warning-arrow");
-let device_hour_periods = new HourPeriods(document, "table-horizontal-row-content");
+let device_hour_periods = new HourPeriods(document, window, "table-horizontal-row-content", "table_extra_small_content", "day_of_week_selector_xs");
 
 let devices = {}; //dictionary with all working devices
 let active_device = null;

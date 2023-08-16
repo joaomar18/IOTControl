@@ -445,7 +445,13 @@ function config_section_display_checker_handler(){
     let show_add_period_popup_btn = document.getElementById("show_add_period_popup_btn");
     if(show_add_period_popup_btn != null){
 
+        let show_add_period_popup_btn_xs = document.getElementById("show_add_period_popup_btn_xs");
+
         let show_remove_period_popup_btn = document.getElementById("show_remove_period_popup_btn");
+
+        let show_remove_period_popup_btn_xs = document.getElementById("show_remove_period_popup_btn_xs");
+
+
         let cancel_add_hour_period_btn = document.getElementById("cancel_add_hour_period_btn");
         let cancel_remove_hour_period_btn = document.getElementById("cancel_remove_hour_period_btn");
         let hour_period_mask = document.getElementById("hour_period_mask");
@@ -454,6 +460,9 @@ function config_section_display_checker_handler(){
         let entries = document.getElementsByClassName("table-horizontal-row-content");
         let left_scrolls = document.getElementsByClassName("arrow-container-left");
         let right_scrolls = document.getElementsByClassName("arrow-container-right");
+
+        let day_of_week_selector_xs = document.getElementById("day_of_week_selector_xs");
+
       
 
         if(!config_section_display_valid){        
@@ -588,7 +597,17 @@ function config_section_display_checker_handler(){
                     document.getElementById("hour_period_mask").style.display = "block";
                 }
             });
+
+            show_add_period_popup_btn_xs.addEventListener('click', function() {
+                let week_day = day_of_week_selector_xs.selectedIndex;
+                document.getElementById("add_day_of_week_selector").selectedIndex = week_day;
+                if(document.getElementById("add_period_popup").style.display != "flex"){
+                    document.getElementById("add_period_popup").style.display = "flex";
+                    document.getElementById("hour_period_mask").style.display = "block";
+                }
+            });
             
+
             cancel_add_hour_period_btn.addEventListener('click', function() {
                 if(document.getElementById("add_period_popup").style.display == "flex"){
                     document.getElementById("add_period_popup").style.display = "none";
@@ -598,6 +617,15 @@ function config_section_display_checker_handler(){
             });
             
             show_remove_period_popup_btn.addEventListener('click', function() {
+                if(document.getElementById("remove_period_popup").style.display != "flex"){
+                    document.getElementById("remove_period_popup").style.display = "flex";
+                    document.getElementById("hour_period_mask").style.display = "block";
+                }
+            });
+
+            show_remove_period_popup_btn_xs.addEventListener('click', function() {
+                let week_day = day_of_week_selector_xs.selectedIndex;
+                document.getElementById("remove_day_of_week_selector").selectedIndex = week_day;
                 if(document.getElementById("remove_period_popup").style.display != "flex"){
                     document.getElementById("remove_period_popup").style.display = "flex";
                     document.getElementById("hour_period_mask").style.display = "block";
@@ -617,6 +645,7 @@ function config_section_display_checker_handler(){
                 noCalendar: true,
                 altFormat: "H:i:S",
                 dateFormat: "H:i:S",
+                disableMobile: "true",
                 enableSeconds: true
             });
             config_section_display_valid = true;

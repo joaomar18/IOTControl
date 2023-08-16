@@ -52,7 +52,7 @@ async def send_messages(ws_server: ws.WebsocketsServer):
 async def main(): #Main coroutine
     data.general.main_loop = asyncio.get_event_loop()
     
-    data.ws.ws_server = ws.WebsocketsServer("127.0.0.1", 9001, data.queues.ws_server_send_queue, data.general.main_loop) #initializes a websockets server on localhost, port 9001 and passes it it's message queue to send
+    data.ws.ws_server = ws.WebsocketsServer("192.168.0.37", 9001, data.queues.ws_server_send_queue, data.general.main_loop) #initializes a websockets server on localhost, port 9001 and passes it it's message queue to send
     #data.ws.ws_server = ws.WebsocketsServer(str(util.ip.get_local_ipv4_address()), 9001, data.queues.ws_server_send_queue, data.general.main_loop) #initializes a websockets server on localhost, port 9001 and passes it it's message queue to send
     device1 = ua.UADevice(id=1,name="plc_1",url="192.168.10.1",port=4840,event_loop=data.general.main_loop, send_queue=data.queues.ws_server_send_queue,nodes=data.device.get_UA_Energy_Analizer_Nodes())
     client1_parameters = uaClient.UAClientParameters(url=device1.url, port=device1.port, max_chunkcount=256, session_timeout=30000, max_messagesize=16777216, name=device1.name, description="Laboratorio de automacao")
