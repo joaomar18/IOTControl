@@ -461,6 +461,10 @@ function config_section_display_checker_handler(){
         let left_scrolls = document.getElementsByClassName("arrow-container-left");
         let right_scrolls = document.getElementsByClassName("arrow-container-right");
 
+        let xs_entries = document.getElementById("table_extra_small_content");
+        let xs_top_scroll = document.getElementById("btn_top_scroll_xs_hp");
+        let xs_bottom_scroll = document.getElementById("btn_bottom_scroll_xs_hp");
+
         let day_of_week_selector_xs = document.getElementById("day_of_week_selector_xs");
 
       
@@ -473,112 +477,205 @@ function config_section_display_checker_handler(){
             let right_interval = null;
             let right_interval_step = 0
 
+
+            let top_interval_xs = null;
+            let top_interval_xs_step = 0;
+            let bottom_interval_xs = null;
+            let bottom_interval_xs_step = 0;
+
+
+
+            function scroll_up_xs(){
+                let top_scroll_speedup = null;
+                if(top_interval_xs == null){
+                    top_interval_xs = setInterval(top_scroll_xs_handler, 1);
+                    top_interval_xs_step = 1;
+                    document.addEventListener('mouseup', buttonReleaseHandler);
+                    document.addEventListener('touchend', buttonReleaseHandler);
+                }
+                function top_scroll_xs_handler(){
+                    xs_entries.scrollTop -= top_interval_xs_step;
+                    if(top_scroll_speedup == null){
+                        top_scroll_speedup = setTimeout(top_scroll_speedup_handler, 1500);
+                    }
+                    function top_scroll_speedup_handler(){
+                        top_interval_xs_step = 2;
+                    }
+                }
+                function buttonReleaseHandler() {
+                    while(top_interval_xs != null){
+                        clearInterval(top_interval_xs);
+                        clearInterval(top_scroll_speedup);
+                        top_interval_xs = null;
+                        top_scroll_speedup = null;
+                    }
+                    document.removeEventListener('mouseup', buttonReleaseHandler);
+                    document.removeEventListener('touchend', buttonReleaseHandler);
+                }
+            }
+
+            function scroll_down_xs(){
+                let bottom_scroll_speedup = null;
+                if(bottom_interval_xs == null){
+                    bottom_interval_xs = setInterval(bottom_scroll_xs_handler, 1);
+                    bottom_interval_xs_step = 1;
+                    document.addEventListener('mouseup', buttonReleaseHandler);
+                    document.addEventListener('touchend', buttonReleaseHandler);
+                }
+                function bottom_scroll_xs_handler(){
+                    xs_entries.scrollTop += bottom_interval_xs_step;
+                    if(bottom_scroll_speedup == null){
+                        bottom_scroll_speedup = setTimeout(bottom_scroll_speedup_handler, 1500);
+                    }
+                    function bottom_scroll_speedup_handler(){
+                        bottom_interval_xs_step = 2;
+                    }
+                }
+                function buttonReleaseHandler() {
+                    while(bottom_interval_xs != null){
+                        clearInterval(bottom_interval_xs);
+                        clearInterval(bottom_scroll_speedup);
+                        bottom_interval_xs = null;
+                        bottom_scroll_speedup_handler_scroll_speedup = null;
+                    }
+                    document.removeEventListener('mouseup', buttonReleaseHandler);
+                    document.removeEventListener('touchend', buttonReleaseHandler);
+                }
+            }
+
+            function scroll_left(event){
+                let left_scroll_speedup = null;
+                let i = -1;
+                if(left_interval == null){
+                    left_interval = setInterval(left_scoll_monday_handler, 1); 
+                    left_interval_step = 1;
+                    document.addEventListener('mouseup', buttonReleaseHandler); 
+                    document.addEventListener('touchend', buttonReleaseHandler);
+                }
+                function left_scoll_monday_handler(){
+                    if (i == -1){
+                        let element_id = event.target.id;
+                        if(element_id == "btn_left_scroll_monday_hp"){
+                            i = 0;
+                        }
+                        else if(element_id == "btn_left_scroll_tuesday_hp"){
+                            i = 1;
+                        }
+                        else if(element_id == "btn_left_scroll_wednesday_hp"){
+                            i = 2;
+                        }
+                        else if(element_id == "btn_left_scroll_thursday_hp"){
+                            i = 3;
+                        }
+                        else if(element_id == "btn_left_scroll_friday_hp"){
+                            i = 4;
+                        }
+                        else if(element_id == "btn_left_scroll_saturday_hp"){
+                            i = 5;
+                        }
+                        else if(element_id == "btn_left_scroll_sunday_hp"){
+                            i = 6;
+                        }
+                    }
+                    entries.item(i).scrollLeft -= left_interval_step;
+                    if(left_scroll_speedup == null){
+                        left_scroll_speedup = setTimeout(left_scroll_speedup_handler, 1500);
+                    }
+                    function left_scroll_speedup_handler(){
+                        left_interval_step = 2;
+                    }
+                }
+                function buttonReleaseHandler() {
+                    while(left_interval != null){
+                        clearInterval(left_interval);
+                        clearInterval(left_scroll_speedup);
+                        left_interval = null;
+                        left_scroll_speedup = null;
+                    }
+                    document.removeEventListener('mouseup', buttonReleaseHandler);
+                    document.removeEventListener('touchend', buttonReleaseHandler);
+                }
+            }
+
+            function scroll_right(event){
+                let right_scroll_speedup = null;
+                let i = -1;
+                if(right_interval == null){
+                    right_interval = setInterval(right_scroll_monday_handler, 1);
+                    right_interval_step = 1;
+                    document.addEventListener('mouseup', buttonReleaseHandler);
+                    document.addEventListener('touchend', buttonReleaseHandler);
+                }
+                function right_scroll_monday_handler(){
+                    if (i == -1){
+                        let element_id = event.target.id;
+                        if(element_id == "btn_right_scroll_monday_hp"){
+                            i = 0;
+                        }
+                        else if(element_id == "btn_right_scroll_tuesday_hp"){
+                            i = 1;
+                        }
+                        else if(element_id == "btn_right_scroll_wednesday_hp"){
+                            i = 2;
+                        }
+                        else if(element_id == "btn_right_scroll_thursday_hp"){
+                            i = 3;
+                        }
+                        else if(element_id == "btn_right_scroll_friday_hp"){
+                            i = 4;
+                        }
+                        else if(element_id == "btn_right_scroll_saturday_hp"){
+                            i = 5;
+                        }
+                        else if(element_id == "btn_right_scroll_sunday_hp"){
+                            i = 6;
+                        }
+                    }
+                    entries.item(i).scrollLeft += right_interval_step;
+                    if(right_scroll_speedup == null){
+                        right_scroll_speedup = setTimeout(right_scroll_speedup_handler, 1500);
+                    }
+                    function right_scroll_speedup_handler(){
+                        right_interval_step = 2;
+                    }
+                }
+                function buttonReleaseHandler() {
+                    while(right_interval != null){
+                        clearInterval(right_interval);
+                        clearInterval(right_scroll_speedup);
+                        right_interval = null;
+                        right_scroll_speedup = null;
+                    }
+                    document.removeEventListener('mouseup', buttonReleaseHandler);
+                    document.removeEventListener('touchend', buttonReleaseHandler);
+                }
+            }
+
+
+            xs_top_scroll.addEventListener('mousedown', scroll_up_xs);  
+            xs_top_scroll.addEventListener('touchstart', scroll_up_xs);  
+
+
+            xs_bottom_scroll.addEventListener('mousedown', scroll_down_xs);
+            xs_bottom_scroll.addEventListener('touchstart', scroll_down_xs);
+
+
             for(let left_scroll of left_scrolls){
                 left_scroll.addEventListener('mousedown', function(event) {
-                    let left_scroll_speedup = null;
-                    let i = -1;
-                    if(left_interval == null){
-                        left_interval = setInterval(left_scoll_monday_handler, 1); 
-                        left_interval_step = 1;
-                        document.addEventListener('mouseup', buttonReleaseHandler); 
-                    }
-                    function left_scoll_monday_handler(){
-                        if (i == -1){
-                            let element_id = event.target.id;
-                            if(element_id == "btn_left_scroll_monday_hp"){
-                                i = 0;
-                            }
-                            else if(element_id == "btn_left_scroll_tuesday_hp"){
-                                i = 1;
-                            }
-                            else if(element_id == "btn_left_scroll_wednesday_hp"){
-                                i = 2;
-                            }
-                            else if(element_id == "btn_left_scroll_thursday_hp"){
-                                i = 3;
-                            }
-                            else if(element_id == "btn_left_scroll_friday_hp"){
-                                i = 4;
-                            }
-                            else if(element_id == "btn_left_scroll_saturday_hp"){
-                                i = 5;
-                            }
-                            else if(element_id == "btn_left_scroll_sunday_hp"){
-                                i = 6;
-                            }
-                        }
-                        entries.item(i).scrollLeft -= left_interval_step;
-                        if(left_scroll_speedup == null){
-                            left_scroll_speedup = setTimeout(left_scroll_speedup_handler, 1500);
-                        }
-                        function left_scroll_speedup_handler(){
-                            left_interval_step = 2;
-                        }
-                    }
-                    function buttonReleaseHandler() {
-                        while(left_interval != null){
-                            clearInterval(left_interval);
-                            clearInterval(left_scroll_speedup);
-                            left_interval = null;
-                            left_scroll_speedup = null;
-                        }
-                        document.removeEventListener('mouseup', buttonReleaseHandler);
-                    }
-                });  
+                    scroll_left(event);
+                });
+                left_scroll.addEventListener('touchstart', function(event) {
+                    scroll_left(event);
+                });
             }
 
 
             for(let right_scroll of right_scrolls){
                 right_scroll.addEventListener('mousedown', function(event) {
-                    let right_scroll_speedup = null;
-                    let i = -1;
-                    if(right_interval == null){
-                        right_interval = setInterval(right_scroll_monday_handler, 1);
-                        right_interval_step = 1;
-                        document.addEventListener('mouseup', buttonReleaseHandler);
-                    }
-                    function right_scroll_monday_handler(){
-                        if (i == -1){
-                            let element_id = event.target.id;
-                            if(element_id == "btn_right_scroll_monday_hp"){
-                                i = 0;
-                            }
-                            else if(element_id == "btn_right_scroll_tuesday_hp"){
-                                i = 1;
-                            }
-                            else if(element_id == "btn_right_scroll_wednesday_hp"){
-                                i = 2;
-                            }
-                            else if(element_id == "btn_right_scroll_thursday_hp"){
-                                i = 3;
-                            }
-                            else if(element_id == "btn_right_scroll_friday_hp"){
-                                i = 4;
-                            }
-                            else if(element_id == "btn_right_scroll_saturday_hp"){
-                                i = 5;
-                            }
-                            else if(element_id == "btn_right_scroll_sunday_hp"){
-                                i = 6;
-                            }
-                        }
-                        entries.item(i).scrollLeft += right_interval_step;
-                        if(right_scroll_speedup == null){
-                            right_scroll_speedup = setTimeout(right_scroll_speedup_handler, 1500);
-                        }
-                        function right_scroll_speedup_handler(){
-                            right_interval_step = 2;
-                        }
-                    }
-                    function buttonReleaseHandler() {
-                        while(right_interval != null){
-                            clearInterval(right_interval);
-                            clearInterval(right_scroll_speedup);
-                            right_interval = null;
-                            right_scroll_speedup = null;
-                        }
-                        document.removeEventListener('mouseup', buttonReleaseHandler);
-                    }
+                    scroll_right(event);
+                });
+                right_scroll.addEventListener('touchstart', function(event) {
+                    scroll_right(event);
                 });
             }
 

@@ -128,21 +128,41 @@
 .arrow-container{
   position: absolute;
   width: fit-content;
-  height: 100%;
+  cursor: pointer;
   align-items: center;
   justify-content: center;
   display: flex;
 }
 
 .arrow-container-left{
+  height: 100%;
   left:10px;
 }
 
 .arrow-container-right{
+  height: 100%;
   right:10px;
 }
 
-.arrow-container:hover{
+.arrow-container-top{
+  height: 30px;
+  top:0;
+  left:0;
+  right:0;
+  width: 100%;
+  padding-top:10px;
+}
+
+.arrow-container-bottom{
+  height:30px;
+  bottom:0;
+  left:0;
+  right:0;
+  width: 100%;
+  padding-bottom: 10px;
+}
+
+.arrow-container-down{
   cursor: pointer;
 }
 

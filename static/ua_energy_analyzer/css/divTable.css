@@ -5,10 +5,27 @@
   margin-top:3.5rem;
   margin-left:7.1rem;
   height:24rem;
-  width: calc( 80% - 3.1rem );
+  width: calc(80% - 75px);
   position: relative;
   display: none;
   white-space: nowrap;
+}
+
+.hour-control-table-small{
+  border-left: 1px solid #b9b9b9;
+  border-right: 1px solid #b9b9b9;
+  border-top: 1px solid #b9b9b9;
+  border-bottom: 1px solid #b9b9b9;
+  margin-top:7.1rem;
+  height:24rem;
+  width: 80%;
+  min-width: 200px;
+  position: relative;
+  display: none;
+  justify-content: start;
+  align-items: center;
+  flex-direction: row;
+  white-space: nowrap; 
 }
 
 .hour-control-table-extra-small{
@@ -18,11 +35,11 @@
   border-bottom: 1px solid #b9b9b9;
   background-color: #e9e9e9;
   margin-top:15rem;
-  min-height:24rem;
+  height:24rem;
   width: 80%;
   min-width: 200px;
   position: relative;
-  display: flex;
+  display: block;
   justify-content: start;
   align-items: center;
   flex-direction: column;
@@ -39,6 +56,17 @@
     justify-content: center;
     top:-3.5rem;
   }
+
+  .table-small-title{
+    width:100%;
+    height:3.5rem;
+    text-align: center;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top:-7rem;    
+  }
   
   .table-large-content{
     width:100%;
@@ -47,6 +75,16 @@
     justify-content: space-evenly;
     flex-direction: column;
   }
+
+  .table-small-content{
+    width:100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+
   .table-bar{
     height:30px;
     background-color: red;
@@ -69,6 +107,14 @@
     top: -13.5rem;
     left: -10%;
     right: -10%;
+  }
+
+  .table-small-title-text{
+    font-weight: 600;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    color:rgb(23, 39, 68);
+    white-space: normal;
   }
 
   .table-extra-small-title-text{
@@ -124,6 +170,17 @@
     text-align: right;
     width:7.5rem;
   }
+
+  .table-x-axis-identifiers{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    position: absolute;
+    top:-3.5rem;
+    height: 3rem;
+    text-align: center;
+    width:100%;  
+  }
   
   .y-axis-identifier{
     height:14.3%;
@@ -132,6 +189,16 @@
     justify-content: right;
     align-items: center;
     padding-right:15px;
+  }
+
+  .x-axis-identifier{
+    width:25%;
+    font-weight: 500;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding-right:15px;
+    border:1px solid black;
   }
   
   .table-horizontal-row{
@@ -146,6 +213,19 @@
     background-color: #e9e9e9;
   }
 
+  .table-vertical-col{
+    position:relative;
+    height:100%;
+    border-bottom: 1px solid #b9b9b9;
+    width:25%;
+    padding-top:30px;
+    padding-bottom:30px;
+    overflow: hidden;
+    white-space:nowrap;
+    background-color: #e9e9e9;
+    border:1px solid black;
+  }
+
   .table-horizontal-row-content{
     width:100%;
     height: 100%;
@@ -156,6 +236,14 @@
     white-space:nowrap;
   }
 
+  .table-extra-small{
+    position:relative;
+    width:100%;
+    height:100%;
+    padding-top:30px;
+    padding-bottom:30px;
+  }
+
   .table-extra-small-content{
     width:100%;
     height:100%;
@@ -163,6 +251,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: start;
+    overflow: hidden;
+    white-space: nowrap;
   }
   
 
@@ -170,7 +260,11 @@
     .hour-control-table-extra-small{
       display: none;
     }
+    .hour-control-table-small{
+      display:block;
+    }
   }
+
 
   @media screen and (min-width: 1300px) {
     .hour-control-table-large{
@@ -178,6 +272,9 @@
     }
     .hour-control-table-extra-small{
       display: none;
+    }
+    .hour-control-table-small{
+      display:none;
     }
   }
 
@@ -204,6 +301,7 @@
     width:80%;
     white-space: nowrap;
     padding:10px;
+    min-height: 3rem;
     border:1px solid #a3a3a3;
     text-align: center;
     border-radius: 5px;

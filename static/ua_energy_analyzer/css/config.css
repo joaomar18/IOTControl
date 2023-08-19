@@ -167,7 +167,7 @@
 }
 
 .config-subcontent{
-  margin-left:1rem;
+  margin: 0;
   flex-grow: 1;
   width: calc(100% - 204px - 1rem);
   position:relative;
@@ -379,9 +379,12 @@
 
 @media screen and (min-width: 992px) { /* Above Large Screen */
   #config-content{
-      margin-bottom: 0rem;
+    margin-bottom: 0rem;
   }
   .config-temporary-alert{
     top: 7.1rem;
+  }
+  .config-subcontent{
+    margin-left:1rem;
   }
 }
