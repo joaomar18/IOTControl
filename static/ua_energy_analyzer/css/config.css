@@ -204,6 +204,7 @@
   background-color: #94B5D6;
 }
 
+/*
 .manual-control-div{
     display:flex;
     align-items: center;
@@ -221,6 +222,41 @@
     min-width: 300px;
     height: 12.9rem;
 }
+*/
+
+.manual-control-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #83c9af9a;
+  width: 25%;
+  min-width: 300px;
+  height: 12.9rem;
+  margin: 1rem;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.manual-control-div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.manual-control-div > * {
+  margin-bottom: 1rem;
+}
+
+.manual-control-div h2 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.manual-control-div p {
+  font-size: 0.9rem;
+  color: #777;
+}
 
 #manual-control-title{
     font-size:1.15rem;
@@ -228,6 +264,9 @@
     font-weight: 600;
     margin-top: 1rem;
 }
+
+
+/*
 
 .hour-control-div{
   display:flex;
@@ -247,6 +286,44 @@
   height: 12.9rem;
 }
 
+*/
+
+.hour-control-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #83c9af9a;
+  width: 25%;
+  min-width: 300px;
+  height: 12.9rem;
+  margin: 1rem;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.hour-control-div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.hour-control-div > * {
+  margin-bottom: 1rem;
+}
+
+.hour-control-div h2 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.hour-control-div p {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+
+
 #hour-control-title{
   font-size:1.15rem;
   color:rgb(23, 39, 68);
@@ -254,6 +331,9 @@
   margin-top: 1rem;
 }
 
+
+
+/*
 
 .special-control-div{
   display:flex;
@@ -273,6 +353,45 @@
   height: fit-content;
   position: relative;
 }
+
+*/
+
+.special-control-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #83c9af9a;
+  width: 25%;
+  min-width: 300px;
+  height: 12.9rem;
+  margin: 1rem;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.special-control-div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.special-control-div > * {
+  margin-bottom: 1rem;
+}
+
+.special-control-div h2 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.special-control-div p {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+
+
 
 .control-element{
     margin-top: 1rem;

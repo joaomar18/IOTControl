@@ -59,6 +59,7 @@ input[type="number"] {
     display: none;
 }
 
+/*
 .nav_button{
     min-height: 4rem;
     width: 100%;
@@ -68,10 +69,37 @@ input[type="number"] {
     font-size: 1rem;
 }
 
+
 .nav_button:hover{
     cursor:pointer;
     background-color: rgb(183, 208, 255);
 }
+*/
+
+.nav_button {
+    min-height: 3rem; /* Slightly reduced min-height for a sleek look */
+    width: 100%;
+    padding: 0.25rem 0.25rem; /* Added horizontal padding for better spacing */
+    outline: none;
+    background-color: #e0e0e0; /* Light gray background */
+    border: none; /* Removed border for a cleaner appearance */
+    font-size: 1rem;
+    font-weight: 500; /* Adjusted font weight for better emphasis */
+    color: #333; /* Darker text color for better contrast */
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.nav_button:hover {
+    cursor: pointer;
+    background-color: #b7d0ff; /* Light blue background on hover */
+}
+
+.nav_button:focus {
+    outline: none;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); /* Subtle box shadow on focus */
+}
+
+/* You can add more custom styles as needed */
 
 #content{
     width:100%;
