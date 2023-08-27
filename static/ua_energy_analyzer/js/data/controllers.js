@@ -202,7 +202,7 @@ class HourPeriod{
 }
 
 class HourPeriods{
-    constructor(document, window, content, xs_content, xs_week_day){
+    constructor(document, window, content, s_content_table, s_content, s_content_identifiers, s_content_inital_display, btn_left_s_content, btn_right_s_content, xs_content, xs_week_day){
         this.monday_periods = [];
         this.tuesday_periods = [];
         this.wednesday_periods = [];
@@ -213,13 +213,64 @@ class HourPeriods{
         this.document = document;
         this.window = window;
         this.content = content;
+        this.s_content_table = s_content_table;
+        this.s_content = s_content;
+        this.s_content_identifiers = s_content_identifiers;
+        this.s_content_display = s_content_inital_display; //1: monday, tuesday, wednesay
+                                                                  //2: thursday, friday, saturday
+                                                                  //3: sunday, empty, empty
+        this.btn_left_s_content = btn_left_s_content;
+        this.btn_right_s_content = btn_right_s_content;
+        this.small_view = false;
         this.extra_small_view = false;
         this.last_xs_week_day = null;
         this.xs_content = xs_content; 
         this.xs_week_day = xs_week_day;
         this.waiting_fb = false;
+        this.update_s_content = setInterval(this.update_s_content_handler.bind(this), 10);
+        this.update_s_periods = null;
         this.update_xs_content = setInterval(this.update_xs_content_handler.bind(this), 10);
         this.init_hour_periods = [false, false, false, false, false, false, false];
+    }
+
+    update_s_content_handler = () => {
+        if(this.document.getElementById(this.s_content_table) == null){
+            this.small_view = false;
+            if(this.update_s_periods != null){
+                clearInterval(this.update_s_periods);
+                this.update_s_periods = null;
+            }
+        }
+        else{
+            if(this.document.getElementById(this.s_content_table).style == 'none'){
+                this.small_view = false;
+                if(this.update_s_periods != null){
+                    clearInterval(this.update_s_periods);
+                    this.update_s_periods = null;
+                }
+            }
+            else{
+                if(!this.small_view){
+                    this.document.getElementById(this.btn_left_s_content).addEventListener("click", () => {
+                        this.s_content_left_move();
+                    });
+                    this.document.getElementById(this.btn_right_s_content).addEventListener("click", () => {
+                        this.s_content_right_move();
+                    });
+                    this.update_s_periods = setInterval(this.update_s_periods_handler.bind(this), 100);
+                    this.small_view = true;
+                }
+            }
+        }
+    }
+    
+    
+    update_s_periods_handler = () => {
+        let sucess_update_s_container = this.update_s_container(this.s_content_display);
+        if(sucess_update_s_container){
+            clearInterval(this.update_s_periods);
+            this.update_s_periods = null;
+        }
     }
 
 
@@ -275,9 +326,6 @@ class HourPeriods{
         }
     }    
 
-
-
-
     update_periods(week_day, new_periods){
         if(week_day == "monday"){
             this.monday_periods = new_periods;
@@ -315,6 +363,292 @@ class HourPeriods{
 
     reset_waiting_fb(){
         this.waiting_fb = false;
+    }
+
+
+    s_content_left_move(){
+        if(this.s_content_display == 1){
+            this.s_content_display = 3;
+        }
+        else{
+            this.s_content_display--;
+        }
+        this.update_s_container(this.s_content_display);
+    }
+
+    s_content_right_move(){
+        if(this.s_content_display == 3){
+            this.s_content_display = 1;
+        }
+        else{
+            this.s_content_display++;
+        }
+        this.update_s_container(this.s_content_display);
+    }
+
+    update_s_container(s_content_display){
+
+        let sucess = false;
+
+        let s_identifiers = this.document.getElementsByClassName(this.s_content_identifiers);
+
+        let s_identifiers_array = Array.from(s_identifiers);
+
+        let new_identifiers;
+
+        let s_content_cols = this.document.getElementsByClassName(this.s_content);
+        let s_content_cols_array = Array.from(s_content_cols);
+
+        let new_periods = [];
+
+        if(s_content_display == 1){
+
+            new_identifiers = ["Segunda-Feira", "Terça-Feira", "Quarta-Feira"];
+
+            if(this.init_hour_periods[0] && this.init_hour_periods[1] && this.init_hour_periods[2]){
+                new_periods = [this.monday_periods, this.tuesday_periods, this.wednesday_periods];
+                sucess = true;
+            }
+
+
+        }
+        else if(s_content_display == 2){
+
+            new_identifiers = ["Quinta-Feira", "Sexta-Feira", "Sábado"];
+
+            if(this.init_hour_periods[3] && this.init_hour_periods[4] && this.init_hour_periods[5]){
+                new_periods = [this.thursday_periods, this.friday_periods, this.saturday_periods];
+                sucess = true;
+            }
+
+        }
+        else if(s_content_display == 3){
+
+            new_identifiers = ["Domingo", "", ""];
+            
+            if(this.init_hour_periods[6]){
+                new_periods = [this.sunday_periods];
+                sucess = true;
+            }
+        }
+
+        let i = 0;
+
+
+        for(let s_content_col of s_content_cols_array){
+            if(s_content_col != null){
+                while (s_content_col.firstChild) {
+                    s_content_col.removeChild(s_content_col.firstChild);
+                }
+            }
+
+            if(i == 0){
+                if(new_periods.length > 0){
+                    for(let hour_period of new_periods[0]){
+                        let new_hour_period = document.createElement("div");
+                        new_hour_period.className = "hour-period-entry-xs";
+                        new_hour_period.innerText = hour_period.init + " - " + hour_period.end;
+                        s_content_col.appendChild(new_hour_period);
+                    } 
+                }
+            }
+            else if(i == 1){
+                if(new_periods.length > 1){
+                    for(let hour_period of new_periods[1]){
+                        let new_hour_period = document.createElement("div");
+                        new_hour_period.className = "hour-period-entry-xs";
+                        new_hour_period.innerText = hour_period.init + " - " + hour_period.end;
+                        s_content_col.appendChild(new_hour_period);
+                    } 
+                }
+            }
+            else if(i == 2){
+                if(new_periods.length > 2){
+                    for(let hour_period of new_periods[2]){
+                        let new_hour_period = document.createElement("div");
+                        new_hour_period.className = "hour-period-entry-xs";
+                        new_hour_period.innerText = hour_period.init + " - " + hour_period.end;
+                        s_content_col.appendChild(new_hour_period);
+                    } 
+                }
+            }
+            i++;
+        } 
+
+
+        i = 0;
+
+        s_identifiers_array.forEach(element => {
+            element.innerHTML = new_identifiers[i];
+            i++;
+        });
+
+        return sucess;
+    }
+
+
+    update_s_container_periods(s_content_display){
+
+        let s_content_cols = this.document.getElementsByClassName(this.s_content);
+        let s_content_cols_array = Array.from(s_content_cols);
+
+        let new_periods = [];
+
+        if(s_content_display == 1){
+
+            if(this.init_hour_periods[0] && this.init_hour_periods[1] && this.init_hour_periods[2]){
+                new_periods = [this.monday_periods, this.tuesday_periods, this.wednesday_periods];
+            }
+
+
+        }
+        else if(s_content_display == 2){
+
+            if(this.init_hour_periods[3] && this.init_hour_periods[4] && this.init_hour_periods[5]){
+                new_periods = [this.thursday_periods, this.friday_periods, this.saturday_periods];
+            }
+
+        }
+        else if(s_content_display == 3){
+            
+            if(this.init_hour_periods[6]){
+                new_periods = [this.sunday_periods];
+            }
+        }
+
+        let i = 0;
+
+
+        for(let s_content_col of s_content_cols_array){
+            if(s_content_col != null){
+                while (s_content_col.firstChild) {
+                    s_content_col.removeChild(s_content_col.firstChild);
+                }
+            }
+
+            if(i == 0){
+                if(new_periods.length > 0){
+                    for(let hour_period of new_periods[0]){
+                        let new_hour_period = document.createElement("div");
+                        new_hour_period.className = "hour-period-entry-xs";
+                        new_hour_period.innerText = hour_period.init + " - " + hour_period.end;
+                        s_content_col.appendChild(new_hour_period);
+                    } 
+                }
+            }
+            else if(i == 1){
+                if(new_periods.length > 1){
+                    for(let hour_period of new_periods[1]){
+                        let new_hour_period = document.createElement("div");
+                        new_hour_period.className = "hour-period-entry-xs";
+                        new_hour_period.innerText = hour_period.init + " - " + hour_period.end;
+                        s_content_col.appendChild(new_hour_period);
+                    } 
+                }
+            }
+            else if(i == 2){
+                if(new_periods.length > 2){
+                    for(let hour_period of new_periods[2]){
+                        let new_hour_period = document.createElement("div");
+                        new_hour_period.className = "hour-period-entry-xs";
+                        new_hour_period.innerText = hour_period.init + " - " + hour_period.end;
+                        s_content_col.appendChild(new_hour_period);
+                    } 
+                }
+            }
+            i++;
+        } 
+
+    }
+
+    update_s_container_day_periods(s_content_display, week_day){
+
+        let s_content_cols = this.document.getElementsByClassName(this.s_content);
+        let s_content_cols_array = Array.from(s_content_cols);
+
+        let new_periods = [];
+
+        let i = 0;
+
+        if(week_day == "monday"){
+            if(s_content_display != 1){
+                return;
+            }
+            else{
+                i = 0;
+                new_periods = this.monday_periods;
+            }
+        }
+        else if(week_day == "tuesday"){
+            if(s_content_display != 1){
+                return;
+            }
+            else{
+                i = 1;
+                new_periods = this.tuesday_periods;
+            }
+        }
+        else if(week_day == "wednesday"){
+            if(s_content_display != 1){
+                return;
+            }
+            else{
+                i = 2;
+                new_periods = this.wednesday_periods;
+            }
+        }
+        else if(week_day == "thursday"){
+            if(s_content_display != 2){
+                return;
+            }
+            else{
+                i = 0;
+                new_periods = this.thursday_periods;
+            }
+        }
+        else if(week_day == "friday"){
+            if(s_content_display != 2){
+                return;
+            }
+            else{
+                i = 1;
+                new_periods = this.friday_periods;
+            }
+        }
+        else if(week_day == "saturday"){
+            if(s_content_display != 2){
+                return;
+            }
+            else{
+                i = 2;
+                new_periods = this.saturday_periods;
+            }
+        }
+        else if(week_day == "sunday"){
+            if(s_content_display != 3){
+                return;
+            }
+            else{
+                i = 0;
+                new_periods = this.sunday_periods;
+            }
+        }
+
+        let s_content_col = s_content_cols_array[i];
+
+        if(s_content_col != null){
+            while (s_content_col.firstChild) {
+                s_content_col.removeChild(s_content_col.firstChild);
+            }
+        }
+
+        for(let hour_period of new_periods){
+            let new_hour_period = document.createElement("div");
+            new_hour_period.className = "hour-period-entry-xs";
+            new_hour_period.innerText = hour_period.init + " - " + hour_period.end;
+            s_content_col.appendChild(new_hour_period);
+        }
+
     }
 
     update_xs_container(week_day){
@@ -676,6 +1010,9 @@ class Device{
                     if(device_hour_periods.extra_small_view){
                         device_hour_periods.update_xs_container(week_day);
                     }
+                    if(device_hour_periods.small_view){
+                        device_hour_periods.update_s_container_day_periods(device_hour_periods.s_content_display, week_day);
+                    }
                     if(device_hour_periods.waiting_fb){
                         config_temporary_alerts.create_temporary_warning("success", "config", "Os períodos horários foram atualizados com exito.");
                         device_hour_periods.reset_waiting_fb();
@@ -716,7 +1053,7 @@ class Device{
 
 
 let device_animation = new DeviceAnimation(document, "realtime-image-animation", "openc-line", "closec-line", "warning-line", "closec-arrow", "warning-arrow");
-let device_hour_periods = new HourPeriods(document, window, "table-horizontal-row-content", "table_extra_small_content", "day_of_week_selector_xs");
+let device_hour_periods = new HourPeriods(document, window, "table-horizontal-row-content", "hour_control_table_small", "table-vertical-col-content", "x-axis-identifier", 1, "hour_control_table_small_left_btn", "hour_control_table_small_right_btn","table_extra_small_content", "day_of_week_selector_xs");
 
 let devices = {}; //dictionary with all working devices
 let active_device = null;

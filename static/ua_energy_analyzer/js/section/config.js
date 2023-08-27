@@ -464,9 +464,12 @@ function config_section_display_checker_handler(){
         let xs_entries = document.getElementById("table_extra_small_content");
         let xs_top_scroll = document.getElementById("btn_top_scroll_xs_hp");
         let xs_bottom_scroll = document.getElementById("btn_bottom_scroll_xs_hp");
-
         let day_of_week_selector_xs = document.getElementById("day_of_week_selector_xs");
 
+
+        let s_entries = document.getElementsByClassName("table-vertical-col-content");
+        let top_scrolls = document.getElementsByClassName("arrow-container-top");
+        let bottom_scrolls = document.getElementsByClassName("arrow-container-bottom");
       
 
         if(!config_section_display_valid){        
@@ -483,6 +486,11 @@ function config_section_display_checker_handler(){
             let bottom_interval_xs = null;
             let bottom_interval_xs_step = 0;
 
+            let top_interval = null;
+            let top_interval_step = 0;
+            let bottom_interval = null;
+            let bottom_interval_step = 0;
+
 
 
             function scroll_up_xs(){
@@ -491,7 +499,7 @@ function config_section_display_checker_handler(){
                     top_interval_xs = setInterval(top_scroll_xs_handler, 1);
                     top_interval_xs_step = 1;
                     document.addEventListener('mouseup', buttonReleaseHandler);
-                    document.addEventListener('touchend', buttonReleaseHandler);
+                    document.addEventListener('touchend', buttonReleaseHandler, {passive: true});
                 }
                 function top_scroll_xs_handler(){
                     xs_entries.scrollTop -= top_interval_xs_step;
@@ -520,7 +528,7 @@ function config_section_display_checker_handler(){
                     bottom_interval_xs = setInterval(bottom_scroll_xs_handler, 1);
                     bottom_interval_xs_step = 1;
                     document.addEventListener('mouseup', buttonReleaseHandler);
-                    document.addEventListener('touchend', buttonReleaseHandler);
+                    document.addEventListener('touchend', buttonReleaseHandler, {passive: true});
                 }
                 function bottom_scroll_xs_handler(){
                     xs_entries.scrollTop += bottom_interval_xs_step;
@@ -543,16 +551,102 @@ function config_section_display_checker_handler(){
                 }
             }
 
+            function scroll_top(event){
+                let top_scroll_speedup = null;
+                let i = -1;
+                if(top_interval == null){
+                    top_interval = setInterval(top_scroll_handler, 1); 
+                    top_interval_step = 1;
+                    document.addEventListener('mouseup', buttonReleaseHandler); 
+                    document.addEventListener('touchend', buttonReleaseHandler, {passive: true});
+                }
+                function top_scroll_handler(){
+                    if (i == -1){
+                        let element_id = event.target.id;
+                        if(element_id == "btn_top_scroll_first_hp"){
+                            i = 0;
+                        }
+                        else if(element_id == "btn_top_scroll_second_hp"){
+                            i = 1;
+                        }
+                        else if(element_id == "btn_top_scroll_third_hp"){
+                            i = 2;
+                        }
+                    }
+                    s_entries.item(i).scrollTop -= top_interval_step;
+                    if(top_scroll_speedup == null){
+                        top_scroll_speedup = setTimeout(top_scroll_speedup_handler, 1500);
+                    }
+                    function top_scroll_speedup_handler(){
+                        top_interval_step = 2;
+                    }
+                }
+                function buttonReleaseHandler() {
+                    while(top_interval != null){
+                        clearInterval(top_interval);
+                        clearInterval(top_scroll_speedup);
+                        top_interval = null;
+                        top_scroll_speedup = null;
+                    }
+                    document.removeEventListener('mouseup', buttonReleaseHandler);
+                    document.removeEventListener('touchend', buttonReleaseHandler);
+                }
+            }
+
+            function scroll_bottom(event){
+                let bottom_scroll_speedup = null;
+                let i = -1;
+                if(bottom_interval == null){
+                    bottom_interval = setInterval(bottom_scroll_handler, 1); 
+                    bottom_interval_step = 1;
+                    document.addEventListener('mouseup', buttonReleaseHandler); 
+                    document.addEventListener('touchend', buttonReleaseHandler, {passive: true});
+                }
+                function bottom_scroll_handler(){
+                    if (i == -1){
+                        let element_id = event.target.id;
+                        if(element_id == "btn_bottom_scroll_first_hp"){
+                            i = 0;
+                        }
+                        else if(element_id == "btn_bottom_scroll_second_hp"){
+                            i = 1;
+                        }
+                        else if(element_id == "btn_bottom_scroll_third_hp"){
+                            i = 2;
+                        }
+                    }
+                    s_entries.item(i).scrollTop += bottom_interval_step;
+                    if(bottom_scroll_speedup == null){
+                        bottom_scroll_speedup = setTimeout(bottom_scroll_speedup_handler, 1500);
+                    }
+                    function bottom_scroll_speedup_handler(){
+                        bottom_interval_step = 2;
+                    }
+                }
+                function buttonReleaseHandler() {
+                    while(bottom_interval != null){
+                        clearInterval(bottom_interval);
+                        clearInterval(bottom_scroll_speedup);
+                        bottom_interval = null;
+                        bottom_scroll_speedup = null;
+                    }
+                    document.removeEventListener('mouseup', buttonReleaseHandler);
+                    document.removeEventListener('touchend', buttonReleaseHandler);
+                }
+            }
+
+
+
             function scroll_left(event){
                 let left_scroll_speedup = null;
                 let i = -1;
                 if(left_interval == null){
-                    left_interval = setInterval(left_scoll_monday_handler, 1); 
+                    left_interval = setInterval(left_scroll_handler, 1); 
                     left_interval_step = 1;
                     document.addEventListener('mouseup', buttonReleaseHandler); 
-                    document.addEventListener('touchend', buttonReleaseHandler);
+                    document.addEventListener('touchend', buttonReleaseHandler, {passive: true});
                 }
-                function left_scoll_monday_handler(){
+                function left_scroll_handler(){
                     if (i == -1){
                         let element_id = event.target.id;
                         if(element_id == "btn_left_scroll_monday_hp"){
@@ -601,12 +695,12 @@ function config_section_display_checker_handler(){
                 let right_scroll_speedup = null;
                 let i = -1;
                 if(right_interval == null){
-                    right_interval = setInterval(right_scroll_monday_handler, 1);
+                    right_interval = setInterval(right_scroll_handler, 1);
                     right_interval_step = 1;
                     document.addEventListener('mouseup', buttonReleaseHandler);
-                    document.addEventListener('touchend', buttonReleaseHandler);
+                    document.addEventListener('touchend', buttonReleaseHandler, {passive: true});
                 }
-                function right_scroll_monday_handler(){
+                function right_scroll_handler(){
                     if (i == -1){
                         let element_id = event.target.id;
                         if(element_id == "btn_right_scroll_monday_hp"){
@@ -653,11 +747,30 @@ function config_section_display_checker_handler(){
 
 
             xs_top_scroll.addEventListener('mousedown', scroll_up_xs);  
-            xs_top_scroll.addEventListener('touchstart', scroll_up_xs);  
+            xs_top_scroll.addEventListener('touchstart', scroll_up_xs, {passive: true});  
 
 
             xs_bottom_scroll.addEventListener('mousedown', scroll_down_xs);
-            xs_bottom_scroll.addEventListener('touchstart', scroll_down_xs);
+            xs_bottom_scroll.addEventListener('touchstart', scroll_down_xs, {passive: true});
+
+
+            for(let top_scroll of top_scrolls){
+                top_scroll.addEventListener('mousedown', function(event) {
+                    scroll_top(event);
+                });
+                top_scroll.addEventListener('touchstart', function(event) {
+                    scroll_top(event);
+                }, {passive: true});
+            }
+
+            for(let bottom_scroll of bottom_scrolls){
+                bottom_scroll.addEventListener('mousedown', function(event) {
+                    scroll_bottom(event);
+                });
+                bottom_scroll.addEventListener('touchstart', function(event) {
+                    scroll_bottom(event);
+                }, {passive: true});
+            }
 
 
             for(let left_scroll of left_scrolls){
@@ -666,7 +779,7 @@ function config_section_display_checker_handler(){
                 });
                 left_scroll.addEventListener('touchstart', function(event) {
                     scroll_left(event);
-                });
+                }, {passive: true});
             }
 
 
@@ -676,7 +789,7 @@ function config_section_display_checker_handler(){
                 });
                 right_scroll.addEventListener('touchstart', function(event) {
                     scroll_right(event);
-                });
+                }, {passive: true});
             }
 
 
