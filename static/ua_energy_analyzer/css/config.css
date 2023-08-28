@@ -241,6 +241,18 @@
   width: auto;
 }
 
+.subcontent-div{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: stretch;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: none;
+}
+
 .sub-nav-button {
   margin: 0.5rem;
   text-align: center;
@@ -251,6 +263,7 @@
   border: none;
   border-radius: 0.3rem;
   padding: 0.5rem 1rem;
+  font-weight: 400;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
 }
@@ -259,28 +272,9 @@
   background-color: #94B5D6;
 }
 
-/*
-.manual-control-div{
-    display:flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: start;
-    padding:1rem;
-    background-color: white;
-    width:25%;
-    margin:1rem;
-    margin-top: 2rem;
-    border-radius: 1%;
-    border:1px solid rgb(216, 216, 216);
-    text-align: center;
-    background-color: #83c9af9a;
-    min-width: 300px;
-    height: 12.9rem;
-}
-*/
-
 .manual-control-div {
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
   padding: 1.5rem;
@@ -320,31 +314,9 @@
     margin-top: 1rem;
 }
 
-
-/*
-
-.hour-control-div{
-  display:flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: start;
-  padding:1rem;
-  background-color: white;
-  width:25%;
-  margin:1rem;
-  margin-top: 2rem;
-  border-radius: 1%;
-  border:1px solid rgb(216, 216, 216);
-  text-align: center;
-  background-color: #83c9af9a;
-  min-width: 300px;
-  height: 12.9rem;
-}
-
-*/
-
 .hour-control-div {
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
   padding: 1.5rem;
@@ -386,33 +358,9 @@
   margin-top: 1rem;
 }
 
-
-
-/*
-
-.special-control-div{
-  display:flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: start;
-  padding:1rem;
-  background-color: white;
-  width:25%;
-  margin:1rem;
-  margin-top: 2rem;
-  border-radius: 1%;
-  border:1px solid rgb(216, 216, 216);
-  text-align: center;
-  background-color: #83c9af9a;
-  min-width: 300px;
-  height: fit-content;
-  position: relative;
-}
-
-*/
-
 .special-control-div {
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
   padding: 1.5rem;

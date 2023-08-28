@@ -103,12 +103,10 @@ class DeviceAnimation{
         if(this.check_elements_valid()){
             if(this.contactor_state != this.last_contactor_state || !this.first_update){
                 if(this.contactor_state){
-                    //this.set_elements_closed();
-                    this.set_elements_open();
+                    this.set_elements_closed();
                 }
                 else{
-                    //this.set_elements_open();
-                    this.set_elements_closed();
+                    this.set_elements_open();
                 }
                 this.last_contactor_state = this.contactor_state;
                 this.first_update = true;

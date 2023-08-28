@@ -89,37 +89,19 @@
   
 
 
-
-
-
-
-  /*CONFIGURATION BUTTON*/
-
-  .configuration-button {
-    background-color: #f1f1f1;
-    color: #555;
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    outline: none;
-    transition: background-color 0.3s;
+  .settings-button{
+    position:absolute;
+    cursor:pointer;
+    top:5px;
+    right:5px;
+    transform: scale(0.6);
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
   }
-  
-  .configuration-button:hover {
-    background-color: #ddd;
+
+  .settings-button:hover {
+    transform: scale(0.7);
   }
-  
-  .configuration-button:focus {
-    background-color: #ccc;
-  }
-  
-  /* Styles for the gear icon */
-  .configuration-icon {
-    width: 20px;
-    height: 20px;
-    fill: #555;
-  }
+
 
 
 /*ARROW BUTTONS*/

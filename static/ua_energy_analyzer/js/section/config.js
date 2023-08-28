@@ -422,11 +422,108 @@ class HorizontalSlider{
     }
 }
 
+class SubScreen{
+    constructor(document, screen_title, controls, sub_screen_names, sub_screen_containers, initial_sub_screen){
+        this.document = document;
+        this.screen_title = screen_title;
+        this.controls = controls;
+        this.sub_screen_names = sub_screen_names;
+        this.sub_screen_containers = sub_screen_containers;
+        this.initial_sub_screen = initial_sub_screen;
+        this.sub_screen_number = null;
+        this.check_sub_screen = setInterval(this.check_sub_screen_handler.bind(this), 10);
+    }
+
+    check_sub_screen_handler = () => {
+        if(this.document.getElementById(this.screen_title) != null){
+            if(this.sub_screen_number == null){
+                this.changeSubScreen(this.initial_sub_screen);
+
+            }
+        }
+        else{
+            if(this.sub_screen_number != null){
+                this.sub_screen_number = null;
+            }
+        }
+    }
+
+    changeSubScreen(screen_number){
+        let valid_section = this.screen_title != null;
+        if(valid_section && this.sub_screen_number != screen_number){
+            this.document.getElementById(this.screen_title).innerText = this.sub_screen_names[screen_number];
+
+            let controls_elements = this.document.getElementsByClassName(this.controls);
+
+            var controls_elements_array = Array.from(controls_elements);
+
+            for (let control_element of controls_elements_array){
+                control_element.style.fontWeight = "400";
+            }
+
+            let container_elements = [];
+
+            for(let sub_screen_container of this.sub_screen_containers){
+                container_elements.push(this.document.getElementById(sub_screen_container));
+            }
+
+            for(let container_element of container_elements){
+                if(container_element.style.display != 'none'){
+                    container_element.style.display = "none";
+                }
+            }
+            controls_elements_array[screen_number].style.fontWeight = "600";
+            container_elements[screen_number].style.display = 'flex';
+            this.sub_screen_number = screen_number;
+        }
+    }
+}
+
 
 let manual_control = new ControlButton(document, "manual_button", document.getElementById("manual_button"));
 let manual_selector = new ControlSelector(document, "manual_selector", document.getElementById("manual_selector"));
+let hour_selector = new ControlSelector(document, "hour_control_selector", document.getElementById("hour_control_selector"));
+let special_selector = new ControlSelector(document, "special_control_selector", document.getElementById("special_control_selector"));
+
 let vertical_slider = new VerticalSlider(document, window, "vertical_config_submenu","vertical_config_slider", "vertical_config_submenu_buttons", "config_slider_left_arrow", "config_slider_right_arrow", "config-subcontent-div");
 let horizontal_slider = new HorizontalSlider(document, window, "horizontal_config_submenu", "horizontal_config_slider", "horizontal_config_submenu", "config_slider_down_arrow", "config_slider_up_arrow");
+
+
+let config_sub_screen_names = ["Controlo de Carga", "Proteção e Limitação"];
+let config_sub_screen_containers = ["controlo_carga_content", "protecao_limitacao_content"];
+let config_sub_screen = new SubScreen(document, "config-subcontent-title", "sub-nav-button", config_sub_screen_names, config_sub_screen_containers, 0);
+
+function setControlSubScreen(){
+    config_sub_screen.changeSubScreen(0);
+}
+
+function setSafeLimitSubScreen(){
+    config_sub_screen.changeSubScreen(1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function outputManualInvert(){
     manual_control.invert_button();
@@ -447,9 +544,14 @@ function config_section_display_checker_handler(){
 
         let show_add_period_popup_btn_xs = document.getElementById("show_add_period_popup_btn_xs");
 
+        let show_add_period_popup_btn_s = document.getElementById("show_add_period_popup_btn_s");
+
         let show_remove_period_popup_btn = document.getElementById("show_remove_period_popup_btn");
 
         let show_remove_period_popup_btn_xs = document.getElementById("show_remove_period_popup_btn_xs");
+
+        let show_remove_period_popup_btn_s = document.getElementById("show_remove_period_popup_btn_s");
+
 
 
         let cancel_add_hour_period_btn = document.getElementById("cancel_add_hour_period_btn");
@@ -808,6 +910,14 @@ function config_section_display_checker_handler(){
                 }
             });
 
+            
+            show_add_period_popup_btn_s.addEventListener('click', function() {
+                if(document.getElementById("add_period_popup").style.display != "flex"){
+                    document.getElementById("add_period_popup").style.display = "flex";
+                    document.getElementById("hour_period_mask").style.display = "block";
+                }
+            });
+
             show_add_period_popup_btn_xs.addEventListener('click', function() {
                 let week_day = day_of_week_selector_xs.selectedIndex;
                 document.getElementById("add_day_of_week_selector").selectedIndex = week_day;
@@ -827,6 +937,13 @@ function config_section_display_checker_handler(){
             });
             
             show_remove_period_popup_btn.addEventListener('click', function() {
+                if(document.getElementById("remove_period_popup").style.display != "flex"){
+                    document.getElementById("remove_period_popup").style.display = "flex";
+                    document.getElementById("hour_period_mask").style.display = "block";
+                }
+            });
+
+            show_remove_period_popup_btn_s.addEventListener('click', function() {
                 if(document.getElementById("remove_period_popup").style.display != "flex"){
                     document.getElementById("remove_period_popup").style.display = "flex";
                     document.getElementById("hour_period_mask").style.display = "block";
