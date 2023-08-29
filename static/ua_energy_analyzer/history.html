@@ -1,1 +1,46 @@
-Histórico
+<div class = "section-content" id = "history_content">
+    <div class = "vertical_selection_menu" id = "vertical_history_submenu">
+        <div class = "vertical-selection-menu-buttons" id = "vertical_history_submenu_buttons">
+            <input type = "button" value = "Proteção e Limitação" class = "sub-nav-button" onclick="setProtectionHistorySubScreen()"></input>
+            <input type = "button" value = "Controlo de Carga" class = "sub-nav-button" onclick="setActivationHistorySubScreen()"></input>
+            <input type = "button" value = "Conexão" class = "sub-nav-button" onclick="setConnectionHistorySubScreen()"></input>
+        </div>
+        <div class="vertical-slider" id = "vertical_history_slider">
+            <button class="slider-button">
+                <span class = "left-arrow" id = "history_slider_left_arrow"></span>
+                <span class = "right-arrow" id = "history_slider_right_arrow"></span>
+            </button>
+        </div>
+    </div>
+    <div class = "section-subcontent" id = "history_subcontent">
+        <div class="container-fluid">
+            <div class = "col-12 section-subcontent-title-div" id = "history_subcontent_title_div">
+                <h5 class = "section-subcontent-title" id = "history_subcontent_title"></h5>
+            </div>
+            <div class = "section-subcontent-div" id = "history_subcontent_div">
+                <div class = "subcontent-div" id = "protection_history_content">
+
+                </div>
+                <div class = "subcontent-div" id = "activation_history_content">
+
+                </div>
+                <div class = "subcontent-div" id = "connection_history_content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = "horizontal_selection_menu" id = "horizontal_history_submenu">
+        <div class = "horizontal-selection-menu-buttons" id = "horizontal_history_submenu_buttons">
+            <input type = "button" value = "Proteção e Limitação" class = "sub-nav-button-small" onclick="setProtectionHistorySubScreen()"></input>
+            <input type = "button" value = "Controlo de Carga" class = "sub-nav-button-small" onclick="setActivationHistorySubScreen()"></input>
+            <input type = "button" value = "Conexão" class = "sub-nav-button-small" onclick="setConnectionHistorySubScreen()"></input>
+        </div>
+    </div>
+    <div class="horizontal-slider" id = "horizontal_history_slider">
+        <button class="slider-button-horizontal">
+            <span class = "down-arrow" id = "history_slider_down_arrow"></span>
+            <span class = "up-arrow" id = "history_slider_up_arrow"></span>
+        </button>
+    </div>
+</div>

@@ -288,8 +288,6 @@ class TemporaryAlert{
     }
 }
 
-let config_temporary_alerts = new TemporaryAlert(document, "config-subcontent-div");
-
 let prio_errors = new PriorityErrorHandling(document, "mask_wPriority", "popup_error", "popup_wPriority", "error_wPriority", "confirm_error_wPriority");
 
 let no_prio_errors = new NoPriorityErrorHandling(document, "mask_woPriority", "popup_error", "popup_woPriority" , "error_woPriority", "confirm_error_woPriority");

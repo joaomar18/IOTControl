@@ -1,10 +1,9 @@
-<div id = "config-content">
+<div class = "section-content" id = "config_content">
     <div class = "vertical_selection_menu" id = "vertical_config_submenu">
         <div class = "vertical-selection-menu-buttons" id = "vertical_config_submenu_buttons">
             <input type = "button" value = "Controlo de carga" class = "sub-nav-button" onclick="setControlSubScreen()"></input>
             <input type = "button" value = "Proteção e Limitação" class = "sub-nav-button" onclick="setSafeLimitSubScreen()"></input>
-            <input type = "button" value = "Data e Hora" class = "sub-nav-button" onclick="setDateHourSubScreen()"></input>
-            <input type = "button" value = "Idioma" class = "sub-nav-button" onclick="setLanguageSubScreen()"></input>
+            <input type = "button" value = "Dispositivo" class = "sub-nav-button" onclick="setDeviceSubScreen()"></input>
         </div>
         <div class="vertical-slider" id = "vertical_config_slider">
             <button class="slider-button">
@@ -13,12 +12,12 @@
             </button>
         </div>
     </div>
-    <div class = "config-subcontent" id = "config_subcontent">
+    <div class = "section-subcontent" id = "config_subcontent">
         <div class="container-fluid">
-            <div class = "col-12" id = "config-subcontent-title-div">
-                <h5 id = "config-subcontent-title"></h5>
+            <div class = "col-12 section-subcontent-title-div" id = "config_subcontent_title_div">
+                <h5 class = "section-subcontent-title" id = "config_subcontent_title"></h5>
             </div>
-            <div id = "config-subcontent-div">
+            <div class = "section-subcontent-div" id = "config_subcontent_div">
                 <div class = "subcontent-div" id = "controlo_carga_content">
                     <div class = "flex-row">
                         <div class = "manual-control-div">
@@ -303,10 +302,7 @@
                 <div class = "subcontent-div" id = "protecao_limitacao_content">
 
                 </div>
-                <div class = "subcontent-div" id = "data_hora_content">
-
-                </div>
-                <div class = "subcontent-div" id = "idioma_content">
+                <div class = "subcontent-div" id = "device_content">
 
                 </div>
             </div>
@@ -316,8 +312,7 @@
         <div class = "horizontal-selection-menu-buttons" id = "horizontal_config_submenu_buttons">
             <input type = "button" value = "Controlo de carga" class = "sub-nav-button-small" onclick="setControlSubScreen()"></input>
             <input type = "button" value = "Proteção e Limitação" class = "sub-nav-button-small" onclick="setSafeLimitSubScreen()"></input>
-            <input type = "button" value = "Data e Hora" class = "sub-nav-button-small" onclick="setDateHourSubScreen()"></input>
-            <input type = "button" value = "Idioma" class = "sub-nav-button-small" onclick="setLanguageSubScreen()"></input>
+            <input type = "button" value = "Dispositivo" class = "sub-nav-button-small" onclick="setDeviceSubScreen()"></input>
         </div>
     </div>
     <div class="horizontal-slider" id = "horizontal_config_slider">

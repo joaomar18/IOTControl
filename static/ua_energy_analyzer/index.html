@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href = "/static/ua_energy_analyzer/css/buttons.css">
     <link rel="stylesheet" href = "/static/ua_energy_analyzer/css/selectButton.css">
+    <link rel="stylesheet" href = "/static/ua_energy_analyzer/css/screen_elements.css">
     <link rel="stylesheet" href = "/static/ua_energy_analyzer/css/divTable.css">
     <link rel="stylesheet" href="/static/ua_energy_analyzer/css/style.css">
     <link rel="stylesheet" href="/static/ua_energy_analyzer/css/realTime.css">
@@ -34,7 +35,7 @@
             <input type="button" class="nav_button" value="Dados em tempo real" onclick="loadRealTime()"></input>
             <input type="button" class="nav_button" value="Consumo energético" onclick="loadConsumption()"></input>
             <input type="button" class="nav_button" value="Qualidade de energia" onclick="loadQuality()"></input>
-            <input type="button" class="nav_button" value="Parâmetros" onclick="loadConfig()"></input>
+            <input type="button" class="nav_button" value="Configuração" onclick="loadConfig()"></input>
             <input type="button" class="nav_button" value="Histórico" onclick="loadHistory()"></input>
         </div>
     </div>
@@ -127,7 +128,10 @@
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/lib/bootstrap/bootstrap.bundle.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/error/messages.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/screen_elements.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/consumption.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/quality.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/config.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/history.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/data/nodes.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/data/controllers.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/com/ws_messages.js"></script>

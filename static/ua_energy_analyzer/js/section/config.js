@@ -3,13 +3,13 @@ let manual_selector = new ControlSelector(document, "manual_selector", document.
 let hour_selector = new ControlSelector(document, "hour_control_selector", document.getElementById("hour_control_selector"));
 let special_selector = new ControlSelector(document, "special_control_selector", document.getElementById("special_control_selector"));
 
-let vertical_slider = new VerticalSlider(document, window, "vertical_config_submenu","vertical_config_slider", "vertical_config_submenu_buttons", "config_slider_left_arrow", "config_slider_right_arrow", "config-subcontent-div");
-let horizontal_slider = new HorizontalSlider(document, window, "config-content", "horizontal_config_submenu", "horizontal_config_slider", "horizontal_config_submenu", "config_slider_down_arrow", "config_slider_up_arrow");
+let config_vertical_slider = new VerticalSlider(document, window, "vertical_config_submenu","vertical_config_slider", "vertical_config_submenu_buttons", "config_slider_left_arrow", "config_slider_right_arrow", "config_subcontent_div");
+let config_horizontal_slider = new HorizontalSlider(document, window, "config_content", "horizontal_config_submenu", "horizontal_config_slider", "horizontal_config_submenu", "config_slider_down_arrow", "config_slider_up_arrow");
 
 
-let config_sub_screen_names = ["Controlo de Carga", "Proteção e Limitação", "Data e Hora", "Idioma"];
-let config_sub_screen_containers = ["controlo_carga_content", "protecao_limitacao_content", "data_hora_content", "idioma_content"];
-let config_sub_screen = new SubScreen(document, "config-subcontent-title", "sub-nav-button", "sub-nav-button-small", config_sub_screen_names, config_sub_screen_containers, 0);
+let config_sub_screen_names = ["Controlo de Carga", "Proteção e Limitação", "Dispositivo"];
+let config_sub_screen_containers = ["controlo_carga_content", "protecao_limitacao_content", "device_content"];
+let config_sub_screen = new SubScreen(document, "config_subcontent_title", "sub-nav-button", "sub-nav-button-small", config_sub_screen_names, config_sub_screen_containers, 0);
 
 
 
@@ -21,17 +21,17 @@ function setSafeLimitSubScreen(){
     config_sub_screen.changeSubScreen(1);
 }
 
-function setDateHourSubScreen(){
+function setDeviceSubScreen(){
     config_sub_screen.changeSubScreen(2);
-}
-
-function setLanguageSubScreen(){
-    config_sub_screen.changeSubScreen(3);
 }
 
 function outputManualInvert(){
     manual_control.invert_button();
 }
+
+
+
+let config_temporary_alerts = new TemporaryAlert(document, "config_subcontent_div");
 
 
 

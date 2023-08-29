@@ -180,11 +180,13 @@ class DeviceInfo{
 }
 
 class ContentScreen{
-    constructor(window, screen_loader, title_element, screen_element, initial_screen_number){
+    constructor(window, screen_loader, title_element, screen_element, control_elements, initial_screen_number){
         this.window = window; //window element
         this.screen_loader = screen_loader; //screen loader
         this.title_element = title_element; //title element
         this.screen_element = screen_element; //content div
+        this.control_elements = document.getElementsByClassName(control_elements);
+        this.control_elements = Array.from(this.control_elements);
         this.initial_screen_number = initial_screen_number;
         this.screen_number = null;
         this.check_active_device = setInterval(this.check_active_device_handler.bind(this), 10);
@@ -205,6 +207,11 @@ class ContentScreen{
     async change_screen(screen_number){
         active_device.valid_elements = false;
         if(this.screen_number != screen_number){
+            for(let control_element of this.control_elements){
+                control_element.style.fontWeight = "400";
+                control_element.style.boxShadow = "none";
+
+            }
             if(screen_number == 1){ //Ecra de dados em tempo real
                 this.screen_element.innerHTML = await this.fetch_html_as_text("/static/ua_energy_analyzer/realTime.html");
                 this.title_element.innerText = "Dados em tempo real";
@@ -223,12 +230,14 @@ class ContentScreen{
             else if(screen_number == 4){ //Ecra de parametros
                 this.screen_element.innerHTML = await this.fetch_html_as_text("/static/ua_energy_analyzer/config.html");
                 await this.fetch_html_as_text("/static/ua_energy_analyzer/css/config.css");
-                this.title_element.innerText = "Parâmetros";
+                this.title_element.innerText = "Configuração";
             }
             else if(screen_number == 5){ //Ecra de historico
                 this.screen_element.innerHTML = await this.fetch_html_as_text("/static/ua_energy_analyzer/history.html");
                 this.title_element.innerText = "Histórico";
             }
+            this.control_elements[screen_number-1].style.fontWeight = "500";
+            this.control_elements[screen_number-1].style.boxShadow = "4px 4px 4px rgba(0, 0, 0, 0.1)";
             active_device.valid_elements = true;
             active_device.set_active_section(screen_number);
             this.screen_number = screen_number;
@@ -240,7 +249,7 @@ class ContentScreen{
 
 let popovers = new PopoverUtil(document);
 let screen_loader = new ScreenLoader(full_loader, connect_display, warning_display, connect_error_message, 5000);
-let content_screen = new ContentScreen(window, screen_loader, title, content_div, 4);
+let content_screen = new ContentScreen(window, screen_loader, title, content_div, "nav_button", 4);
 let nav_drop_down = new DropDownMenu(window, mainNavBar, mainDropButton);
 let footer_drop_down = new DropDownMenuExit(document, statePopup, buttonState);
 let device_info = new DeviceInfo(document, "device_name", "device_type");

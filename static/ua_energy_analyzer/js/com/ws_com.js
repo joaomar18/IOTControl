@@ -57,7 +57,7 @@ class WebsocketsClient{
     }
 }
           
-let ws_client = new WebsocketsClient(window, "192.168.1.79", 9001);
+let ws_client = new WebsocketsClient(window, "127.0.0.1", 9001);
   
   
   
