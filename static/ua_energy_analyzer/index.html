@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/static/ua_energy_analyzer/css/realTime.css">
     <link rel="stylesheet" href ="/static/ua_energy_analyzer/css/consumption.css">
     <link rel="stylesheet" href ="/static/ua_energy_analyzer/css/config.css">
-    <title>Controlador de carga</title>
+    <title>{{ device_name }}</title>
 </head>
 <body>
     <div class = "container-fluid">
@@ -126,12 +126,37 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/lib/bootstrap/bootstrap.bundle.js"></script>
+
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/error/messages.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/screen_elements.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/consumption.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/quality.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/config.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/history.js"></script>
+
+    <!--CONSUMPTION SCRIPTS-->
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/consumption/consumption.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/consumption/consumption_active.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/consumption/consumption_past.js"></script>
+    <!--END CONSUMPTION SCRIPTS-->
+
+    <!--QUALITY SCRIPTS-->
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/quality/quality.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/quality/quality_voltage.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/quality/quality_frequency.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/quality/quality_powerfactor.js"></script>
+    <!--END QUALITY SCRIPTS-->
+
+    <!--CONFIG SCRIPTS-->
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/config/config.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/config/config_load_control.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/config/config_protection.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/config/config_device.js"></script>
+    <!--END CONFIG SCRIPTS-->
+
+    <!--HISTORY SCRIPTS-->
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/history/history.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/history/history_load_control.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/history/history_protection.js"></script>
+    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/history/history_device.js"></script>
+    <!--END HISTORY SCRIPTS-->
+
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/data/nodes.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/data/controllers.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/com/ws_messages.js"></script>
@@ -139,6 +164,5 @@
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/com/http_messages.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/com/http_com.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/screens.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/visual.js"></script>
 </body>
 </html>

@@ -350,18 +350,23 @@
                                 <div class = "protection-format-div" id = "protection_bar_format">
                                     <span class = "element">
                                         <span class = "element-fixed-name">Limite Superior</span>
-                                        <input type="range" class="form-range range-element" id = "protection_upper_limit">
+                                        <div class = "element-position-container" id = "protection_upper_limit_container">
+                                            <input type="range" class="form-range range-element" id = "protection_upper_limit">
+                                        </div>
                                     </span>
                                     <span class = "element">
                                         <span class = "element-fixed-name">Limite Inferior</span>
-                                        <input type="range" class="form-range range-element" id = "protection_lower_limit">
+                                        <div class = "element-position-container" id = "protection_lower_limit_container">
+                                            <input type="range" class="form-range range-element" id = "protection_lower_limit">
+                                        </div>
                                     </span>
                                     <span class = "element">
                                         <span class = "element-fixed-name">Tempo de Atuação</span>
-                                        <input type="range" class="form-range range-element" id = "protection_trigger_time">
+                                        <div class = "element-position-container" id = "protection_trigger_container">
+                                            <input type="range" class="form-range range-element" id = "protection_trigger_time">
+                                        </div>
                                     </span>
                                 </div>
-
                                 <span class = "element">
                                     <input type = "button" id = "update_voltage_protection_btn" class = "btn btn-primary element-button" value = "Atualizar" onclick = "updateVoltageProtection()">
                                     <input type = "button" id = "cancel_update_voltage_protection_btn" class = "btn btn-secondary element-button" value = "Cancelar" onclick = "cancelUpdateVoltageProtection()">

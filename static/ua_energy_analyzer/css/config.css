@@ -177,11 +177,11 @@
 }
 
 #protection_bar_format{
-  display: none;
+  display: flex;
 }
 
 #protection_text_format{
-  display: flex;
+  display: none;
 }
 
 .protection-control-div:hover {
@@ -460,6 +460,40 @@
 
 .info-popup-image{
   cursor:pointer;
+}
+
+.element-position-container{
+  width: 100%;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.current-protection-value {
+  position: absolute;
+  height: fit-content;
+  width: 5rem;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+  padding: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  transform: translateX(-50%);
+  top: -40px; /* Adjust the top value to position it properly */
+}
+
+/* Arrow down */
+.current-protection-value::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  border-width: 8px;
+  border-style: solid;
+  border-color: white transparent transparent transparent;
+  transform: translateX(-50%);
 }
 
 
