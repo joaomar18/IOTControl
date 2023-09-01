@@ -9,7 +9,7 @@ let config_horizontal_slider = new HorizontalSlider(document, window, "config_co
 
 let config_sub_screen_names = ["Controlo de Carga", "Proteção e Limitação", "Dispositivo"];
 let config_sub_screen_containers = ["controlo_carga_content", "protecao_limitacao_content", "device_content"];
-let config_sub_screen = new SubScreen(document, "config_subcontent_title", "sub-nav-button", "sub-nav-button-small", config_sub_screen_names, config_sub_screen_containers, 0);
+let config_sub_screen = new SubScreen(document, "config_subcontent_title", "sub-nav-button", "sub-nav-button-small", config_sub_screen_names, config_sub_screen_containers, 1);
 
 
 

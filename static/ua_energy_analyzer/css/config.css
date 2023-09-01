@@ -151,8 +151,94 @@
   color: #777;
 }
 
+.protection-control-div{
+
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #83c9af9a;
+  height: fit-content;
+  width:50%;
+  min-width: 300px;
+  margin: 1rem;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.protection-format-div{
+  width: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#protection_bar_format{
+  display: none;
+}
+
+#protection_text_format{
+  display: flex;
+}
+
+.protection-control-div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.protection-control-div > * {
+  margin-bottom: 1rem;
+}
+
+.protection-control-div h2 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.protection-control-div p {
+  font-size: 0.9rem;
+  color: #777;
+}
 
 
+.protection-view-div{
+  display:flex;
+  align-items: center;
+  position: relative;
+  padding: 1.5rem;
+  justify-content: center;
+  background-color: #e7e7e79a;
+  height:fit-content;
+  flex-direction: column;
+  width:30%;
+  min-width: 300px;
+  margin: 1rem;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.protection-view-div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.protection-view-div > * {
+  margin-bottom: 1rem;
+}
+
+.protection-view-div h2 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.protection-view-div p {
+  font-size: 0.9rem;
+  color: #777;
+}
 
 .control-element{
     margin-top: 1rem;
@@ -162,6 +248,17 @@
     flex-direction: column;
 }
 
+.control-element-expanded{
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; 
+}
+
+
+
 .element-name{
     width:fit-content;
     font-size: 1rem;
@@ -170,6 +267,34 @@
     margin:1rem;
     margin-top:0.5rem;
     margin-bottom:0.5rem;
+    white-space: nowrap;
+}
+
+.element-name-main{
+  width:fit-content;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color:rgb(23, 39, 68);
+  margin:1rem;
+  margin-top:0.5rem;
+  margin-bottom:0.5rem;
+  white-space: nowrap;
+}
+
+.element-fixed-name{
+  flex-shrink: 0;
+  width: 9.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color:rgb(23, 39, 68);
+  margin:1rem;
+  margin-top:0.5rem;
+  margin-bottom:0.5rem;
+  white-space: nowrap;
+}
+
+.range-element{
+  flex-grow: 1;
 }
 
 .element{
@@ -180,6 +305,31 @@
     margin-top:0.5rem;
     margin-bottom:0.5rem;
     width:100%;
+    position:relative;
+}
+
+
+.element-main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+  margin-top:2rem;
+  margin-bottom:2rem;
+  width:100%;
+  position:relative;
+}
+
+.element-settings-button{
+  margin-left: 15px;
+  width: 30px; /* You can adjust this value to your desired width percentage */
+  height: auto; /* This ensures the image maintains its aspect ratio */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.element-settings-button:hover {
+  transform: scale(1.1);
 }
 
 #manual_button{
@@ -218,17 +368,83 @@
   outline: none;
 }
 
+.element-input-disabled{
+  background-color: white;
+}
+
 .element-input-name{
   margin-right: 0.25rem;
+}
+
+.element-identifiers{
+  width:100%;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  padding:0;
+}
+
+.element-identifier{
+  display: flex;
+  width:33%;
+  margin:0;
+  align-items: center;
+  justify-content: center;
+}
+
+.element-parameter{
+  width:100%;
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding:0;
+}
+
+.element-parameter-field{
+  width:25%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+}
+
+.element-parameter-field-name{
+  width: 9.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+}
+
+.element-input-parameter{
+  margin:0;
+  padding-left:5px;
+  min-width: none;
+  width:7.5rem;
 }
 
 .unit-select{
   width:7rem;
   margin-right:1rem;
+  margin-left:1rem;
+  text-align: center;
 }
 
 .element-select{
   margin-right: 1rem;
+}
+.element-select-main{
+  width:10.5rem;
+  text-align: center;
+  font-weight: 500;
+  font-size:1.15rem;
+}
+
+.element-protection-select{
+  width:12.5rem;
 }
 
 .flex-row{
@@ -246,3 +462,10 @@
   cursor:pointer;
 }
 
+
+@media screen and (min-width: 992px) { /* Above Large Screen */
+  .protection-control-div{
+    min-width: 400px;
+    width:30%;
+  }
+}
