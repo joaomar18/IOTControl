@@ -29,6 +29,27 @@ input[type="number"] {
     background-color: rgba(131, 167, 201, 0.604);
 }
 
+.time-date-text{
+    position:absolute;
+    width: fit-content;
+    color:rgb(23, 39, 68);
+    font-size: 1rem;
+    font-weight: 500;
+    right:10px;
+    display: none;
+}
+
+.time-date-text-xs{
+    color:rgb(23, 39, 68);
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;  
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height:3rem;
+}
+
 .drop-button{
     height:100%;
     aspect-ratio: 1/1;
@@ -417,5 +438,11 @@ input[type="number"] {
     }
     .nav_button{
         min-height: 2rem;
+    }
+    .time-date-text{
+        display: block;
+    }
+    .time-date-text-xs{
+        display: none;
     }
 }

@@ -45,11 +45,15 @@ async function process_global_parameter(global_message){
 
 
 async function process_controller(controller, parameter, value){
-    devices[controller].receive_parameter_messages(parameter, value);
+    if(devices[controller] != null){
+        devices[controller].receive_parameter_messages(parameter, value);
+    }
 }
 
 async function process_node(controller, node, value){
-    devices[controller].receive_node_messages(node, value);
+    if(devices[controller] != null){
+        devices[controller].receive_node_messages(node, value);
+    }
 }
 
 

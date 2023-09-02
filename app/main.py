@@ -3,6 +3,7 @@
 import asyncio
 import time
 import threading
+import multiprocessing as mp
 
 #######################################
 
@@ -18,8 +19,6 @@ import data.device
 
 import db.database as db
 
-import gui.app as gui
-
 import protocol.ua.client as uaClient
 
 import util.ip
@@ -31,12 +30,10 @@ import web.server as web
 #######################################
 
 def initProcesses(): #Initiates Threads to run in paralel with the application
-    ##################THREADS##################
-    t1 = threading.Thread(target=web.run,  args=()) #Runs the Flask Webserver on a separate Thread
-    t2 = threading.Thread(target=gui.run, args=()) #Runs the Tkinter application on a separate Thread
+    ##################PROCESSES##################
+    t1 = mp.Process(target=web.run,  args=()) #Runs the Flask Webserver on a separate Thread
     t1.start()
-    t2.start()
-    ###########################################
+    #############################################
 
 async def send_messages(ws_server: ws.WebsocketsServer):
     while True:

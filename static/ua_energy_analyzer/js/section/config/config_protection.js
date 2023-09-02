@@ -10,7 +10,7 @@ let protection_upper_limit_unit = "V";
 let protection_lower_limit_unit = "V";
 let protection_trigger_time_unit = "s";
 
-let protection_upper_limit_current_value = 50;
+let protection_upper_limit_current_value = 89.78;
 let protection_lower_limit_current_value = 50;
 let protection_trigger_time_current_value = 50;
 
@@ -26,8 +26,6 @@ let protection_trigger_time_change = false;
 
 let ul_new_value_div = null;
 let ul_current_value_div = null;
-
-
 
 /**************************** PROTECTION DISPLAY MANAGEMENT ***************************/
 
@@ -54,7 +52,6 @@ function init_protection_display(){
     function protection_upper_limit_checker_handler(){
         if(protection_upper_limit.value != protection_upper_limit_value){
             protection_upper_limit_value = protection_upper_limit.value;
-            console.log(protection_upper_limit_value);
         }
         if(protection_upper_limit_current_value != protection_upper_limit_value){
             protection_upper_limit_change = true;

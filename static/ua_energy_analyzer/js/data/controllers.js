@@ -1050,6 +1050,7 @@ class Device{
 }
 
 
+
 let device_animation = new DeviceAnimation(document, "realtime-image-animation", "openc-line", "closec-line", "warning-line", "closec-arrow", "warning-arrow");
 let device_hour_periods = new HourPeriods(document, window, "table-horizontal-row-content", "hour_control_table_small", "table-vertical-col-content", "x-axis-identifier", 1, "hour_control_table_small_left_btn", "hour_control_table_small_right_btn","table_extra_small_content", "day_of_week_selector_xs");
 

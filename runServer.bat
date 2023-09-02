@@ -1,3 +1,3 @@
 @echo off
-"C:\Users\JOAOM\AppData\Local\Programs\Python\Python311\python.exe" "D:\IOT\Trabalho_Pratico\IOTControl\app\main.py"
+"C:\Users\t01jpm0\AppData\Local\Programs\Python\Python311\python.exe" "D:\IOTControl\app\main.py"
 pause

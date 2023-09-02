@@ -73,11 +73,7 @@ def get_UA_Energy_Analizer_Nodes() -> set[UANode]:
     return ua_energy_analizer_nodes.copy()
 
 devices : dict[str, Device] = dict() #data structure to hold all devices
-history: dict[str, list[str]] = dict() #data structure to hold each device info history
-state: dict[str, str] = dict() #list with each device state [name of device, state of device]
 
 def add_device(device: Device):
     devices[device.name] = device
-    history[device.name] :list[str] = list()
-    state[device.name] = ""
 

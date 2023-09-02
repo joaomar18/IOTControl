@@ -11,6 +11,53 @@ let mainDropButton = document.getElementById("main-drop-button");
 let statePopup = document.getElementById("state-footer");
 let buttonState = document.getElementById("controller-state-footer");
 
+class DateTimeWidget{
+    constructor(document, element, element_xs, initial_date){
+        this.document = document;
+        this.element = element;
+        this.element_xs = element_xs;
+        this.date = initial_date;
+        this.date_string = null;
+        this.update_element = setInterval(this.update_element_handler.bind(this), 1000);
+        if(this.document.getElementById(this.element) != null){
+            this.document.getElementById(this.element).innerText = this.format_date_time(this.date);
+        }
+        if(this.document.getElementById(this.element_xs) != null){
+            this.document.getElementById(this.element_xs).innerText = this.format_date_time(this.date);
+        }
+    }
+
+    format_date_time(date){
+        let full_year = date.getFullYear();
+        let month = date.getMonth();
+        let day = date.getDate();
+        let day_of_week = date.getDay();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let seconds = date.getSeconds();   
+        let month_str;
+        let day_str;
+        const months_str = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        const days_str = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
+        month_str = months_str[month];
+        day_str = days_str[day_of_week];
+        let date_str = String(hours).padStart(2, '0') + ":" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0') + ", " + day_str + " " + String(day) + " de " + String(month_str) + " " + String(full_year);
+        return date_str;
+    }
+
+    
+
+    update_element_handler = () => {
+        this.date.setSeconds(this.date.getSeconds() + 1);
+        if(this.document.getElementById(this.element) != null){
+            this.document.getElementById(this.element).innerText = this.format_date_time(this.date);
+        }
+        if(this.document.getElementById(this.element_xs) != null){
+            this.document.getElementById(this.element_xs).innerText = this.format_date_time(this.date);
+        }
+    }
+}
+
 
 class PopoverUtil{
     constructor(document){
@@ -207,6 +254,7 @@ class ContentScreen{
     async change_screen(screen_number){
         active_device.valid_elements = false;
         if(this.screen_number != screen_number){
+            this.screen_element.style.opacity = "0.025";
             for(let control_element of this.control_elements){
                 control_element.style.fontWeight = "400";
                 control_element.style.boxShadow = "none";
@@ -229,7 +277,6 @@ class ContentScreen{
             }
             else if(screen_number == 4){ //Ecra de parametros
                 this.screen_element.innerHTML = await this.fetch_html_as_text("/static/ua_energy_analyzer/config.html");
-                await this.fetch_html_as_text("/static/ua_energy_analyzer/css/config.css");
                 this.title_element.innerText = "Configuração";
             }
             else if(screen_number == 5){ //Ecra de historico
@@ -242,11 +289,13 @@ class ContentScreen{
             active_device.set_active_section(screen_number);
             this.screen_number = screen_number;
             popovers.update_dynamic_elements(); //update popover elements
+            this.screen_element.style.opacity = "1";
         } 
     }
 }
 
 
+let date_time_widget = new DateTimeWidget(document, "time_date_text", "time_date_text_xs", new Date());
 let popovers = new PopoverUtil(document);
 let screen_loader = new ScreenLoader(full_loader, connect_display, warning_display, connect_error_message, 5000);
 let content_screen = new ContentScreen(window, screen_loader, title, content_div, "nav_button", 4);

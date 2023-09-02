@@ -2,6 +2,7 @@
   border-left: 1px solid #b9b9b9;
   border-right: 1px solid #b9b9b9;
   border-top: 1px solid #b9b9b9;
+  border-bottom: 1px solid #b9b9b9;
   margin-top:3.5rem;
   margin-left:7.1rem;
   height:24rem;
@@ -12,6 +13,7 @@
 }
 
 .hour-control-table-small{
+  border-left: 1px solid #b9b9b9;
   border-right: 1px solid #b9b9b9;
   border-top: 1px solid #b9b9b9;
   margin-top:12.1rem;
@@ -212,7 +214,6 @@
   .table-horizontal-row{
     position:relative;
     width:100%;
-    border-bottom: 1px solid #b9b9b9;
     height:14.3%;
     padding-left:30px;
     padding-right:30px;
@@ -225,7 +226,6 @@
     position:relative;
     height:100%;
     border-bottom: 1px solid #b9b9b9;
-    border-left: 1px solid #b9b9b9;
     width:33.3%;
     padding-top:30px;
     padding-bottom:30px;
