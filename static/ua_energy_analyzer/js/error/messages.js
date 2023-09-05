@@ -93,9 +93,10 @@ class AlertProps{
 class TemporaryAlert{
 
 
-    constructor(document, align_element){
+    constructor(document, align_element, section){
         this.document = document;
         this.align_element = align_element;
+        this.section = section;
         this.update_position_array = [];
         this.remove_alert_array = [];
         this.active_alerts = [];
@@ -213,7 +214,7 @@ class TemporaryAlert{
     }
 
     check_align_element_handler = () => {
-        if(this.document.getElementById(this.align_element) == null){
+        if(this.document.getElementById(this.section).hidden){
             for(let active_alert of this.active_alerts){     
                 try{
                     document.getElementById(active_alert.element_id).remove();

@@ -30,6 +30,7 @@ let ul_current_value_div = null;
 /**************************** PROTECTION DISPLAY MANAGEMENT ***************************/
 
 function init_protection_display(){
+    /*
     let protection_upper_limit = document.getElementById("protection_upper_limit");
     let protection_lower_limit = document.getElementById("protection_lower_limit");
     let protection_trigger_time = document.getElementById("protection_trigger_time");
@@ -113,11 +114,12 @@ function init_protection_display(){
             protection_lower_limit_change = true;
         }
     }
-
+    */
 }
 
 function end_protection_display(){
 
+    /*
     clearInterval(protection_upper_limit_checker);
     clearInterval(protection_lower_limit_checker);
     clearInterval(protection_trigger_time_checker);
@@ -136,6 +138,7 @@ function end_protection_display(){
 
     ul_new_value_div = null;
     ul_current_value_div = null;
+    */
 
 }
 

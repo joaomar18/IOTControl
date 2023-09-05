@@ -8,6 +8,11 @@
   position:relative;
 }
 
+#realtime_content{
+  display: inherit;
+  width:100%;
+}
+
 .vertical_selection_menu{
     margin:0;
     padding:0;
@@ -221,7 +226,6 @@
   margin: 0;
   padding: 0;
   width: 100%;
-  display: none;
 }
 
 .sub-nav-button {

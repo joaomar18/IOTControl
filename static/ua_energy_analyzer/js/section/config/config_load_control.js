@@ -1,6 +1,217 @@
 /*************************** HOUR PERIOD DISPLAY MANAGEMENT ***************************/
 
-let datetime_pickers = null;
+class HourPeriodDisplay{
+    constructor(document, entries, scrolls, add_period_show_btn, remove_period_show_btn, add_period_cancel_btn, remove_period_cancel_btn, mask, add_popup, remove_popup, day_of_week_xs_view){ 
+        this.document = document;   
+        //ENTRIES//
+        this.entries = entries;
+        this.entries_valid = false;
+        this.entries_elements = null;
+        this.check_valid_entries = setInterval(this.check_valid_entries_handler.bind(this), 10);
+
+        //SCROLLS//
+        this.scrolls = scrolls;
+        this.scrolls_valid = false;
+        this.scrolls_elements = null;
+        this.check_valid_scrolls = setInterval(this.check_valid_scrolls_handler.bind(this), 10);
+
+
+        //SHOW ADD PERIOD BUTTON
+        this.add_period_show_btn = add_period_show_btn;
+        this.add_period_show_btn_valid = false;
+        this.add_period_show_btn_elements = null;
+        this.check_valid_add_period_show_btn = setInterval(this.check_valid_add_period_show_btn_handler.bind(this), 10);
+
+        //SHOW REMOVE PERIOD BUTTON
+        this.remove_period_show_btn = remove_period_show_btn;
+        this.remove_period_show_btn_valid = false;
+        this.remove_period_show_btn_element = null;
+        this.check_valid_remove_period_show_btn = setInterval(this.check_valid_remove_period_show_btn_handler.bind(this), 10);
+
+        //CANCEL ADD PERIOD BUTTON
+        this.add_period_cancel_btn = add_period_cancel_btn;
+        this.add_period_cancel_btn_valid = false;
+        this.add_period_cancel_btn_element = null;
+        this.check_valid_add_period_cancel_btn = setInterval(this.check_valid_add_period_cancel_btn_handler.bind(this), 10);
+
+
+        //CANCEL REMOVE PERIOD BUTTON
+        this.remove_period_cancel_btn = remove_period_cancel_btn;
+        this.remove_period_cancel_btn_valid = false;
+        this.remove_period_cancel_btn_element = null;
+        this.check_valid_remove_period_cancel_btn = setInterval(this.check_valid_remove_period_cancel_btn_handler.bind(this), 10);
+
+        //MASK
+        this.mask = mask;
+
+        //ADD PERIOD POPUP
+        this.add_popup = add_popup;
+
+        //REMOVE PERIOD POPUP
+        this.remove_popup = remove_popup;
+
+        //WEEK DAY SELECTOR EXTRA SMALL VIEW
+        this.day_of_week_xs_view = day_of_week_xs_view;
+    }
+
+    check_valid_entries_handler = () => {
+        if(!this.entries_valid){
+            this.entries_valid = true;
+            for(let entrie of this.entries){
+                let entrie_elements = this.document.getElementsByClassName(entrie);
+                entrie_elements = Array.from(entrie_elements);
+                if(entrie_elements.length == 0){
+                    this.entries_valid = false;
+                }
+            }
+        }
+        else{
+            this.entries_elements = [];
+            for(let entrie of this.entries){
+                let entrie_elements = this.document.getElementsByClassName(entrie);
+                entrie_elements = Array.from(entrie_elements);
+                this.entries_elements.push(entrie_elements);
+            }
+            console.log(this.entries_elements)
+            clearInterval(this.check_valid_entries);
+            this.check_valid_entries = null;
+        }
+    }
+
+    check_valid_scrolls_handler = () => {
+        if(!this.scrolls_valid){
+            this.scrolls_valid = true;
+            for(let scroll of this.scrolls){
+                let scroll_elements = this.document.getElementsByClassName(scroll);
+                scroll_elements = Array.from(scroll_elements);
+                if(scroll_elements.length == 0){
+                    this.scrolls_valid = false;
+                }
+            }
+        }
+        else{
+            this.scrolls_elements = [];
+            for(let scroll of this.scrolls){
+                let scroll_elements = this.document.getElementsByClassName(scroll);
+                scroll_elements = Array.from(scroll_elements);
+                this.scrolls_elements.push(scroll_elements);
+            }
+            console.log(this.scrolls_elements)
+            clearInterval(this.check_valid_scrolls);
+            this.check_valid_scrolls = null;
+        }
+    }
+
+    check_valid_add_period_show_btn_handler = () => {
+        if(!this.add_period_show_btn_valid){
+            this.add_period_show_btn_valid = true;
+            for(let button of this.add_period_show_btn){
+                let button_element = this.document.getElementById(button);
+                if(button_element == null){
+                    this.add_period_show_btn_valid = false;
+                }
+            }
+        }
+        else{
+            this.add_period_show_btn_elements = [];
+            for(let button of this.add_period_show_btn){
+                let button_element = this.document.getElementById(button);
+                this.add_period_show_btn_elements.push(button_element);
+            }
+            clearInterval(this.check_valid_add_period_show_btn);
+            this.check_valid_add_period_show_btn = null;
+        }
+    }
+
+
+    check_valid_remove_period_show_btn_handler = () => {
+        if(!this.remove_period_show_btn_valid){
+            if(this.document.getElementById(this.remove_period_show_btn) != null){
+                this.remove_period_show_btn_valid = true;
+            }
+        }
+        else{
+            this.remove_period_show_btn_element = this.document.getElementById(this.remove_period_show_btn);
+            clearInterval(this.check_valid_remove_period_show_btn);
+            this.check_valid_remove_period_show_btn = null;
+        }
+    }
+
+    check_valid_add_period_cancel_btn_handler = () => {
+        if(!this.add_period_cancel_btn_valid){
+            if(this.document.getElementById(this.add_period_cancel_btn) != null){
+                this.add_period_cancel_btn_valid = true;
+            }
+        }
+        else{
+            this.add_period_cancel_btn_element = this.document.getElementById(this.add_period_cancel_btn);
+            clearInterval(this.check_valid_add_period_cancel_btn);
+            this.check_valid_add_period_cancel_btn = null;
+        }
+    }
+
+
+    check_valid_remove_period_cancel_btn_handler = () => {
+        if(!this.remove_period_cancel_btn_valid){
+            if(this.document.getElementById(this.remove_period_cancel_btn) != null){
+                this.remove_period_cancel_btn_valid = true;
+            }
+        }
+        else{
+            this.remove_period_cancel_btn_element = this.document.getElementById(this.remove_period_cancel_btn);
+            clearInterval(this.check_valid_remove_period_cancel_btn);
+            this.check_valid_remove_period_cancel_btn = null;
+        }
+    }
+
+
+}
+
+let hour_period_entries = ["table-horizontal-row-content", "table-vertical-col-content", "hour-control-table-extra-small"];
+let hour_period_scrolls = ["arrow-container-left", "arrow-container-right", "arrow-container-top", "arrow-container-bottom", "arrow-container-top-xs", "arrow-container-bottom-xs"];
+let show_add_period_popup_btn = ["show_add_period_popup_btn", "show_add_period_popup_btn_s", "show_add_period_popup_btn_xs"];
+let show_remove_period_popup_btn = ["show_remove_period_popup_btn", "show_remove_period_popup_btn_s", "show_remove_period_popup_btn_xs"];
+let cancel_add_hour_period_btn = "cancel_add_hour_period_btn";
+let cancel_remove_hour_period_btn = "cancel_remove_hour_period_btn";
+let hour_period_mask = "hour_period_mask";
+let hour_period_add_popup = "add_period_popup";
+let hour_period_remove_popup = "remove_period_popup";
+let day_of_week_selector_xs = "day_of_week_selector_xs";
+
+let hour_period_display = new HourPeriodDisplay(document, hour_period_entries, hour_period_scrolls, show_add_period_popup_btn, show_remove_period_popup_btn, cancel_add_hour_period_btn, cancel_remove_hour_period_btn, hour_period_mask, hour_period_add_popup, hour_period_remove_popup, day_of_week_selector_xs);
+
+
+
+
+
+
+
+
+
+
+
+
+let datetime_pickers = [];
+
+// Function to initialize Flatpickr and destroy the old instances
+function initializeFlatpickr() {
+    // Destroy the old instances
+    datetime_pickers.forEach(function (picker) {
+        picker.destroy();
+    });
+
+    // Create new instances and store them in the array
+    datetime_pickers = flatpickr(".daily-time-period-picker", {
+        enableTime: true,
+        time_24hr: true,
+        altInput: true,
+        noCalendar: true,
+        altFormat: "H:i:S",
+        dateFormat: "H:i:S",
+        disableMobile: true, // Note: Removed the quotes around "true"
+        enableSeconds: true
+    });
+}
 
 function init_hour_period_display(){
 
@@ -27,15 +238,17 @@ function init_hour_period_display(){
     let left_scrolls = document.getElementsByClassName("arrow-container-left");
     let right_scrolls = document.getElementsByClassName("arrow-container-right");
 
+    let s_entries = document.getElementsByClassName("table-vertical-col-content");
+    let top_scrolls = document.getElementsByClassName("arrow-container-top");
+    let bottom_scrolls = document.getElementsByClassName("arrow-container-bottom");
+
     let xs_entries = document.getElementById("table_extra_small_content");
     let xs_top_scroll = document.getElementById("btn_top_scroll_xs_hp");
     let xs_bottom_scroll = document.getElementById("btn_bottom_scroll_xs_hp");
     let day_of_week_selector_xs = document.getElementById("day_of_week_selector_xs");
 
 
-    let s_entries = document.getElementsByClassName("table-vertical-col-content");
-    let top_scrolls = document.getElementsByClassName("arrow-container-top");
-    let bottom_scrolls = document.getElementsByClassName("arrow-container-bottom");
+
   
         
 
@@ -427,16 +640,7 @@ function init_hour_period_display(){
             document.getElementById("hour_period_mask").style.display = "none";
         }
     });
-     datetime_pickers = flatpickr(".daily-time-period-picker", {
-        enableTime: true,
-        time_24hr: true,
-        altInput: true,
-        noCalendar: true,
-        altFormat: "H:i:S",
-        dateFormat: "H:i:S",
-        disableMobile: "true",
-        enableSeconds: true
-    });
+    initializeFlatpickr();
 }
 
 /************************* END HOUR PERIOD DISPLAY MANAGEMENT *************************/

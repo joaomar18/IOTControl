@@ -30,12 +30,12 @@ class WebsocketsClient{
             console.log("Connected to server: " + server_adress);
         });
         this.connection.addEventListener("message", async(message) =>{
-            try {
+            //try {
                 const data = await message.data;
                 await process_message(data);
-            } catch (error) {
-                console.error("Error receiving message: " + error);
-            }
+            //} catch (error) {
+            //    console.error("Error receiving message: " + error);
+            //}
         });
         this.connection.addEventListener("close", () =>{
             this.connected = false;

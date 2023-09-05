@@ -23,7 +23,6 @@ class ControlButton{
             //communication error
             clearInterval(this.check_feedback);
             clearTimeout(this.check_feedback_timeout);
-            //no_prio_errors.set_error("Erro de comunicação");
             config_temporary_alerts.create_temporary_warning("danger", "config", "Erro de comunicação");
             this.feedback_done();
         }
@@ -62,12 +61,10 @@ class ControlButton{
                     }
                 }
                 else{
-                    //no_prio_errors.set_error("O seletor de permissão não está ativo.");
                     config_temporary_alerts.create_temporary_warning("info", "config", "O seletor de permissão não está ativo.");
                 }
             }
             else{
-                //no_prio_errors.set_error("O dispositivo "+ active_device.name +" não está conectado.");
                 config_temporary_alerts.create_temporary_warning("warning", "config", "O dispositivo "+ active_device.name +" não está conectado.");
             }
         }
@@ -76,42 +73,54 @@ class ControlButton{
     feedback_done(){
         this.feedback = false;
     }
-
 }
 
 class ControlSelector{
-    constructor(document, name, element){
+    constructor(document, name, element, section){
         this.document = document;
         this.name = name;
         this.state = false;
         this.element = element;
+        this.section = section
         this.check_element = setInterval(this.check_element_handler.bind(this), 10);
         this.feedback = false;
         this.element_valid = false;
+        this.selector_action_handler = null;
+    }
+
+    selector_action(){
+        if(!this.feedback){
+            this.invert_selector();
+        }
+        else{
+            if(this.state){
+                this.set_selector_on();
+            }
+            else{
+                this.set_selector_off();
+            }
+        }
     }
 
     check_element_handler = () => {
         if(this.document.getElementById(this.name) != null){
-            if(!this.element_valid){
-                this.document.getElementById(this.name).addEventListener("click", () => {
-                    if(!this.feedback){
-                        this.invert_selector();
+            if(!this.document.getElementById(this.section).hidden){
+                if(!this.element_valid){
+                    if(this.selector_action_handler == null){
+                        this.selector_action_handler = this.selector_action.bind(this);
+                        this.document.getElementById(this.name).addEventListener("click", this.selector_action_handler);
                     }
-                    else{
-                        if(this.state){
-                            this.set_selector_on();
-                        }
-                        else{
-                            this.set_selector_off();
-                        }
-                    }
-                });
-                this.element_valid = true;
+                    this.element_valid = true;
+                }
             }
-        }
-        else{
-            if(this.element_valid){
-                this.element_valid = false;
+            else{
+                if(this.element_valid){
+                    if(this.selector_action_handler != null){
+                        this.document.getElementById(this.name).removeEventListener("click", this.selector_action_handler);
+                        this.selector_action_handler = null;
+                    }
+                    this.element_valid = false;
+                }
             }
         }
     }
@@ -134,7 +143,6 @@ class ControlSelector{
             clearInterval(this.check_feedback);
             clearTimeout(this.check_feedback_timeout);
             config_temporary_alerts.create_temporary_warning("danger", "config", "Erro de comunicação");
-            //no_prio_errors.set_error("Erro de comunicação");
             this.feedback_done();
         }
     }
@@ -162,8 +170,6 @@ class ControlSelector{
                     }
                 }
                 else{
-                    console.log("not connected");
-                    //no_prio_errors.set_error("O dispositivo "+ active_device.name +" não está conectado.");
                     config_temporary_alerts.create_temporary_warning("warning", "config", "O dispositivo "+ active_device.name +" não está conectado.");
                     this.set_selector_off();
                 }
@@ -191,7 +197,7 @@ class ControlSelector{
 }
 
 class VerticalSlider{
-    constructor(document, window, menu_name,button_name, submenu_name, left_arrow_name, right_arrow_name, section_subcontent){
+    constructor(document, window, menu_name,button_name, submenu_name, left_arrow_name, right_arrow_name, section_subcontent, section){
         this.document = document;
         this.window = window;
         this.menu_name = menu_name;
@@ -200,6 +206,7 @@ class VerticalSlider{
         this.left_arrow_name = left_arrow_name;
         this.right_arrow_name = right_arrow_name;
         this.section_subcontent = section_subcontent;
+        this.section = section;
         this.check_element = setInterval(this.check_element_handler.bind(this), 10);
         this.check_window = setInterval(this.check_window_handler.bind(this), 10);
         this.check_subcontent = setInterval(this.check_subcontent_handler.bind(this), 10);
@@ -207,6 +214,7 @@ class VerticalSlider{
         this.submenu_state = true;
         this.last_submenu_state = null;
         this.initial_validation = false;
+        this.invert_slider_handler = null;
     }
 
     invert_slider(){
@@ -234,7 +242,7 @@ class VerticalSlider{
         this.document.getElementById(this.submenu_name).style.display = "flex";
     }
 
-    check_window_handler = () => {
+    check_window_handler = () => { //SLIDER SHOW/HIDE ON WINDOW WIDTH
         if(this.button_valid){
             let window_width = this.window.innerWidth;
             if(window_width >= 992){
@@ -273,24 +281,28 @@ class VerticalSlider{
         }
     }
 
-    check_element_handler = () => {
+    check_element_handler = () => { //EVENT LISTENER HANDLER
         if(this.document.getElementById(this.button_name) != null){
-            if(!this.button_valid){
-                this.document.getElementById(this.button_name).addEventListener("click", () => {
-                    this.invert_slider();
-                });
-                this.button_valid = true;
+            if(!this.document.getElementById(this.section).hidden){
+                if(this.invert_slider_handler == null){
+                    this.invert_slider_handler = this.invert_slider.bind(this);
+                    this.document.getElementById(this.button_name).addEventListener("click", this.invert_slider_handler);
+                }
             }
-        }
-        else{
-            if(this.button_valid){
-                this.button_valid = false;
-                this.initial_validation = false;
+            else{
+                if(this.invert_slider_handler != null){
+                    this.document.getElementById(this.button_name).removeEventListener("click", this.invert_slider_handler);
+                    this.invert_slider_handler = null;
+                    this.initial_validation = false;
+                }
+            }
+            if(!this.button_valid){
+                this.button_valid = true;
             }
         }
     }
     
-    check_subcontent_handler = () => {
+    check_subcontent_handler = () => { //UPDATES SLIDER HEIGHT
         if(this.button_valid){
             let viewport_height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
             let subcontent_height = this.document.getElementById(this.section_subcontent).offsetHeight;
@@ -338,6 +350,7 @@ class HorizontalSlider{
         this.last_submenu_state = null;
         this.initial_validation = false;
         this.margin_bottom_reset = false;
+        this.invert_slider_handler = null;
     }
 
     invert_slider(){
@@ -449,17 +462,21 @@ class HorizontalSlider{
 
     check_element_handler = () => {
         if(this.document.getElementById(this.button_name) != null){
-            if(!this.button_valid){
-                this.document.getElementById(this.button_name).addEventListener("click", () => {
-                    this.invert_slider();
-                });
-                this.button_valid = true;
+            if(!this.document.getElementById(this.main_container).hidden){
+                if(this.invert_slider_handler == null){
+                    this.invert_slider_handler = this.invert_slider.bind(this);
+                    this.document.getElementById(this.button_name).addEventListener("click", this.invert_slider_handler);
+                }
             }
-        }
-        else{
-            if(this.button_valid){
-                this.button_valid = false;
-                this.initial_validation = false;
+            else{
+                if(this.invert_slider_handler != null){
+                    this.document.getElementById(this.button_name).removeEventListener("click", this.invert_slider_handler);
+                    this.invert_slider_handler = null;
+                    this.initial_validation = false;
+                }
+            }
+            if(!this.button_valid){
+                this.button_valid = true;
             }
         }
     }
@@ -482,12 +499,10 @@ class SubScreen{
         if(this.document.getElementById(this.screen_title) != null){
             if(this.sub_screen_number == null){
                 this.changeSubScreen(this.initial_sub_screen);
-
             }
-        }
-        else{
-            if(this.sub_screen_number != null){
-                this.sub_screen_number = null;
+            else{
+                clearInterval(this.check_sub_screen);
+                this.check_sub_screen = null;
             }
         }
     }
@@ -503,28 +518,17 @@ class SubScreen{
             let controls_elements_array = Array.from(controls_elements);
             let controls_elements_small_array = Array.from(controls_elements_small);
 
-            for (let control_element of controls_elements_array){
-                control_element.style.fontWeight = "400";
+
+            if(this.sub_screen_number != null){
+                controls_elements_array[this.sub_screen_number].style.fontWeight = "400";
+                controls_elements_small_array[this.sub_screen_number] = "400";
+                this.document.getElementById(this.sub_screen_containers[this.sub_screen_number]).hidden = true;
             }
 
-            for (let control_element of controls_elements_small_array){
-                control_element.style.fontWeight = "400";
-            }
-
-            let container_elements = [];
-
-            for(let sub_screen_container of this.sub_screen_containers){
-                container_elements.push(this.document.getElementById(sub_screen_container));
-            }
-
-            for(let container_element of container_elements){
-                if(container_element.style.display != 'none'){
-                    container_element.style.display = "none";
-                }
-            }
             controls_elements_array[screen_number].style.fontWeight = "600";
-            controls_elements_small_array[screen_number].style.fontWeight = "600";
-            container_elements[screen_number].style.display = 'flex';
+            controls_elements_small_array[screen_number] = "600";
+            this.document.getElementById(this.sub_screen_containers[screen_number]).hidden = false;
+
             this.sub_screen_number = screen_number;
         }
     }

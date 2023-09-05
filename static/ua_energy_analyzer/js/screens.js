@@ -226,70 +226,168 @@ class DeviceInfo{
     }
 }
 
-class ContentScreen{
-    constructor(window, screen_loader, title_element, screen_element, control_elements, initial_screen_number){
-        this.window = window; //window element
-        this.screen_loader = screen_loader; //screen loader
-        this.title_element = title_element; //title element
-        this.screen_element = screen_element; //content div
-        this.control_elements = document.getElementsByClassName(control_elements);
-        this.control_elements = Array.from(this.control_elements);
-        this.initial_screen_number = initial_screen_number;
-        this.screen_number = null;
-        this.check_active_device = setInterval(this.check_active_device_handler.bind(this), 10);
+class ContentLoader{
+    constructor(document, elements, files, sub_files, css_files, js_files, files_directory, sub_files_directory, css_files_directory, js_files_directory){
+        this.document = document;
+        this.elements = elements;
+        this.files = files;
+        this.sub_files = sub_files;
+        this.css_files = css_files;
+        this.js_files = js_files;
+        this.files_directory = files_directory;
+        this.sub_files_directory = sub_files_directory;
+        this.css_files_directory = css_files_directory;
+        this.js_files_directory = js_files_directory;
+        this.elements_loaded = [];
+        for(let element of this.elements){
+            this.elements_loaded.push(false);
+        }
+        this.loaded_count = 0;
+        this.load_content = null;
     }
 
-    check_active_device_handler = () => {
-        if(active_device != null){
-            this.screen_loader.set_loaded();
-            this.change_screen(this.initial_screen_number); //Initialize the screen with screen number
-            clearInterval(this.check_active_device);
+    startLoadingOthers(){
+        this.load_content = setInterval(this.load_content_handler.bind(this), 10);
+    }
+
+
+    load_content_handler = () => {
+        if(this.loaded_count < this.elements_loaded.length){
+            this.load_element(this.loaded_count);
+            this.loaded_count++;
         }
-    }    
+        else{
+            clearInterval(this.load_content);
+            this.load_content = null;
+        }
+    } 
+
+    async load_element(element_number){
+        if(this.elements_loaded[element_number] != null){
+            if(!this.elements_loaded[element_number]){
+                for(let css_file of this.css_files[element_number]){
+                    this.loadCSS(this.css_files_directory+css_file);
+                }
+                for(let js_file of this.js_files[element_number]){
+                    this.loadJS(this.js_files_directory+js_file);
+                }
+                this.elements[element_number].innerHTML = await this.fetch_html_as_text(this.files_directory+this.files[element_number]);
+
+                let sub_elements = this.elements[element_number].querySelectorAll('.subcontent-div');
+
+
+                let i = 0;
+                for(let sub_element of sub_elements){
+                    sub_element.innerHTML = await this.fetch_html_as_text(this.sub_files_directory+this.sub_files[element_number][i]);
+                    i++;
+                }
+
+                this.elements_loaded[element_number] = true;
+            }
+        }
+    }
 
     async fetch_html_as_text(url) {
         return await (await fetch(url)).text();
     }
 
+    loadCSS(url) {
+        let link = this.document.createElement("link");
+        link.href = url;
+        link.rel = "stylesheet";
+        this.document.head.appendChild(link);
+    }
+
+    loadJS(url) {
+        let script = this.document.createElement("script");
+        script.src = url;
+        this.document.body.appendChild(script);
+    }
+}
+
+class ContentScreen{
+    constructor(window, screen_loader, title_element, screen_titles, control_elements,  content_elements, content_loader, initial_screen_number){
+        this.window = window; //window element
+        this.screen_loader = screen_loader; //screen loader
+        this.title_element = title_element; //title element
+        this.screen_titles = screen_titles;
+        this.control_elements = document.getElementsByClassName(control_elements);
+        this.control_elements = Array.from(this.control_elements);
+        this.initial_screen_number = initial_screen_number;
+        this.screen_number = null;
+        this.content_elements = content_elements;
+        this.content_loader = content_loader;
+        this.check_active_device = setInterval(this.check_active_device_handler.bind(this), 10);
+        this.init_running = false;
+    }
+
+    check_active_device_handler = () => {
+        if(active_device != null){
+            this.init();
+        }
+    }    
+
+    async init(){
+        if(this.init_running){
+            return; //Makes sure the interval function doens't make repetitive calls to init()
+        }   
+        this.init_running = true;
+        try{
+            if(!this.screen_loader.loaded){
+                await this.content_loader.load_element(this.initial_screen_number);
+                await this.change_screen(this.initial_screen_number); //Initialize the screen with screen number
+                this.screen_loader.set_loaded();
+                this.content_loader.startLoadingOthers();
+                clearInterval(this.check_active_device);
+            }
+        }
+        finally{
+            this.init_running = false;
+        }
+    }
+
     async change_screen(screen_number){
-        active_device.valid_elements = false;
         if(this.screen_number != screen_number){
-            this.screen_element.style.opacity = "0.025";
-            for(let control_element of this.control_elements){
-                control_element.style.fontWeight = "400";
-                control_element.style.boxShadow = "none";
+            if(this.content_loader.elements_loaded[screen_number]){
+                active_device.valid_elements = false;
+                for(let control_element of this.control_elements){
+                    control_element.style.fontWeight = "400";
+                    control_element.style.boxShadow = "none";
+                }
+    
+                if(this.screen_number != null){
+
+                    this.content_elements[this.screen_number].hidden = true;
+                }
+    
+                this.content_elements[screen_number].hidden = false;
+                this.title_element.innerText = this.screen_titles[screen_number];
+    
+    
+                if(screen_number == 0){ //Ecra de dados em tempo real
+                    active_device.set_elements(get_real_time_nodes());
+                    device_animation.set_elements(get_real_time_animation_nodes());
+                }
+                else if(screen_number == 1){ //Ecra de consumo energetico
+                    active_device.set_elements(get_consumption_nodes());
+                }
+                else if(screen_number == 2){ //Ecra de qualidade de energia
+                }
+                else if(screen_number == 3){ //Ecra de parametros
+    
+                }
+                else if(screen_number == 4){ //Ecra de historico
+                }
+                this.control_elements[screen_number].style.fontWeight = "500";
+                this.control_elements[screen_number].style.boxShadow = "4px 4px 4px rgba(0, 0, 0, 0.1)";
+                active_device.valid_elements = true;
+                active_device.set_active_section(screen_number+1);
+                this.screen_number = screen_number;
+                popovers.update_dynamic_elements(); //update popover elements
+            }
+            else{
 
             }
-            if(screen_number == 1){ //Ecra de dados em tempo real
-                this.screen_element.innerHTML = await this.fetch_html_as_text("/static/ua_energy_analyzer/realTime.html");
-                this.title_element.innerText = "Dados em tempo real";
-                active_device.set_elements(get_real_time_nodes());
-                device_animation.set_elements(get_real_time_animation_nodes());
-            }
-            else if(screen_number == 2){ //Ecra de consumo energetico
-                this.screen_element.innerHTML = await this.fetch_html_as_text("/static/ua_energy_analyzer/consumption.html");
-                this.title_element.innerText = "Consumo energético";
-                active_device.set_elements(get_consumption_nodes());
-            }
-            else if(screen_number == 3){ //Ecra de qualidade de energia
-                this.screen_element.innerHTML = await this.fetch_html_as_text("/static/ua_energy_analyzer/quality.html");
-                this.title_element.innerText = "Qualidade de energia";
-            }
-            else if(screen_number == 4){ //Ecra de parametros
-                this.screen_element.innerHTML = await this.fetch_html_as_text("/static/ua_energy_analyzer/config.html");
-                this.title_element.innerText = "Configuração";
-            }
-            else if(screen_number == 5){ //Ecra de historico
-                this.screen_element.innerHTML = await this.fetch_html_as_text("/static/ua_energy_analyzer/history.html");
-                this.title_element.innerText = "Histórico";
-            }
-            this.control_elements[screen_number-1].style.fontWeight = "500";
-            this.control_elements[screen_number-1].style.boxShadow = "4px 4px 4px rgba(0, 0, 0, 0.1)";
-            active_device.valid_elements = true;
-            active_device.set_active_section(screen_number);
-            this.screen_number = screen_number;
-            popovers.update_dynamic_elements(); //update popover elements
-            this.screen_element.style.opacity = "1";
         } 
     }
 }
@@ -298,7 +396,82 @@ class ContentScreen{
 let date_time_widget = new DateTimeWidget(document, "time_date_text", "time_date_text_xs", new Date());
 let popovers = new PopoverUtil(document);
 let screen_loader = new ScreenLoader(full_loader, connect_display, warning_display, connect_error_message, 5000);
-let content_screen = new ContentScreen(window, screen_loader, title, content_div, "nav_button", 4);
+
+let content_elements = document.getElementsByClassName("section-content");
+let content_elements_array = Array.from(content_elements);
+let content_files = ["realTime.html", "consumption.html", "quality.html", "config.html", "history.html"];
+let subcontent_files = [[], [], [], [], []];
+
+//REALTIME SUBCONTENT//
+
+
+//CONSUMPTION SUBCONTENT//
+
+subcontent_files[1].push("consumption/active_consumption.html");
+subcontent_files[1].push("consumption/past_consumption.html");
+
+//QUALITY SUBCONTENT//
+
+subcontent_files[2].push("quality/voltage_quality.html");
+subcontent_files[2].push("quality/frequency_quality.html");
+subcontent_files[2].push("quality/pf_quality.html");
+
+//CONFIG SUBCONTENT//
+
+subcontent_files[3].push("config/load_control.html");
+subcontent_files[3].push("config/protection_control.html");
+subcontent_files[3].push("config/device_control.html");
+
+//HISTORY SUBCONTENT//
+
+subcontent_files[4].push("history/load_history.html");
+subcontent_files[4].push("history/protection_history.html");
+subcontent_files[4].push("history/device_history.html");
+
+let content_css_files = [["realTime.css"], ["consumption.css"], [], ["config.css"], []];
+let content_js_files = [[], [], [], [], []];
+
+//REALTIME JS FILES//
+
+
+//CONSUMPTION JS FILES //
+
+content_js_files[1].push("section/consumption/consumption_active.js");
+content_js_files[1].push("section/consumption/consumption_past.js");
+content_js_files[1].push("section/consumption/consumption.js");
+
+//QUALITY JS FILES //
+
+content_js_files[2].push("section/quality/quality_voltage.js");
+content_js_files[2].push("section/quality/quality_frequency.js");
+content_js_files[2].push("section/quality/quality_powerfactor.js");
+content_js_files[2].push("section/quality/quality.js");
+
+//CONFIG JS FILES //
+
+content_js_files[2].push("section/config/config_load_control.js");
+content_js_files[2].push("section/config/config_protection.js");
+content_js_files[2].push("section/config/config_device.js");
+content_js_files[2].push("section/config/config.js");
+
+//HISTORY JS FILES //
+
+content_js_files[2].push("section/history/history_load_control.js");
+content_js_files[2].push("section/history/history_protection.js");
+content_js_files[2].push("section/history/history_device.js");
+content_js_files[2].push("section/history/history.js");
+
+
+let content_files_directory = "/static/ua_energy_analyzer/";
+let subcontent_files_directory = "/static/ua_energy_analyzer/section/"
+let content_css_files_directory = "/static/ua_energy_analyzer/css/";
+let content_js_files_directory = "/static/ua_energy_analyzer/js/";
+
+
+let content_screen_titles = ["Dados em tempo real", "Consumo energético", "Qualidade de energia", "Configuração", "Histórico"];
+
+let content_loader = new ContentLoader(document, content_elements_array, content_files, subcontent_files, content_css_files, content_js_files, content_files_directory, subcontent_files_directory, content_css_files_directory, content_js_files_directory);
+let content_screen = new ContentScreen(window, screen_loader, title, content_screen_titles, "nav_button", content_elements_array, content_loader, 3);
 let nav_drop_down = new DropDownMenu(window, mainNavBar, mainDropButton);
 let footer_drop_down = new DropDownMenuExit(document, statePopup, buttonState);
 let device_info = new DeviceInfo(document, "device_name", "device_type");
@@ -306,21 +479,21 @@ let device_info = new DeviceInfo(document, "device_name", "device_type");
 
 
 function loadRealTime(){
-    content_screen.change_screen(1);
+    content_screen.change_screen(0);
 }
 
 function loadConsumption(){
-    content_screen.change_screen(2);
+    content_screen.change_screen(1);
 }
 
 function loadQuality(){
-    content_screen.change_screen(3);
+    content_screen.change_screen(2);
 }
 
 function loadConfig(){
-    content_screen.change_screen(4);
+    content_screen.change_screen(3);
 }
 
 function loadHistory(){
-    content_screen.change_screen(5);
+    content_screen.change_screen(4);
 }

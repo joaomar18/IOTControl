@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{{ device_name }}</title>
     <link rel="icon" type="image/x-icon" href="/static/ua_energy_analyzer/img/app_icon.ico">
     <link rel="stylesheet" href="/static/ua_energy_analyzer/css/lib/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -12,10 +13,6 @@
     <link rel="stylesheet" href = "/static/ua_energy_analyzer/css/screen_elements.css">
     <link rel="stylesheet" href = "/static/ua_energy_analyzer/css/divTable.css">
     <link rel="stylesheet" href="/static/ua_energy_analyzer/css/style.css">
-    <link rel="stylesheet" href="/static/ua_energy_analyzer/css/realTime.css">
-    <link rel="stylesheet" href ="/static/ua_energy_analyzer/css/consumption.css">
-    <link rel="stylesheet" href ="/static/ua_energy_analyzer/css/config.css">
-    <title>{{ device_name }}</title>
 </head>
 <body>
     <div class = "container-fluid">
@@ -42,6 +39,27 @@
         </div>
     </div>
     <div class = "container-fluid" id= "content">
+
+        <!--REALTIME CONTENT-->
+        <div class = "section-content" id = "realtime_content" hidden>
+        </div>
+
+        <!--CONSUMPTION CONTENT-->
+        <div class = "section-content" id = "consumption_content" hidden>
+        </div>
+
+        <!--QUALITY CONTENT-->
+        <div class = "section-content" id = "quality_content" hidden>
+        </div>
+
+        <!--CONFIG CONTENT-->
+        <div class = "section-content" id = "config_content" hidden>
+        </div>
+
+        <!--HISTORY CONTENT-->
+        <div class = "section-content" id = "history_content" hidden>
+        </div>
+
     </div>
     <div class = "container-fluid">
         <div class = "d-flex flex-row justify-content-evenly align-content-center">
@@ -124,40 +142,12 @@
             <input type = "button" value = "Confirmar" class = "button-error" id = "confirm_error_woPriority">
         </div>
     </div>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/lib/bootstrap/bootstrap.bundle.js"></script>
 
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/error/messages.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/elements.js"></script>
-
-    <!--CONSUMPTION SCRIPTS-->
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/consumption/consumption.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/consumption/consumption_active.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/consumption/consumption_past.js"></script>
-    <!--END CONSUMPTION SCRIPTS-->
-
-    <!--QUALITY SCRIPTS-->
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/quality/quality.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/quality/quality_voltage.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/quality/quality_frequency.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/quality/quality_powerfactor.js"></script>
-    <!--END QUALITY SCRIPTS-->
-
-    <!--CONFIG SCRIPTS-->
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/config/config.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/config/config_load_control.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/config/config_protection.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/config/config_device.js"></script>
-    <!--END CONFIG SCRIPTS-->
-
-    <!--HISTORY SCRIPTS-->
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/history/history.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/history/history_load_control.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/history/history_protection.js"></script>
-    <script type="text/javascript" src="/static/ua_energy_analyzer/js/section/history/history_device.js"></script>
-    <!--END HISTORY SCRIPTS-->
 
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/data/nodes.js"></script>
     <script type="text/javascript" src="/static/ua_energy_analyzer/js/data/controllers.js"></script>
