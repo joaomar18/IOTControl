@@ -1,7 +1,7 @@
 /*************************** HOUR PERIOD DISPLAY MANAGEMENT ***************************/
 
 class HourPeriodDisplay{
-    constructor(document, entries, scrolls, add_period_show_btn, remove_period_show_btn, add_period_cancel_btn, remove_period_cancel_btn, mask, add_popup, remove_popup, day_of_week_xs_view){ 
+    constructor(document, entries, scrolls, add_period_show_btn, remove_period_show_btn, add_period_cancel_btn, remove_period_cancel_btn, mask, add_popup, remove_popup, day_of_week_xs_view, section){ 
         this.document = document;   
         //ENTRIES//
         this.entries = entries;
@@ -13,6 +13,7 @@ class HourPeriodDisplay{
         this.scrolls = scrolls;
         this.scrolls_valid = false;
         this.scrolls_elements = null;
+        this.scrolls_handlers = null;
         this.check_valid_scrolls = setInterval(this.check_valid_scrolls_handler.bind(this), 10);
 
 
@@ -25,7 +26,7 @@ class HourPeriodDisplay{
         //SHOW REMOVE PERIOD BUTTON
         this.remove_period_show_btn = remove_period_show_btn;
         this.remove_period_show_btn_valid = false;
-        this.remove_period_show_btn_element = null;
+        this.remove_period_show_btn_elements = null;
         this.check_valid_remove_period_show_btn = setInterval(this.check_valid_remove_period_show_btn_handler.bind(this), 10);
 
         //CANCEL ADD PERIOD BUTTON
@@ -40,6 +41,14 @@ class HourPeriodDisplay{
         this.remove_period_cancel_btn_valid = false;
         this.remove_period_cancel_btn_element = null;
         this.check_valid_remove_period_cancel_btn = setInterval(this.check_valid_remove_period_cancel_btn_handler.bind(this), 10);
+
+
+        //SECTION HANDLER
+        this.elements_ready = [false, false, false, false, false, false];
+        this.init_done = false;
+        this.section = section;
+        this.events_processed = false;
+        this.check_section = setInterval(this.check_section_handler.bind(this), 10);
 
         //MASK
         this.mask = mask;
@@ -74,6 +83,7 @@ class HourPeriodDisplay{
             }
             console.log(this.entries_elements)
             clearInterval(this.check_valid_entries);
+            this.elements_ready[0] = true;
             this.check_valid_entries = null;
         }
     }
@@ -91,13 +101,21 @@ class HourPeriodDisplay{
         }
         else{
             this.scrolls_elements = [];
+            this.scrolls_handlers = [];
+            let i = 0;
             for(let scroll of this.scrolls){
                 let scroll_elements = this.document.getElementsByClassName(scroll);
                 scroll_elements = Array.from(scroll_elements);
                 this.scrolls_elements.push(scroll_elements);
+                this.scrolls_handlers.push([]);
+                for(let scroll_element of scroll_elements){
+                    this.scrolls_handlers[i].push(null);
+                }
+                i++;
             }
             console.log(this.scrolls_elements)
             clearInterval(this.check_valid_scrolls);
+            this.elements_ready[1] = true;
             this.check_valid_scrolls = null;
         }
     }
@@ -119,6 +137,7 @@ class HourPeriodDisplay{
                 this.add_period_show_btn_elements.push(button_element);
             }
             clearInterval(this.check_valid_add_period_show_btn);
+            this.elements_ready[2] = true;
             this.check_valid_add_period_show_btn = null;
         }
     }
@@ -126,13 +145,22 @@ class HourPeriodDisplay{
 
     check_valid_remove_period_show_btn_handler = () => {
         if(!this.remove_period_show_btn_valid){
-            if(this.document.getElementById(this.remove_period_show_btn) != null){
-                this.remove_period_show_btn_valid = true;
+            this.remove_period_show_btn_valid = true;
+            for(let button of this.remove_period_show_btn){
+                let button_element = this.document.getElementById(button);
+                if(button_element == null){
+                    this.remove_period_show_btn_valid = false;
+                }
             }
         }
         else{
-            this.remove_period_show_btn_element = this.document.getElementById(this.remove_period_show_btn);
+            this.remove_period_show_btn_elements = [];
+            for(let button of this.remove_period_show_btn){
+                let button_element = this.document.getElementById(button);
+                this.remove_period_show_btn_elements.push(button_element);
+            }
             clearInterval(this.check_valid_remove_period_show_btn);
+            this.elements_ready[3] = true;
             this.check_valid_remove_period_show_btn = null;
         }
     }
@@ -146,6 +174,7 @@ class HourPeriodDisplay{
         else{
             this.add_period_cancel_btn_element = this.document.getElementById(this.add_period_cancel_btn);
             clearInterval(this.check_valid_add_period_cancel_btn);
+            this.elements_ready[4] = true;
             this.check_valid_add_period_cancel_btn = null;
         }
     }
@@ -160,10 +189,121 @@ class HourPeriodDisplay{
         else{
             this.remove_period_cancel_btn_element = this.document.getElementById(this.remove_period_cancel_btn);
             clearInterval(this.check_valid_remove_period_cancel_btn);
+            this.elements_ready[5] = true;
             this.check_valid_remove_period_cancel_btn = null;
         }
     }
 
+    check_section_handler = () => {
+        if(!this.init_done){
+            let checker = true;
+            console.log(this.elements_ready);
+            for(let element_valid of this.elements_ready){
+                if(!element_valid){
+                    checker = false;
+                }
+            }
+            if(checker){
+                this.init_done = true;
+            }
+        }
+        else{
+            if(!this.document.getElementById(this.section).hidden){
+                if(!this.events_processed){
+                    //ADD EVENT LISTENERS TO ELEMENTS
+                    let i = 0;
+                    console.log(this.scrolls_handlers);
+                    for(let scrolls of this.scrolls_elements){
+                        if(i == 0){ //Left Scrolls
+                            let j = 0;
+                            for(let left_scroll of scrolls){
+                                this.assign_scroll_handler(this.scrolls_handlers[0], j,  left_scroll, this.entries_elements[0][j], "left");
+                                j++;
+                            }
+                        }
+                        else if(i == 1){ //Right Scrolls
+                            let j = 0;
+                            for(let right_scroll of scrolls){
+                                this.assign_scroll_handler(this.scrolls_handlers[1], j, right_scroll, this.entries_elements[0][j], "right");
+                                j++;
+                            }
+                        }
+                        else if(i == 2){ //Top scrolls small
+                            let j = 0;
+                            for(let top_scroll of scrolls){
+                                this.assign_scroll_handler(this.scrolls_handlers[2], j, top_scroll, this.entries_elements[1][j], "top");
+                                j++;
+                            }
+                        }
+                        else if(i == 3){ //Bottom scrolls small
+                            let j = 0;
+                            for(let bottom_scroll of scrolls){
+                                this.assign_scroll_handler(this.scrolls_handlers[3], j, bottom_scroll, this.entries_elements[1][j], "bottom");
+                                j++;
+                            }
+                        }
+                        else if(i == 4){ //Top scroll extra small
+                            let j = 0;
+                            for(let top_scroll of scrolls){
+                                this.assign_scroll_handler(this.scrolls_handlers[4], j, top_scroll, this.entries_elements[2][j], "top");
+                                j++;
+                            }
+                        }
+                        else if(i == 5){ //Bottom scroll extra small
+                            let j = 0;
+                            for(let bottom_scroll of scrolls){
+                                this.assign_scroll_handler(this.scrolls_handlers[5], j, bottom_scroll, this.entries_elements[2][j], "bottom");
+                                j++;
+                            }
+                        }
+                        i++;
+                    }
+                    this.events_processed = true;
+                    console.log(this.scrolls_handlers);
+                }
+            }
+            else{
+                if(this.events_processed){
+                    //CLEAN EVENT LISTENERS
+                    this.events_processed = false;
+                }
+            }
+        }
+    }
+
+    //ASSIGN SCROLL HANDLER
+
+    assign_scroll_handler(scroll_handler, handler_position, scroll_element, entrie_element, scroll_type){
+        let scroll_speedup = null;
+        let scroll_interval = 20;
+        //console.log(scroll_element);
+        //console.log(scroll_handler);
+        if(scroll_handler[handler_position] == null){
+            scroll_handler[handler_position] = this.scroll_function.bind(this, entrie_element, scroll_type, scroll_interval);
+            scroll_element.addEventListener("click", scroll_handler[handler_position]);
+        }
+    }
+
+    //SCROLL FUNCTION//
+
+    scroll_function(entrie_element, scroll_type, scroll_interval){
+        console.log("im running");
+        if(scroll_type == "left"){
+            entrie_element.scrollLeft -= scroll_interval;
+        }
+        else if(scroll_type == "right"){
+            entrie_element.scrollLeft += scroll_interval;
+        }
+        else if(scroll_type == "top"){
+            entrie_element.scrollTop -= scroll_interval;
+        }
+        else if(scroll_type == "bottom"){
+            entrie_element.scrollTop += scroll_interval;
+        }
+        else{
+            console.log("error in scroll function");
+        }
+    }
 
 }
 
@@ -178,7 +318,7 @@ let hour_period_add_popup = "add_period_popup";
 let hour_period_remove_popup = "remove_period_popup";
 let day_of_week_selector_xs = "day_of_week_selector_xs";
 
-let hour_period_display = new HourPeriodDisplay(document, hour_period_entries, hour_period_scrolls, show_add_period_popup_btn, show_remove_period_popup_btn, cancel_add_hour_period_btn, cancel_remove_hour_period_btn, hour_period_mask, hour_period_add_popup, hour_period_remove_popup, day_of_week_selector_xs);
+let hour_period_display = new HourPeriodDisplay(document, hour_period_entries, hour_period_scrolls, show_add_period_popup_btn, show_remove_period_popup_btn, cancel_add_hour_period_btn, cancel_remove_hour_period_btn, hour_period_mask, hour_period_add_popup, hour_period_remove_popup, day_of_week_selector_xs, "config_content");
 
 
 
@@ -189,7 +329,7 @@ let hour_period_display = new HourPeriodDisplay(document, hour_period_entries, h
 
 
 
-
+/*
 
 let datetime_pickers = [];
 
@@ -643,8 +783,11 @@ function init_hour_period_display(){
     initializeFlatpickr();
 }
 
+*/
+
 /************************* END HOUR PERIOD DISPLAY MANAGEMENT *************************/
 /**************************************************************************************/
+
 
 /************************************ FUNCTIONS ***************************************/
 

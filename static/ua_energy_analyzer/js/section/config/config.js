@@ -50,6 +50,7 @@ let config_temporary_alerts = new TemporaryAlert(document, "config_subcontent_di
 /************************************* END ALERTS *************************************/
 /**************************************************************************************/
 
+/*
 let config_section_display_checker = setInterval(config_section_display_checker_handler, 10);
 let config_section_content = "config_content";
 let config_section_valid = false;
@@ -70,3 +71,4 @@ function config_section_display_checker_handler(){
         }
     }
 }
+*/
