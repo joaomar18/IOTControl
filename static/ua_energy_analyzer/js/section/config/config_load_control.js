@@ -1,7 +1,7 @@
 /*************************** HOUR PERIOD DISPLAY MANAGEMENT ***************************/
 
 class HourPeriodDisplay{
-    constructor(document, entries, scrolls, add_period_show_btn, remove_period_show_btn, add_period_cancel_btn, remove_period_cancel_btn, mask, add_popup, remove_popup, day_of_week_xs_view, section){ 
+    constructor(document, entries, scrolls, add_period_show_btn, remove_period_show_btn, add_period_cancel_btn, remove_period_cancel_btn, mask, add_popup, remove_popup, day_of_week_xs_view, add_day_of_week_selector, remove_day_of_week_selector, timepickers_class, section){ 
         this.document = document;   
         //ENTRIES//
         this.entries = entries;
@@ -14,6 +14,7 @@ class HourPeriodDisplay{
         this.scrolls_valid = false;
         this.scrolls_elements = null;
         this.scrolls_handlers = null;
+        this.scroll_function_handlers = null;
         this.check_valid_scrolls = setInterval(this.check_valid_scrolls_handler.bind(this), 10);
 
 
@@ -21,18 +22,21 @@ class HourPeriodDisplay{
         this.add_period_show_btn = add_period_show_btn;
         this.add_period_show_btn_valid = false;
         this.add_period_show_btn_elements = null;
+        this.add_period_show_btn_handlers = null;
         this.check_valid_add_period_show_btn = setInterval(this.check_valid_add_period_show_btn_handler.bind(this), 10);
 
         //SHOW REMOVE PERIOD BUTTON
         this.remove_period_show_btn = remove_period_show_btn;
         this.remove_period_show_btn_valid = false;
         this.remove_period_show_btn_elements = null;
+        this.remove_period_show_btn_handlers = null;
         this.check_valid_remove_period_show_btn = setInterval(this.check_valid_remove_period_show_btn_handler.bind(this), 10);
 
         //CANCEL ADD PERIOD BUTTON
         this.add_period_cancel_btn = add_period_cancel_btn;
         this.add_period_cancel_btn_valid = false;
         this.add_period_cancel_btn_element = null;
+        this.add_period_cancel_btn_handler = null;
         this.check_valid_add_period_cancel_btn = setInterval(this.check_valid_add_period_cancel_btn_handler.bind(this), 10);
 
 
@@ -40,6 +44,7 @@ class HourPeriodDisplay{
         this.remove_period_cancel_btn = remove_period_cancel_btn;
         this.remove_period_cancel_btn_valid = false;
         this.remove_period_cancel_btn_element = null;
+        this.remove_period_cancel_btn_handler = null;
         this.check_valid_remove_period_cancel_btn = setInterval(this.check_valid_remove_period_cancel_btn_handler.bind(this), 10);
 
 
@@ -52,6 +57,7 @@ class HourPeriodDisplay{
 
         //MASK
         this.mask = mask;
+        this.mask_handler = null;
 
         //ADD PERIOD POPUP
         this.add_popup = add_popup;
@@ -61,6 +67,15 @@ class HourPeriodDisplay{
 
         //WEEK DAY SELECTOR EXTRA SMALL VIEW
         this.day_of_week_xs_view = day_of_week_xs_view;
+
+        this.add_day_of_week_selector = add_day_of_week_selector;
+        this.remove_day_of_week_selector = remove_day_of_week_selector;
+
+
+        //TIMEPICKERS
+        this.timepickers_class = timepickers_class;
+        this.datetime_pickers = null;
+
     }
 
     check_valid_entries_handler = () => {
@@ -81,7 +96,6 @@ class HourPeriodDisplay{
                 entrie_elements = Array.from(entrie_elements);
                 this.entries_elements.push(entrie_elements);
             }
-            console.log(this.entries_elements)
             clearInterval(this.check_valid_entries);
             this.elements_ready[0] = true;
             this.check_valid_entries = null;
@@ -102,18 +116,20 @@ class HourPeriodDisplay{
         else{
             this.scrolls_elements = [];
             this.scrolls_handlers = [];
+            this.scroll_function_handlers = [];
             let i = 0;
             for(let scroll of this.scrolls){
                 let scroll_elements = this.document.getElementsByClassName(scroll);
                 scroll_elements = Array.from(scroll_elements);
                 this.scrolls_elements.push(scroll_elements);
                 this.scrolls_handlers.push([]);
+                this.scroll_function_handlers.push([]);
                 for(let scroll_element of scroll_elements){
                     this.scrolls_handlers[i].push(null);
+                    this.scroll_function_handlers[i].push([null, null]);
                 }
                 i++;
             }
-            console.log(this.scrolls_elements)
             clearInterval(this.check_valid_scrolls);
             this.elements_ready[1] = true;
             this.check_valid_scrolls = null;
@@ -132,9 +148,11 @@ class HourPeriodDisplay{
         }
         else{
             this.add_period_show_btn_elements = [];
+            this.add_period_show_btn_handlers = [];
             for(let button of this.add_period_show_btn){
                 let button_element = this.document.getElementById(button);
                 this.add_period_show_btn_elements.push(button_element);
+                this.add_period_show_btn_handlers.push(null);
             }
             clearInterval(this.check_valid_add_period_show_btn);
             this.elements_ready[2] = true;
@@ -155,9 +173,11 @@ class HourPeriodDisplay{
         }
         else{
             this.remove_period_show_btn_elements = [];
+            this.remove_period_show_btn_handlers = [];
             for(let button of this.remove_period_show_btn){
                 let button_element = this.document.getElementById(button);
                 this.remove_period_show_btn_elements.push(button_element);
+                this.remove_period_show_btn_handlers.push(null);
             }
             clearInterval(this.check_valid_remove_period_show_btn);
             this.elements_ready[3] = true;
@@ -197,7 +217,6 @@ class HourPeriodDisplay{
     check_section_handler = () => {
         if(!this.init_done){
             let checker = true;
-            console.log(this.elements_ready);
             for(let element_valid of this.elements_ready){
                 if(!element_valid){
                     checker = false;
@@ -212,58 +231,174 @@ class HourPeriodDisplay{
                 if(!this.events_processed){
                     //ADD EVENT LISTENERS TO ELEMENTS
                     let i = 0;
-                    console.log(this.scrolls_handlers);
+
+                    //SCROLLS//
+
                     for(let scrolls of this.scrolls_elements){
                         if(i == 0){ //Left Scrolls
                             let j = 0;
                             for(let left_scroll of scrolls){
-                                this.assign_scroll_handler(this.scrolls_handlers[0], j,  left_scroll, this.entries_elements[0][j], "left");
+                                this.assign_scroll_handler(this.scrolls_handlers[0], this.scroll_function_handlers, j, i,  left_scroll, this.entries_elements[0][j], "left");
                                 j++;
                             }
                         }
                         else if(i == 1){ //Right Scrolls
                             let j = 0;
                             for(let right_scroll of scrolls){
-                                this.assign_scroll_handler(this.scrolls_handlers[1], j, right_scroll, this.entries_elements[0][j], "right");
+                                this.assign_scroll_handler(this.scrolls_handlers[1], this.scroll_function_handlers, j, i, right_scroll, this.entries_elements[0][j], "right");
                                 j++;
                             }
                         }
                         else if(i == 2){ //Top scrolls small
                             let j = 0;
                             for(let top_scroll of scrolls){
-                                this.assign_scroll_handler(this.scrolls_handlers[2], j, top_scroll, this.entries_elements[1][j], "top");
+                                this.assign_scroll_handler(this.scrolls_handlers[2], this.scroll_function_handlers, j, i, top_scroll, this.entries_elements[1][j], "top");
                                 j++;
                             }
                         }
                         else if(i == 3){ //Bottom scrolls small
                             let j = 0;
                             for(let bottom_scroll of scrolls){
-                                this.assign_scroll_handler(this.scrolls_handlers[3], j, bottom_scroll, this.entries_elements[1][j], "bottom");
+                                this.assign_scroll_handler(this.scrolls_handlers[3], this.scroll_function_handlers, j, i, bottom_scroll, this.entries_elements[1][j], "bottom");
                                 j++;
                             }
                         }
                         else if(i == 4){ //Top scroll extra small
                             let j = 0;
                             for(let top_scroll of scrolls){
-                                this.assign_scroll_handler(this.scrolls_handlers[4], j, top_scroll, this.entries_elements[2][j], "top");
+                                this.assign_scroll_handler(this.scrolls_handlers[4], this.scroll_function_handlers, j, i, top_scroll, this.entries_elements[2][j], "top");
                                 j++;
                             }
                         }
                         else if(i == 5){ //Bottom scroll extra small
                             let j = 0;
                             for(let bottom_scroll of scrolls){
-                                this.assign_scroll_handler(this.scrolls_handlers[5], j, bottom_scroll, this.entries_elements[2][j], "bottom");
+                                this.assign_scroll_handler(this.scrolls_handlers[5], this.scroll_function_handlers, j, i, bottom_scroll, this.entries_elements[2][j], "bottom");
                                 j++;
                             }
                         }
                         i++;
                     }
+
+                    i = 0;
+
+                    for(let button of this.add_period_show_btn_elements){
+                        let type = "normal";
+                        if(i == 2){
+                            type = "small";
+                        }
+                        this.assign_period_show_btn_handler(this.add_period_show_btn_handlers, i, button, this.add_popup, this.mask, this.day_of_week_xs_view, this.add_day_of_week_selector, type);
+                        i++;
+                    }
+
+                    i = 0;
+
+                    for(let button of this.remove_period_show_btn_elements){
+                        let type = "normal"
+                        if( i == 2){
+                            type = "small"; 
+                        }
+                        this.assign_period_show_btn_handler(this.remove_period_show_btn_handlers, i, button, this.remove_popup, this.mask, this.day_of_week_xs_view, this.remove_day_of_week_selector, type);
+                        i++;
+                    }
+
+                    //CANCEL ADD HOUR PERIOD BUTTON
+ 
+                    this.add_period_cancel_btn_handler = this.cancel_period_show_btn_function.bind(this, this.add_popup, this.mask);
+                    this.add_period_cancel_btn_element.addEventListener("click", this.add_period_cancel_btn_handler);
+
+                    //CANCEL REMOVE HOUR PERIOD BUTTON
+
+                    this.remove_period_cancel_btn_handler = this.cancel_period_show_btn_function.bind(this, this.remove_popup, this.mask);
+                    this.remove_period_cancel_btn_element.addEventListener("click", this.remove_period_cancel_btn_handler);
+
+                    //MASK
+
+                    this.mask_handler = this.mask_main_handler.bind(this);
+
+                    this.document.getElementById(this.mask).addEventListener("click", this.mask_handler);
+
+                    this.init_datetime_pickers(this.timepickers_class);
+
+
                     this.events_processed = true;
-                    console.log(this.scrolls_handlers);
                 }
             }
             else{
                 if(this.events_processed){
+                    let i = 0;
+                    for(let scrolls of this.scrolls_elements){
+                        if(i == 0){ //Left Scrolls
+                            let j = 0;
+                            for(let left_scroll of scrolls){
+                                this.remove_scroll_handler(this.scrolls_handlers[0], j,  left_scroll);
+                                j++;
+                            }
+                        }
+                        else if(i == 1){ //Right Scrolls
+                            let j = 0;
+                            for(let right_scroll of scrolls){
+                                this.remove_scroll_handler(this.scrolls_handlers[1], j,  right_scroll);
+                                j++;
+                            }
+                        }
+                        else if(i == 2){ //Top scrolls small
+                            let j = 0;
+                            for(let top_scroll of scrolls){
+                                this.remove_scroll_handler(this.scrolls_handlers[2], j,  top_scroll);                                
+                                j++;
+                            }
+                        }
+                        else if(i == 3){ //Bottom scrolls small
+                            let j = 0;
+                            for(let bottom_scroll of scrolls){
+                                this.remove_scroll_handler(this.scrolls_handlers[3], j,  bottom_scroll);
+                                j++;
+                            }
+                        }
+                        else if(i == 4){ //Top scroll extra small
+                            let j = 0;
+                            for(let top_scroll of scrolls){
+                                this.remove_scroll_handler(this.scrolls_handlers[4], j,  top_scroll);
+                                j++;
+                            }
+                        }
+                        else if(i == 5){ //Bottom scroll extra small
+                            let j = 0;
+                            for(let bottom_scroll of scrolls){
+                                this.remove_scroll_handler(this.scrolls_handlers[5], j,  bottom_scroll);
+                                j++;
+                            }
+                        }
+                        i++;
+                    }
+
+
+                    i = 0;
+
+                    for(let button of this.add_period_show_btn_elements){
+                        this.remove_period_show_btn_handler(this.add_period_show_btn_handlers, i, button);
+                        i++;
+                    }
+
+                    i = 0;
+
+                    for(let button of this.remove_period_show_btn_elements){
+                        this.remove_period_show_btn_handler(this.remove_period_show_btn_handlers, i, button);
+                        i++;
+                    }
+
+                    this.add_period_cancel_btn_element.removeEventListener("click", this.add_period_cancel_btn_handler);
+                    this.add_period_cancel_btn_handler = null;
+
+                    this.remove_period_cancel_btn_element.removeEventListener("click", this.remove_period_cancel_btn_handler);
+                    this.remove_period_cancel_btn_handler = null;
+
+                    this.document.getElementById(this.mask).removeEventListener("click", this.mask_handler);
+                    this.mask_handler = null;
+
+                    this.destroy_datetime_pickers();
+
                     //CLEAN EVENT LISTENERS
                     this.events_processed = false;
                 }
@@ -271,34 +406,243 @@ class HourPeriodDisplay{
         }
     }
 
+    //ASSIGN ADD/REMOVE PERIOD SHOW BUTTON HANDLER
+
+
+    assign_period_show_btn_handler(handlers, handler_position ,button, popup, mask, day_of_week, day_of_week_selector, type){
+        if(type == "normal"){
+            if(handlers[handler_position] == null){
+                handlers[handler_position] = this.period_show_btn_function.bind(this, popup, mask);
+                button.addEventListener("click", handlers[handler_position]);
+            }
+        }
+        else if(type == "small"){
+            if(handlers[handler_position] == null){
+                handlers[handler_position] = this.period_show_btn_small_function.bind(this, popup, mask, day_of_week, day_of_week_selector);
+                button.addEventListener("click", handlers[handler_position]);
+            }
+        }
+        else{
+            console.log("error in assign add/remove period show button handler");
+            return;
+        }
+    }
+
+    remove_period_show_btn_handler(handlers, handler_position, button){
+        if(handlers[handler_position] != null){
+            button.removeEventListener("click", handlers[handler_position]);
+            handlers[handler_position] = null;
+        }
+    }
+
+    //ADD/REMOVE PERIOD SHOW BUTTON FUNCTIONS
+
+    period_show_btn_function(popup, mask){
+        if(this.document.getElementById(popup).style.display != "flex"){
+            this.document.getElementById(popup).style.display = "flex";
+            this.document.getElementById(mask).style.display = "block";
+        }
+    }
+
+    period_show_btn_small_function(popup, mask, day_of_week, day_of_week_selector){
+        let week_day = this.document.getElementById(day_of_week).selectedIndex;
+        console.log(week_day);
+        this.document.getElementById(day_of_week_selector).selectedIndex = week_day;
+        if(this.document.getElementById(popup).style.display != "flex"){
+            this.document.getElementById(popup).style.display = "flex";
+            this.document.getElementById(mask).style.display = "block";
+        }
+    }
+
+    //CANCEL ADD/REMOVE PERIOD FUNCTIONS
+
+    cancel_period_show_btn_function(popup, mask){
+        if(document.getElementById(popup).style.display == "flex"){
+            document.getElementById(popup).style.display = "none";
+            document.getElementById(mask).style.display = "none";
+            this.clean_datetime_pickers();
+        }
+    }
+
+    mask_main_handler(event){
+        this.mask_period_function(event, this.add_popup, this.remove_popup, this.mask);
+    }
+
+    mask_period_function(event, add_popup, remove_popup, mask){
+        if (!event.target.closest("#"+add_popup) && !event.target.closest("#"+remove_popup)){
+            this.document.getElementById(add_popup).style.display = "none";
+            this.document.getElementById(remove_popup).style.display = "none";
+            this.document.getElementById(mask).style.display = "none";    
+            this.clean_datetime_pickers();                     
+        }
+    }
+
+
+    //INIT DATE TIME PICKERS
+
+    init_datetime_pickers(timepickers_class){
+        // Create new instances and store them in the array
+        this.datetime_pickers = [];
+        
+        this.datetime_pickers = flatpickr("." + timepickers_class, {
+            enableTime: true,
+            time_24hr: true,
+            altInput: true,
+            noCalendar: true,
+            altFormat: "H:i:S",
+            dateFormat: "H:i:S",
+            disableMobile: true, // Note: Removed the quotes around "true"
+            enableSeconds: true
+        });
+    }
+
+    //DESTROY DATE TIME PICKERS
+
+    destroy_datetime_pickers(){
+        this.datetime_pickers.forEach(function (picker) {
+            picker.destroy();
+        });
+    }
+
+    //CLEAN DATE TIME PICKERS
+
+    clean_datetime_pickers(){
+        for(let datetime_picker in this.datetime_pickers){
+            this.datetime_pickers[datetime_picker].setDate("");
+        }
+    
+        this.document.getElementById(this.add_day_of_week_selector).selectedIndex = 0;
+    
+        this.document.getElementById(this.remove_day_of_week_selector).selectedIndex = 0;
+    }
+
+
     //ASSIGN SCROLL HANDLER
 
-    assign_scroll_handler(scroll_handler, handler_position, scroll_element, entrie_element, scroll_type){
+    assign_scroll_handler(scroll_handler, scroll_function_handlers, handler_position, scroll_position, scroll_element, entrie_element, scroll_type){
         let scroll_speedup = null;
-        let scroll_interval = 20;
-        //console.log(scroll_element);
-        //console.log(scroll_handler);
+        let scroll_interval = 10;
         if(scroll_handler[handler_position] == null){
-            scroll_handler[handler_position] = this.scroll_function.bind(this, entrie_element, scroll_type, scroll_interval);
+            scroll_handler[handler_position] = this.scroll_function.bind(this, entrie_element, scroll_function_handlers, scroll_position, handler_position, scroll_type, scroll_interval);
             scroll_element.addEventListener("click", scroll_handler[handler_position]);
+        }
+    }
+
+    remove_scroll_handler(scroll_handler, handler_position, scroll_element){
+        if(scroll_handler[handler_position] != null){
+            scroll_element.removeEventListener("click", scroll_handler[handler_position]);
+            scroll_handler[handler_position] = null;
         }
     }
 
     //SCROLL FUNCTION//
 
-    scroll_function(entrie_element, scroll_type, scroll_interval){
-        console.log("im running");
+    scroll_function(entrie_element, scroll_function_handlers, scroll_position, handler_position, scroll_type, scroll_interval){
         if(scroll_type == "left"){
-            entrie_element.scrollLeft -= scroll_interval;
+            let init_width = 0;
+            if(scroll_function_handlers[scroll_position+1][handler_position][1] != null){
+                clearInterval(scroll_function_handlers[scroll_position+1][handler_position][1]);
+                scroll_function_handlers[scroll_position+1][handler_position][1] = null;
+            }
+            if(scroll_function_handlers[scroll_position][handler_position][0] == null){
+                let offsetWidth = entrie_element.offsetWidth;
+                let scrollWidth = entrie_element.scrollWidth;
+                let seen_elements_width = 182;
+                let width_to_scroll = ((Math.floor(offsetWidth / seen_elements_width))*seen_elements_width)-30;
+                scroll_function_handlers[scroll_position][handler_position][0] = setInterval(function() {
+                    if(scroll_function_handlers[scroll_position][handler_position][0] != null && scroll_function_handlers[scroll_position+1][handler_position][1] == null){
+                        entrie_element.scrollLeft -= scroll_interval;
+                        if(offsetWidth == scrollWidth || init_width >= width_to_scroll){
+                            clearInterval(scroll_function_handlers[scroll_position][handler_position][0]);
+                            scroll_function_handlers[scroll_position][handler_position][0] = null;
+                        }
+                        init_width += scroll_interval;
+                    }
+                }, 10);
+            }
         }
         else if(scroll_type == "right"){
-            entrie_element.scrollLeft += scroll_interval;
+            let init_width = 0;
+            if(scroll_function_handlers[scroll_position-1][handler_position][0] != null){
+                clearInterval(scroll_function_handlers[scroll_position-1][handler_position][0]);
+                scroll_function_handlers[scroll_position-1][handler_position][0] = null;
+            }
+            if(scroll_function_handlers[scroll_position][handler_position][1] == null){
+                let offsetWidth = entrie_element.offsetWidth;
+                let scrollWidth = entrie_element.scrollWidth;
+                let seen_elements_width = 182;
+                let width_to_scroll = ((Math.floor(offsetWidth / seen_elements_width))*seen_elements_width)-30;
+                scroll_function_handlers[scroll_position][handler_position][1] = setInterval(function() {
+                    if(scroll_function_handlers[scroll_position][handler_position][1] != null && scroll_function_handlers[scroll_position-1][handler_position][0] == null){
+                        entrie_element.scrollLeft += scroll_interval;
+                        if(offsetWidth == scrollWidth || init_width >= width_to_scroll){
+                            clearInterval(scroll_function_handlers[scroll_position][handler_position][1]);
+                            scroll_function_handlers[scroll_position][handler_position][1] = null;
+                        }
+                        init_width += scroll_interval;
+                    }
+                }, 10);
+            }
         }
         else if(scroll_type == "top"){
-            entrie_element.scrollTop -= scroll_interval;
+            let init_height = 0;
+            if(scroll_function_handlers[scroll_position+1][handler_position][1] != null){
+                clearInterval(scroll_function_handlers[scroll_position+1][handler_position][1]);
+                scroll_function_handlers[scroll_position+1][handler_position][1] = null;
+            }
+            if(scroll_function_handlers[scroll_position][handler_position][0] == null){
+                let offsetHeight = entrie_element.offsetHeight;
+                let scrollHeight = entrie_element.scrollHeight;
+                let window_height = window.innerHeight;
+                let seen_elements_height;
+                if(window_height >= 992){
+                    seen_elements_height = 58;
+                }
+                else{
+                    seen_elements_height = 52;
+                }
+                let height_to_sroll = ((Math.floor(offsetHeight / seen_elements_height))*seen_elements_height)-30;
+                scroll_function_handlers[scroll_position][handler_position][0] = setInterval(function() {
+                    if(scroll_function_handlers[scroll_position][handler_position][0] != null && scroll_function_handlers[scroll_position+1][handler_position][1] == null){
+                        entrie_element.scrollTop -= scroll_interval;
+                        if(offsetHeight == scrollHeight || init_height >= height_to_sroll){
+                            clearInterval(scroll_function_handlers[scroll_position][handler_position][0]);
+                            scroll_function_handlers[scroll_position][handler_position][0] = null;
+                        }
+                        init_height += scroll_interval;
+                    }
+                }, 10);
+            }
         }
         else if(scroll_type == "bottom"){
-            entrie_element.scrollTop += scroll_interval;
+            let init_height = 0;
+            if(scroll_function_handlers[scroll_position-1][handler_position][0] != null){
+                clearInterval(scroll_function_handlers[scroll_position-1][handler_position][0]);
+                scroll_function_handlers[scroll_position-1][handler_position][0] = null;
+            }
+            if(scroll_function_handlers[scroll_position][handler_position][1] == null){
+                let offsetHeight = entrie_element.offsetHeight;
+                let scrollHeight = entrie_element.scrollHeight;
+                let window_height = window.innerHeight;
+                let seen_elements_height;
+                if(window_height >= 992){
+                    seen_elements_height = 58;
+                }
+                else{
+                    seen_elements_height = 52;
+                }
+                let height_to_sroll = ((Math.floor(offsetHeight / seen_elements_height))*seen_elements_height)-30;
+                scroll_function_handlers[scroll_position][handler_position][1] = setInterval(function() {
+                    if(scroll_function_handlers[scroll_position][handler_position][1] != null && scroll_function_handlers[scroll_position-1][handler_position][0] == null){
+                        entrie_element.scrollTop += scroll_interval;
+                        if(offsetHeight == scrollHeight || init_height >= height_to_sroll){
+                            clearInterval(scroll_function_handlers[scroll_position][handler_position][1]);
+                            scroll_function_handlers[scroll_position][handler_position][1] = null;
+                        }
+                        init_height += scroll_interval;
+                    }
+                }, 10);
+            }
         }
         else{
             console.log("error in scroll function");
@@ -307,7 +651,7 @@ class HourPeriodDisplay{
 
 }
 
-let hour_period_entries = ["table-horizontal-row-content", "table-vertical-col-content", "hour-control-table-extra-small"];
+let hour_period_entries = ["table-horizontal-row-content", "table-vertical-col-content", "table-extra-small-content"];
 let hour_period_scrolls = ["arrow-container-left", "arrow-container-right", "arrow-container-top", "arrow-container-bottom", "arrow-container-top-xs", "arrow-container-bottom-xs"];
 let show_add_period_popup_btn = ["show_add_period_popup_btn", "show_add_period_popup_btn_s", "show_add_period_popup_btn_xs"];
 let show_remove_period_popup_btn = ["show_remove_period_popup_btn", "show_remove_period_popup_btn_s", "show_remove_period_popup_btn_xs"];
@@ -317,476 +661,12 @@ let hour_period_mask = "hour_period_mask";
 let hour_period_add_popup = "add_period_popup";
 let hour_period_remove_popup = "remove_period_popup";
 let day_of_week_selector_xs = "day_of_week_selector_xs";
+let add_day_of_week_selector = "add_day_of_week_selector";
+let remove_day_of_week_selector = "remove_day_of_week_selector";
+let timepickers_class = "daily-time-period-picker";
 
-let hour_period_display = new HourPeriodDisplay(document, hour_period_entries, hour_period_scrolls, show_add_period_popup_btn, show_remove_period_popup_btn, cancel_add_hour_period_btn, cancel_remove_hour_period_btn, hour_period_mask, hour_period_add_popup, hour_period_remove_popup, day_of_week_selector_xs, "config_content");
+let hour_period_display = new HourPeriodDisplay(document, hour_period_entries, hour_period_scrolls, show_add_period_popup_btn, show_remove_period_popup_btn, cancel_add_hour_period_btn, cancel_remove_hour_period_btn, hour_period_mask, hour_period_add_popup, hour_period_remove_popup, day_of_week_selector_xs, add_day_of_week_selector, remove_day_of_week_selector, timepickers_class, "config_content");
 
-
-
-
-
-
-
-
-
-
-/*
-
-let datetime_pickers = [];
-
-// Function to initialize Flatpickr and destroy the old instances
-function initializeFlatpickr() {
-    // Destroy the old instances
-    datetime_pickers.forEach(function (picker) {
-        picker.destroy();
-    });
-
-    // Create new instances and store them in the array
-    datetime_pickers = flatpickr(".daily-time-period-picker", {
-        enableTime: true,
-        time_24hr: true,
-        altInput: true,
-        noCalendar: true,
-        altFormat: "H:i:S",
-        dateFormat: "H:i:S",
-        disableMobile: true, // Note: Removed the quotes around "true"
-        enableSeconds: true
-    });
-}
-
-function init_hour_period_display(){
-
-    let show_add_period_popup_btn = document.getElementById("show_add_period_popup_btn");
-
-    let show_add_period_popup_btn_xs = document.getElementById("show_add_period_popup_btn_xs");
-
-    let show_add_period_popup_btn_s = document.getElementById("show_add_period_popup_btn_s");
-
-    let show_remove_period_popup_btn = document.getElementById("show_remove_period_popup_btn");
-
-    let show_remove_period_popup_btn_xs = document.getElementById("show_remove_period_popup_btn_xs");
-
-    let show_remove_period_popup_btn_s = document.getElementById("show_remove_period_popup_btn_s");
-
-
-
-    let cancel_add_hour_period_btn = document.getElementById("cancel_add_hour_period_btn");
-    let cancel_remove_hour_period_btn = document.getElementById("cancel_remove_hour_period_btn");
-    let hour_period_mask = document.getElementById("hour_period_mask");
-
-
-    let entries = document.getElementsByClassName("table-horizontal-row-content");
-    let left_scrolls = document.getElementsByClassName("arrow-container-left");
-    let right_scrolls = document.getElementsByClassName("arrow-container-right");
-
-    let s_entries = document.getElementsByClassName("table-vertical-col-content");
-    let top_scrolls = document.getElementsByClassName("arrow-container-top");
-    let bottom_scrolls = document.getElementsByClassName("arrow-container-bottom");
-
-    let xs_entries = document.getElementById("table_extra_small_content");
-    let xs_top_scroll = document.getElementById("btn_top_scroll_xs_hp");
-    let xs_bottom_scroll = document.getElementById("btn_bottom_scroll_xs_hp");
-    let day_of_week_selector_xs = document.getElementById("day_of_week_selector_xs");
-
-
-
-  
-        
-
-    let left_interval = null;
-    let left_interval_step = 0;
-    let right_interval = null;
-    let right_interval_step = 0
-
-
-    let top_interval_xs = null;
-    let top_interval_xs_step = 0;
-    let bottom_interval_xs = null;
-    let bottom_interval_xs_step = 0;
-
-    let top_interval = null;
-    let top_interval_step = 0;
-    let bottom_interval = null;
-    let bottom_interval_step = 0;
-
-
-
-    function scroll_up_xs(){
-        let top_scroll_speedup = null;
-        if(top_interval_xs == null){
-            top_interval_xs = setInterval(top_scroll_xs_handler, 1);
-            top_interval_xs_step = 1;
-            document.addEventListener('mouseup', buttonReleaseHandler);
-            document.addEventListener('touchend', buttonReleaseHandler, {passive: true});
-        }
-        function top_scroll_xs_handler(){
-            xs_entries.scrollTop -= top_interval_xs_step;
-            if(top_scroll_speedup == null){
-                top_scroll_speedup = setTimeout(top_scroll_speedup_handler, 1500);
-            }
-            function top_scroll_speedup_handler(){
-                top_interval_xs_step = 2;
-            }
-        }
-        function buttonReleaseHandler() {
-            while(top_interval_xs != null){
-                clearInterval(top_interval_xs);
-                clearInterval(top_scroll_speedup);
-                top_interval_xs = null;
-                top_scroll_speedup = null;
-            }
-            document.removeEventListener('mouseup', buttonReleaseHandler);
-            document.removeEventListener('touchend', buttonReleaseHandler);
-        }
-    }
-
-    function scroll_down_xs(){
-        let bottom_scroll_speedup = null;
-        if(bottom_interval_xs == null){
-            bottom_interval_xs = setInterval(bottom_scroll_xs_handler, 1);
-            bottom_interval_xs_step = 1;
-            document.addEventListener('mouseup', buttonReleaseHandler);
-            document.addEventListener('touchend', buttonReleaseHandler, {passive: true});
-        }
-        function bottom_scroll_xs_handler(){
-            xs_entries.scrollTop += bottom_interval_xs_step;
-            if(bottom_scroll_speedup == null){
-                bottom_scroll_speedup = setTimeout(bottom_scroll_speedup_handler, 1500);
-            }
-            function bottom_scroll_speedup_handler(){
-                bottom_interval_xs_step = 2;
-            }
-        }
-        function buttonReleaseHandler() {
-            while(bottom_interval_xs != null){
-                clearInterval(bottom_interval_xs);
-                clearInterval(bottom_scroll_speedup);
-                bottom_interval_xs = null;
-                bottom_scroll_speedup_handler_scroll_speedup = null;
-            }
-            document.removeEventListener('mouseup', buttonReleaseHandler);
-            document.removeEventListener('touchend', buttonReleaseHandler);
-        }
-    }
-
-    function scroll_top(event){
-        let top_scroll_speedup = null;
-        let i = -1;
-        if(top_interval == null){
-            top_interval = setInterval(top_scroll_handler, 1); 
-            top_interval_step = 1;
-            document.addEventListener('mouseup', buttonReleaseHandler); 
-            document.addEventListener('touchend', buttonReleaseHandler, {passive: true});
-        }
-        function top_scroll_handler(){
-            if (i == -1){
-                let element_id = event.target.id;
-                if(element_id == "btn_top_scroll_first_hp"){
-                    i = 0;
-                }
-                else if(element_id == "btn_top_scroll_second_hp"){
-                    i = 1;
-                }
-                else if(element_id == "btn_top_scroll_third_hp"){
-                    i = 2;
-                }
-            }
-            s_entries.item(i).scrollTop -= top_interval_step;
-            if(top_scroll_speedup == null){
-                top_scroll_speedup = setTimeout(top_scroll_speedup_handler, 1500);
-            }
-            function top_scroll_speedup_handler(){
-                top_interval_step = 2;
-            }
-        }
-        function buttonReleaseHandler() {
-            while(top_interval != null){
-                clearInterval(top_interval);
-                clearInterval(top_scroll_speedup);
-                top_interval = null;
-                top_scroll_speedup = null;
-            }
-            document.removeEventListener('mouseup', buttonReleaseHandler);
-            document.removeEventListener('touchend', buttonReleaseHandler);
-        }
-    }
-
-    function scroll_bottom(event){
-        let bottom_scroll_speedup = null;
-        let i = -1;
-        if(bottom_interval == null){
-            bottom_interval = setInterval(bottom_scroll_handler, 1); 
-            bottom_interval_step = 1;
-            document.addEventListener('mouseup', buttonReleaseHandler); 
-            document.addEventListener('touchend', buttonReleaseHandler, {passive: true});
-        }
-        function bottom_scroll_handler(){
-            if (i == -1){
-                let element_id = event.target.id;
-                if(element_id == "btn_bottom_scroll_first_hp"){
-                    i = 0;
-                }
-                else if(element_id == "btn_bottom_scroll_second_hp"){
-                    i = 1;
-                }
-                else if(element_id == "btn_bottom_scroll_third_hp"){
-                    i = 2;
-                }
-            }
-            s_entries.item(i).scrollTop += bottom_interval_step;
-            if(bottom_scroll_speedup == null){
-                bottom_scroll_speedup = setTimeout(bottom_scroll_speedup_handler, 1500);
-            }
-            function bottom_scroll_speedup_handler(){
-                bottom_interval_step = 2;
-            }
-        }
-        function buttonReleaseHandler() {
-            while(bottom_interval != null){
-                clearInterval(bottom_interval);
-                clearInterval(bottom_scroll_speedup);
-                bottom_interval = null;
-                bottom_scroll_speedup = null;
-            }
-            document.removeEventListener('mouseup', buttonReleaseHandler);
-            document.removeEventListener('touchend', buttonReleaseHandler);
-        }
-    }
-
-
-
-    function scroll_left(event){
-        let left_scroll_speedup = null;
-        let i = -1;
-        if(left_interval == null){
-            left_interval = setInterval(left_scroll_handler, 1); 
-            left_interval_step = 1;
-            document.addEventListener('mouseup', buttonReleaseHandler); 
-            document.addEventListener('touchend', buttonReleaseHandler, {passive: true});
-        }
-        function left_scroll_handler(){
-            if (i == -1){
-                let element_id = event.target.id;
-                if(element_id == "btn_left_scroll_monday_hp"){
-                    i = 0;
-                }
-                else if(element_id == "btn_left_scroll_tuesday_hp"){
-                    i = 1;
-                }
-                else if(element_id == "btn_left_scroll_wednesday_hp"){
-                    i = 2;
-                }
-                else if(element_id == "btn_left_scroll_thursday_hp"){
-                    i = 3;
-                }
-                else if(element_id == "btn_left_scroll_friday_hp"){
-                    i = 4;
-                }
-                else if(element_id == "btn_left_scroll_saturday_hp"){
-                    i = 5;
-                }
-                else if(element_id == "btn_left_scroll_sunday_hp"){
-                    i = 6;
-                }
-            }
-            entries.item(i).scrollLeft -= left_interval_step;
-            if(left_scroll_speedup == null){
-                left_scroll_speedup = setTimeout(left_scroll_speedup_handler, 1500);
-            }
-            function left_scroll_speedup_handler(){
-                left_interval_step = 2;
-            }
-        }
-        function buttonReleaseHandler() {
-            while(left_interval != null){
-                clearInterval(left_interval);
-                clearInterval(left_scroll_speedup);
-                left_interval = null;
-                left_scroll_speedup = null;
-            }
-            document.removeEventListener('mouseup', buttonReleaseHandler);
-            document.removeEventListener('touchend', buttonReleaseHandler);
-        }
-    }
-
-    function scroll_right(event){
-        let right_scroll_speedup = null;
-        let i = -1;
-        if(right_interval == null){
-            right_interval = setInterval(right_scroll_handler, 1);
-            right_interval_step = 1;
-            document.addEventListener('mouseup', buttonReleaseHandler);
-            document.addEventListener('touchend', buttonReleaseHandler, {passive: true});
-        }
-        function right_scroll_handler(){
-            if (i == -1){
-                let element_id = event.target.id;
-                if(element_id == "btn_right_scroll_monday_hp"){
-                    i = 0;
-                }
-                else if(element_id == "btn_right_scroll_tuesday_hp"){
-                    i = 1;
-                }
-                else if(element_id == "btn_right_scroll_wednesday_hp"){
-                    i = 2;
-                }
-                else if(element_id == "btn_right_scroll_thursday_hp"){
-                    i = 3;
-                }
-                else if(element_id == "btn_right_scroll_friday_hp"){
-                    i = 4;
-                }
-                else if(element_id == "btn_right_scroll_saturday_hp"){
-                    i = 5;
-                }
-                else if(element_id == "btn_right_scroll_sunday_hp"){
-                    i = 6;
-                }
-            }
-            entries.item(i).scrollLeft += right_interval_step;
-            if(right_scroll_speedup == null){
-                right_scroll_speedup = setTimeout(right_scroll_speedup_handler, 1500);
-            }
-            function right_scroll_speedup_handler(){
-                right_interval_step = 2;
-            }
-        }
-        function buttonReleaseHandler() {
-            while(right_interval != null){
-                clearInterval(right_interval);
-                clearInterval(right_scroll_speedup);
-                right_interval = null;
-                right_scroll_speedup = null;
-            }
-            document.removeEventListener('mouseup', buttonReleaseHandler);
-            document.removeEventListener('touchend', buttonReleaseHandler);
-        }
-    }
-
-
-    xs_top_scroll.addEventListener('mousedown', scroll_up_xs);  
-    xs_top_scroll.addEventListener('touchstart', scroll_up_xs, {passive: true});  
-
-
-    xs_bottom_scroll.addEventListener('mousedown', scroll_down_xs);
-    xs_bottom_scroll.addEventListener('touchstart', scroll_down_xs, {passive: true});
-
-
-    for(let top_scroll of top_scrolls){
-        top_scroll.addEventListener('mousedown', function(event) {
-            scroll_top(event);
-        });
-        top_scroll.addEventListener('touchstart', function(event) {
-            scroll_top(event);
-        }, {passive: true});
-    }
-
-    for(let bottom_scroll of bottom_scrolls){
-        bottom_scroll.addEventListener('mousedown', function(event) {
-            scroll_bottom(event);
-        });
-        bottom_scroll.addEventListener('touchstart', function(event) {
-            scroll_bottom(event);
-        }, {passive: true});
-    }
-
-
-    for(let left_scroll of left_scrolls){
-        left_scroll.addEventListener('mousedown', function(event) {
-            scroll_left(event);
-        });
-        left_scroll.addEventListener('touchstart', function(event) {
-            scroll_left(event);
-        }, {passive: true});
-    }
-
-
-    for(let right_scroll of right_scrolls){
-        right_scroll.addEventListener('mousedown', function(event) {
-            scroll_right(event);
-        });
-        right_scroll.addEventListener('touchstart', function(event) {
-            scroll_right(event);
-        }, {passive: true});
-    }
-
-
-    hour_period_mask.addEventListener("click", (event) => {
-        if (!event.target.closest("#add_period_popup")){
-            document.getElementById("add_period_popup").style.display = "none";
-            document.getElementById("remove_period_popup").style.display = "none";
-            document.getElementById("hour_period_mask").style.display = "none";    
-            cleanHourPeriodPopup(datetime_pickers);                        
-        }
-    });
-    show_add_period_popup_btn.addEventListener('click', function() {
-        if(document.getElementById("add_period_popup").style.display != "flex"){
-            document.getElementById("add_period_popup").style.display = "flex";
-            document.getElementById("hour_period_mask").style.display = "block";
-        }
-    });
-
-        
-    show_add_period_popup_btn_s.addEventListener('click', function() {
-        if(document.getElementById("add_period_popup").style.display != "flex"){
-            document.getElementById("add_period_popup").style.display = "flex";
-            document.getElementById("hour_period_mask").style.display = "block";
-        }
-    });
-
-    show_add_period_popup_btn_xs.addEventListener('click', function() {
-        let week_day = day_of_week_selector_xs.selectedIndex;
-        document.getElementById("add_day_of_week_selector").selectedIndex = week_day;
-        if(document.getElementById("add_period_popup").style.display != "flex"){
-            document.getElementById("add_period_popup").style.display = "flex";
-            document.getElementById("hour_period_mask").style.display = "block";
-        }
-    });
-        
-
-    cancel_add_hour_period_btn.addEventListener('click', function() {
-        if(document.getElementById("add_period_popup").style.display == "flex"){
-            document.getElementById("add_period_popup").style.display = "none";
-            document.getElementById("hour_period_mask").style.display = "none";
-            cleanHourPeriodPopup(datetime_pickers);
-        }
-    });
-        
-    show_remove_period_popup_btn.addEventListener('click', function() {
-        if(document.getElementById("remove_period_popup").style.display != "flex"){
-            document.getElementById("remove_period_popup").style.display = "flex";
-            document.getElementById("hour_period_mask").style.display = "block";
-        }
-    });
-
-    show_remove_period_popup_btn_s.addEventListener('click', function() {
-        if(document.getElementById("remove_period_popup").style.display != "flex"){
-            document.getElementById("remove_period_popup").style.display = "flex";
-            document.getElementById("hour_period_mask").style.display = "block";
-        }
-    });
-
-    show_remove_period_popup_btn_xs.addEventListener('click', function() {
-        let week_day = day_of_week_selector_xs.selectedIndex;
-        document.getElementById("remove_day_of_week_selector").selectedIndex = week_day;
-        if(document.getElementById("remove_period_popup").style.display != "flex"){
-            document.getElementById("remove_period_popup").style.display = "flex";
-            document.getElementById("hour_period_mask").style.display = "block";
-        }
-    });
-        
-    cancel_remove_hour_period_btn.addEventListener('click', function() {
-        if(document.getElementById("remove_period_popup").style.display == "flex"){
-            document.getElementById("remove_period_popup").style.display = "none";
-            document.getElementById("hour_period_mask").style.display = "none";
-        }
-    });
-    initializeFlatpickr();
-}
-
-*/
-
-/************************* END HOUR PERIOD DISPLAY MANAGEMENT *************************/
-/**************************************************************************************/
 
 
 /************************************ FUNCTIONS ***************************************/
@@ -960,17 +840,6 @@ function addHourPeriod(){
         }
     }
 
-}
-
-function cleanHourPeriodPopup(datetime_pickers){
-
-    for(let datetime_picker in datetime_pickers){
-        datetime_pickers[datetime_picker].setDate("");
-    }
-
-    document.getElementById("add_day_of_week_selector").selectedIndex = 0;
-
-    document.getElementById("remove_day_of_week_selector").selectedIndex = 0;
 }
 
 
