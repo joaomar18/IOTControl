@@ -43,13 +43,21 @@
 }
 
 .vertical-selection-menu-buttons{
-  width: 100%;
+  width: 184px;
   height: 100%;
   display: flex;
   justify-content: start;
   align-items: center;
   flex-direction: column;
+  overflow: hidden;
+  margin: 0;
   margin-right: 20px;
+  padding: 0;
+}
+
+.vertical-selection-menu-buttons.active{
+  margin-right: 20px;
+
 }
 
 

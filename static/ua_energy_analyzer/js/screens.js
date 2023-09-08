@@ -18,13 +18,8 @@ class DateTimeWidget{
         this.element_xs = element_xs;
         this.date = initial_date;
         this.date_string = null;
-        this.update_element = setInterval(this.update_element_handler.bind(this), 1000);
-        if(this.document.getElementById(this.element) != null){
-            this.document.getElementById(this.element).innerText = this.format_date_time(this.date);
-        }
-        if(this.document.getElementById(this.element_xs) != null){
-            this.document.getElementById(this.element_xs).innerText = this.format_date_time(this.date);
-        }
+        this.last_update_time_stamp = 0;
+        this.update_element_handler();
     }
 
     format_date_time(date){
@@ -48,13 +43,18 @@ class DateTimeWidget{
     
 
     update_element_handler = () => {
-        this.date.setSeconds(this.date.getSeconds() + 1);
-        if(this.document.getElementById(this.element) != null){
-            this.document.getElementById(this.element).innerText = this.format_date_time(this.date);
+        const current_time_stamp = performance.now();
+        if((current_time_stamp - this.last_update_time_stamp) >= 1000){
+            this.last_update_time_stamp = current_time_stamp;
+            this.date.setSeconds(this.date.getSeconds() + 1);
+            if(this.document.getElementById(this.element) != null){
+                this.document.getElementById(this.element).innerText = this.format_date_time(this.date);
+            }
+            if(this.document.getElementById(this.element_xs) != null){
+                this.document.getElementById(this.element_xs).innerText = this.format_date_time(this.date);
+            }
         }
-        if(this.document.getElementById(this.element_xs) != null){
-            this.document.getElementById(this.element_xs).innerText = this.format_date_time(this.date);
-        }
+        requestAnimationFrame(this.update_element_handler.bind(this));
     }
 }
 

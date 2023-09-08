@@ -215,6 +215,16 @@ class VerticalSlider{
         this.last_submenu_state = null;
         this.initial_validation = false;
         this.invert_slider_handler = null;
+        
+        //Values
+        this.submenu_width = 184;
+        this.submenu_margin_right = 20;
+        this.initial_submenu_width = null;
+        this.initial_submenu_margin_right = null;
+
+        this.init_close_anim = false;
+        this.init_open_anim = false;
+
     }
 
     invert_slider(){
@@ -231,15 +241,87 @@ class VerticalSlider{
     }
 
     close_slider(){
-        this.document.getElementById(this.left_arrow_name).style.display = "none";
-        this.document.getElementById(this.right_arrow_name).style.display = "block";
-        this.document.getElementById(this.submenu_name).style.display = "none";
+        if(this.submenu_state){ 
+            this.initial_submenu_width = this.submenu_width;
+            this.initial_submenu_margin_right = this.submenu_margin_right;
+        }
+        else{
+            this.initial_submenu_width = 0;
+            this.initial_submenu_margin_right = 0;
+        }
+        this.close_slider_animation();
     }
 
     open_slider(){
-        this.document.getElementById(this.left_arrow_name).style.display = "block";
-        this.document.getElementById(this.right_arrow_name).style.display = "none";
-        this.document.getElementById(this.submenu_name).style.display = "flex";
+        if(this.submenu_state){ 
+            this.initial_submenu_width = this.submenu_width;
+            this.initial_submenu_margin_right = this.submenu_margin_right;
+        }
+        else{
+            this.initial_submenu_width = 0;
+            this.initial_submenu_margin_right = 0;
+        }
+        this.open_slider_animation();
+    }
+
+    close_slider_animation(){
+        let element_width = this.document.getElementById(this.submenu_name).offsetWidth;
+        let element_margin_right = getComputedStyle(this.document.getElementById(this.submenu_name)).getPropertyValue("margin-right");
+        element_margin_right = Number(element_margin_right.substring(0, element_margin_right.indexOf("px")));
+        if(!this.init_close_anim){
+            element_width = this.initial_submenu_width;
+            element_margin_right = this.initial_submenu_margin_right;
+            this.init_close_anim = true;
+        }
+        if(element_width > 0 || element_margin_right > 0){
+            let offset = 20;
+            let margin_offset = 1;
+            if(element_width-offset < 0){
+                offset = element_width;
+            }
+            if(element_margin_right-margin_offset < 0){
+                margin_offset = element_margin_right;
+            }
+            this.document.getElementById(this.submenu_name).style.width = String(element_width-offset)+"px";
+            this.document.getElementById(this.submenu_name).style.marginRight = String(element_margin_right-margin_offset)+"px";
+            requestAnimationFrame(this.close_slider_animation.bind(this));
+        }
+        else{
+            this.document.getElementById(this.left_arrow_name).style.display = "none";
+            this.document.getElementById(this.right_arrow_name).style.display = "block";
+            this.init_close_anim = false;
+            return;
+        }
+    }
+
+    open_slider_animation(){
+        let element_width = this.document.getElementById(this.submenu_name).offsetWidth;
+        let element_margin_right = getComputedStyle(this.document.getElementById(this.submenu_name)).getPropertyValue("margin-right");
+        element_margin_right = Number(element_margin_right.substring(0, element_margin_right.indexOf("px")));
+        if(!this.init_open_anim){
+            element_width = this.initial_submenu_width;
+            element_margin_right = this.initial_submenu_margin_right;
+            this.init_open_anim = true;
+        }
+        if(element_width < this.submenu_width || element_margin_right < this.submenu_margin_right){
+            let offset = 20;
+            let margin_offset = 1;
+            if(element_width + offset > this.submenu_width){
+                offset = this.submenu_width - element_width;
+            }
+            if(element_margin_right + margin_offset > 20){
+                margin_offset = this.submenu_margin_right - element_margin_right;
+            }
+            this.document.getElementById(this.submenu_name).style.width = String(element_width+offset)+"px";
+            this.document.getElementById(this.submenu_name).style.marginRight = String(element_margin_right+margin_offset)+"px";
+            requestAnimationFrame(this.open_slider_animation.bind(this));
+        }
+        else{
+            this.document.getElementById(this.left_arrow_name).style.display = "block";
+            this.document.getElementById(this.right_arrow_name).style.display = "none";
+            this.init_open_anim = false;
+            return;
+        }
     }
 
     check_window_handler = () => { //SLIDER SHOW/HIDE ON WINDOW WIDTH

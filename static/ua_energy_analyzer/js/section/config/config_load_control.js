@@ -521,7 +521,7 @@ class HourPeriodDisplay{
 
     assign_scroll_handler(scroll_handler, scroll_function_handlers, handler_position, scroll_position, scroll_element, entrie_element, scroll_type){
         let scroll_speedup = null;
-        let scroll_interval = 10;
+        let scroll_interval = 5;
         if(scroll_handler[handler_position] == null){
             scroll_handler[handler_position] = this.scroll_function.bind(this, entrie_element, scroll_function_handlers, scroll_position, handler_position, scroll_type, scroll_interval);
             scroll_element.addEventListener("click", scroll_handler[handler_position]);
@@ -548,7 +548,7 @@ class HourPeriodDisplay{
                 let offsetWidth = entrie_element.offsetWidth;
                 let scrollWidth = entrie_element.scrollWidth;
                 let seen_elements_width = 182;
-                let width_to_scroll = ((Math.floor(offsetWidth / seen_elements_width))*seen_elements_width)-30;
+                let width_to_scroll = ((Math.floor(offsetWidth / seen_elements_width))*seen_elements_width)-seen_elements_width;
                 scroll_function_handlers[scroll_position][handler_position][0] = setInterval(function() {
                     if(scroll_function_handlers[scroll_position][handler_position][0] != null && scroll_function_handlers[scroll_position+1][handler_position][1] == null){
                         entrie_element.scrollLeft -= scroll_interval;
@@ -558,7 +558,7 @@ class HourPeriodDisplay{
                         }
                         init_width += scroll_interval;
                     }
-                }, 10);
+                }, 5);
             }
         }
         else if(scroll_type == "right"){
@@ -571,7 +571,7 @@ class HourPeriodDisplay{
                 let offsetWidth = entrie_element.offsetWidth;
                 let scrollWidth = entrie_element.scrollWidth;
                 let seen_elements_width = 182;
-                let width_to_scroll = ((Math.floor(offsetWidth / seen_elements_width))*seen_elements_width)-30;
+                let width_to_scroll = ((Math.floor(offsetWidth / seen_elements_width))*seen_elements_width)-seen_elements_width;
                 scroll_function_handlers[scroll_position][handler_position][1] = setInterval(function() {
                     if(scroll_function_handlers[scroll_position][handler_position][1] != null && scroll_function_handlers[scroll_position-1][handler_position][0] == null){
                         entrie_element.scrollLeft += scroll_interval;
@@ -581,7 +581,7 @@ class HourPeriodDisplay{
                         }
                         init_width += scroll_interval;
                     }
-                }, 10);
+                }, 5);
             }
         }
         else if(scroll_type == "top"){
@@ -601,7 +601,7 @@ class HourPeriodDisplay{
                 else{
                     seen_elements_height = 52;
                 }
-                let height_to_sroll = ((Math.floor(offsetHeight / seen_elements_height))*seen_elements_height)-30;
+                let height_to_sroll = ((Math.floor(offsetHeight / seen_elements_height))*seen_elements_height)-seen_elements_height;
                 scroll_function_handlers[scroll_position][handler_position][0] = setInterval(function() {
                     if(scroll_function_handlers[scroll_position][handler_position][0] != null && scroll_function_handlers[scroll_position+1][handler_position][1] == null){
                         entrie_element.scrollTop -= scroll_interval;
@@ -611,7 +611,7 @@ class HourPeriodDisplay{
                         }
                         init_height += scroll_interval;
                     }
-                }, 10);
+                }, 5);
             }
         }
         else if(scroll_type == "bottom"){
@@ -631,7 +631,7 @@ class HourPeriodDisplay{
                 else{
                     seen_elements_height = 52;
                 }
-                let height_to_sroll = ((Math.floor(offsetHeight / seen_elements_height))*seen_elements_height)-30;
+                let height_to_sroll = ((Math.floor(offsetHeight / seen_elements_height))*seen_elements_height)-seen_elements_height;
                 scroll_function_handlers[scroll_position][handler_position][1] = setInterval(function() {
                     if(scroll_function_handlers[scroll_position][handler_position][1] != null && scroll_function_handlers[scroll_position-1][handler_position][0] == null){
                         entrie_element.scrollTop += scroll_interval;
@@ -641,7 +641,7 @@ class HourPeriodDisplay{
                         }
                         init_height += scroll_interval;
                     }
-                }, 10);
+                }, 5);
             }
         }
         else{
