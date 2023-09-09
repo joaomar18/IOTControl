@@ -15,7 +15,7 @@ function outputManualInvert(){
 /************************************ MENU SLIDERS ************************************/
 
 let config_vertical_slider = new VerticalSlider(document, window, "vertical_config_submenu","vertical_config_slider", "vertical_config_submenu_buttons", "config_slider_left_arrow", "config_slider_right_arrow", "config_subcontent_div", "config_content");
-let config_horizontal_slider = new HorizontalSlider(document, window, "config_content", "horizontal_config_submenu", "horizontal_config_slider", "horizontal_config_submenu", "config_slider_down_arrow", "config_slider_up_arrow");
+let config_horizontal_slider = new HorizontalSlider(document, window, "config_content", "horizontal_config_submenu", "horizontal_config_slider", "horizontal_config_submenu_buttons", "config_slider_down_arrow", "config_slider_up_arrow", "config_content");
 
 /********************************** END MENU SLIDERS **********************************/
 /**************************************************************************************/

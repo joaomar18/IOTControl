@@ -215,20 +215,6 @@ class VerticalSlider{
         this.last_submenu_state = null;
         this.initial_validation = false;
         this.invert_slider_handler = null;
-        
-        //Values
-        this.submenu_width = 184;
-        this.submenu_margin_right = 20;
-
-
-        this.submenu_current_width = null;
-        this.submenu_current_margin_right = null;
-        this.initial_submenu_width = null;
-        this.initial_submenu_margin_right = null;
-
-        this.init_close_anim = false;
-        this.init_open_anim = false;
-
     }
 
     invert_slider(){
@@ -245,85 +231,15 @@ class VerticalSlider{
     }
 
     close_slider(){
-        if(this.submenu_state){ 
-            this.initial_submenu_width = this.submenu_width;
-            this.initial_submenu_margin_right = this.submenu_margin_right;
-        }
-        else{
-            this.initial_submenu_width = 0;
-            this.initial_submenu_margin_right = 0;
-        }
-        this.close_slider_animation();
+        this.document.getElementById(this.submenu_name).classList.add("closed");
+        this.document.getElementById(this.left_arrow_name).style.display = "none";
+        this.document.getElementById(this.right_arrow_name).style.display = "block";
     }
 
     open_slider(){
-        if(this.submenu_state){ 
-            this.initial_submenu_width = this.submenu_width;
-            this.initial_submenu_margin_right = this.submenu_margin_right;
-        }
-        else{
-            this.initial_submenu_width = 0;
-            this.initial_submenu_margin_right = 0;
-        }
-        this.open_slider_animation();
-    }
-
-    close_slider_animation(){
-        if(!this.init_close_anim){
-            this.submenu_current_width = this.initial_submenu_width;
-            this.submenu_current_margin_right = this.initial_submenu_margin_right;
-            this.init_close_anim = true;
-        }
-        if(this.submenu_current_width > 0 || this.submenu_current_margin_right > 0){
-            let offset = 10;
-            let margin_offset = 0.4;
-            if(this.submenu_current_width-offset < 0){
-                offset = this.submenu_current_width;
-            }
-            if(this.submenu_current_margin_right-margin_offset < 0){
-                margin_offset = this.submenu_current_margin_right;
-            }
-            this.submenu_current_width -= offset;
-            this.submenu_current_margin_right -= margin_offset;
-            this.document.getElementById(this.submenu_name).style.width = String(this.submenu_current_width)+"px";
-            this.document.getElementById(this.submenu_name).style.marginRight = String(this.submenu_current_margin_right)+"px";
-            requestAnimationFrame(this.close_slider_animation.bind(this));
-        }
-        else{
-            this.document.getElementById(this.left_arrow_name).style.display = "none";
-            this.document.getElementById(this.right_arrow_name).style.display = "block";
-            this.init_close_anim = false;
-            return;
-        }
-    }
-
-    open_slider_animation(){
-        if(!this.init_open_anim){
-            this.submenu_current_width = this.initial_submenu_width;
-            this.submenu_current_margin_right = this.initial_submenu_margin_right;
-            this.init_open_anim = true;
-        }
-        if(this.submenu_current_width < this.submenu_width || this.submenu_current_margin_right < this.submenu_margin_right){
-            let offset = 10;
-            let margin_offset = 0.4;
-            if(this.submenu_current_width + offset > this.submenu_width){
-                offset = this.submenu_width - this.submenu_current_width;
-            }
-            if(this.submenu_current_margin_right + margin_offset > this.submenu_margin_right){
-                margin_offset = this.submenu_margin_right - this.submenu_current_margin_right;
-            }
-            this.submenu_current_width += offset;
-            this.submenu_current_margin_right += margin_offset;
-            this.document.getElementById(this.submenu_name).style.width = String(this.submenu_current_width)+"px";
-            this.document.getElementById(this.submenu_name).style.marginRight = String(this.submenu_current_margin_right)+"px";
-            requestAnimationFrame(this.open_slider_animation.bind(this));
-        }
-        else{
-            this.document.getElementById(this.left_arrow_name).style.display = "block";
-            this.document.getElementById(this.right_arrow_name).style.display = "none";
-            this.init_open_anim = false;
-            return;
-        }
+        this.document.getElementById(this.submenu_name).classList.remove("closed");
+        this.document.getElementById(this.left_arrow_name).style.display = "block";
+        this.document.getElementById(this.right_arrow_name).style.display = "none";
     }
 
     check_window_handler = () => { //SLIDER SHOW/HIDE ON WINDOW WIDTH
@@ -416,7 +332,7 @@ class VerticalSlider{
 }
 
 class HorizontalSlider{
-    constructor(document, window, main_container, menu_name,button_name, submenu_name, down_arrow_name, up_arrow_name){
+    constructor(document, window, main_container, menu_name, button_name, submenu_name, down_arrow_name, up_arrow_name, section){
         this.document = document;
         this.window = window;
         this.main_container = main_container;
@@ -425,6 +341,7 @@ class HorizontalSlider{
         this.submenu_name = submenu_name;
         this.down_arrow_name = down_arrow_name;
         this.up_arrow_name = up_arrow_name;
+        this.section = section;
         this.check_element = setInterval(this.check_element_handler.bind(this), 10);
         this.check_window = setInterval(this.check_window_handler.bind(this), 10);
         this.update_height = null;
@@ -450,29 +367,36 @@ class HorizontalSlider{
         }
     }
 
+
+
+
     close_slider(){
         this.document.getElementById(this.down_arrow_name).style.display = "none";
         this.document.getElementById(this.button_name).style.bottom = "3.1rem";
         this.document.getElementById(this.up_arrow_name).style.display = "block";
-        this.document.getElementById(this.submenu_name).style.display = "none";
+        this.document.getElementById(this.menu_name).classList.add("closed");
+        this.document.getElementById(this.main_container).style.marginBottom = " 7.1rem ";
+        this.document.getElementById(this.submenu_name).style.height = "0px";
+        this.document.getElementById(this.menu_name).style.height = "0px";
     }
 
     open_slider(){
+        this.document.getElementById(this.up_arrow_name).style.display = "none";
         this.document.getElementById(this.down_arrow_name).style.display = "block";
-        this.document.getElementById(this.submenu_name).style.display = "flex";
+        this.document.getElementById(this.menu_name).classList.remove("closed");
         if(this.update_height == null){
             this.update_height = setInterval(this.update_height_handler.bind(this), 10);
         }
-        this.document.getElementById(this.up_arrow_name).style.display = "none";
-
     }
 
     update_height_handler = () => {
-        if(this.document.getElementById(this.submenu_name) != null){
-            if(this.document.getElementById(this.submenu_name).style.display != 'none'){
+        if(this.document.getElementById(this.menu_name) != null && !this.document.getElementById(this.section).hidden){
+            if(!this.document.getElementById(this.menu_name).classList.contains("closed") && this.window.innerWidth < 992){
                 let height = this.document.getElementById(this.submenu_name).offsetHeight;
                 if (height != this.last_height){
                     this.document.getElementById(this.main_container).style.marginBottom = "calc( 7.1rem + " + String(height) + "px )";
+                    this.document.getElementById(this.submenu_name).style.height = "fit-content";
+                    this.document.getElementById(this.menu_name).style.height = "calc( " + String(height)+"px )";
                     this.document.getElementById(this.button_name).style.bottom = "calc( " + String(height) + "px + 3.1rem )" ;
                     this.last_height = height;
                 }
@@ -480,9 +404,13 @@ class HorizontalSlider{
             else{
                 if(this.update_height != null){
                     clearInterval(this.update_height);
-                    this.document.getElementById(this.main_container).style.marginBottom = " 7.1rem ";
                     this.update_height = null;
                     this.last_height = null;
+                }
+                if(this.window.innerWidth < 992){
+                    this.document.getElementById(this.main_container).style.marginBottom = " 7.1rem ";
+                    this.document.getElementById(this.submenu_name).style.height = "0px";
+                    this.document.getElementById(this.menu_name).style.height = "0px";
                 }
             }
         }  
@@ -534,6 +462,7 @@ class HorizontalSlider{
                             this.close_slider();
                         }
                     }
+                    this.update_height_handler();
                     this.last_submenu_state = null;
                     this.initial_validation = true;
                 }

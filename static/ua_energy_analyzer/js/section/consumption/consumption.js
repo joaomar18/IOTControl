@@ -1,7 +1,7 @@
 /************************************ MENU SLIDERS ************************************/
 
 let consumption_vertical_slider = new VerticalSlider(document, window, "vertical_consumption_submenu","vertical_consumption_slider", "vertical_consumption_submenu_buttons", "consumption_slider_left_arrow", "consumption_slider_right_arrow", "consumption_subcontent_div", "consumption_content");
-let consumption_horizontal_slider = new HorizontalSlider(document, window, "consumption_content", "horizontal_consumption_submenu", "horizontal_consumption_slider", "horizontal_consumption_submenu", "consumption_slider_down_arrow", "consumption_slider_up_arrow");
+let consumption_horizontal_slider = new HorizontalSlider(document, window, "consumption_content", "horizontal_consumption_submenu", "horizontal_consumption_slider", "horizontal_consumption_submenu_buttons", "consumption_slider_down_arrow", "consumption_slider_up_arrow", "consumption_content");
 
 /********************************** END MENU SLIDERS **********************************/
 /**************************************************************************************/

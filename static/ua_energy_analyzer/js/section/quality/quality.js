@@ -1,7 +1,7 @@
 /************************************ MENU SLIDERS ************************************/
 
 let quality_vertical_slider = new VerticalSlider(document, window, "vertical_quality_submenu","vertical_quality_slider", "vertical_quality_submenu_buttons", "quality_slider_left_arrow", "quality_slider_right_arrow", "quality_subcontent_div", "quality_content");
-let quality_horizontal_slider = new HorizontalSlider(document, window, "quality_content", "horizontal_quality_submenu", "horizontal_quality_slider", "horizontal_quality_submenu", "quality_slider_down_arrow", "quality_slider_up_arrow");
+let quality_horizontal_slider = new HorizontalSlider(document, window, "quality_content", "horizontal_quality_submenu", "horizontal_quality_slider", "horizontal_quality_submenu_buttons", "quality_slider_down_arrow", "quality_slider_up_arrow", "quality_content");
 
 /********************************** END MENU SLIDERS **********************************/
 /**************************************************************************************/

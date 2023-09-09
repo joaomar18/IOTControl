@@ -1,7 +1,7 @@
 /************************************ MENU SLIDERS ************************************/
 
 let history_vertical_slider = new VerticalSlider(document, window, "vertical_history_submenu","vertical_history_slider", "vertical_history_submenu_buttons", "history_slider_left_arrow", "history_slider_right_arrow", "history_subcontent_div", "history_content");
-let history_horizontal_slider = new HorizontalSlider(document, window, "history_content", "horizontal_history_submenu", "horizontal_history_slider", "horizontal_history_submenu", "history_slider_down_arrow", "history_slider_up_arrow");
+let history_horizontal_slider = new HorizontalSlider(document, window, "history_content", "horizontal_history_submenu", "horizontal_history_slider", "horizontal_history_submenu_buttons", "history_slider_down_arrow", "history_slider_up_arrow", "history_content");
 
 /********************************** END MENU SLIDERS **********************************/
 /**************************************************************************************/
