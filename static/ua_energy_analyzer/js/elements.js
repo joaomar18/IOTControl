@@ -219,6 +219,10 @@ class VerticalSlider{
         //Values
         this.submenu_width = 184;
         this.submenu_margin_right = 20;
+
+
+        this.submenu_current_width = null;
+        this.submenu_current_margin_right = null;
         this.initial_submenu_width = null;
         this.initial_submenu_margin_right = null;
 
@@ -265,25 +269,24 @@ class VerticalSlider{
     }
 
     close_slider_animation(){
-        let element_width = this.document.getElementById(this.submenu_name).offsetWidth;
-        let element_margin_right = getComputedStyle(this.document.getElementById(this.submenu_name)).getPropertyValue("margin-right");
-        element_margin_right = Number(element_margin_right.substring(0, element_margin_right.indexOf("px")));
         if(!this.init_close_anim){
-            element_width = this.initial_submenu_width;
-            element_margin_right = this.initial_submenu_margin_right;
+            this.submenu_current_width = this.initial_submenu_width;
+            this.submenu_current_margin_right = this.initial_submenu_margin_right;
             this.init_close_anim = true;
         }
-        if(element_width > 0 || element_margin_right > 0){
-            let offset = 20;
-            let margin_offset = 1;
-            if(element_width-offset < 0){
-                offset = element_width;
+        if(this.submenu_current_width > 0 || this.submenu_current_margin_right > 0){
+            let offset = 10;
+            let margin_offset = 0.4;
+            if(this.submenu_current_width-offset < 0){
+                offset = this.submenu_current_width;
             }
-            if(element_margin_right-margin_offset < 0){
-                margin_offset = element_margin_right;
+            if(this.submenu_current_margin_right-margin_offset < 0){
+                margin_offset = this.submenu_current_margin_right;
             }
-            this.document.getElementById(this.submenu_name).style.width = String(element_width-offset)+"px";
-            this.document.getElementById(this.submenu_name).style.marginRight = String(element_margin_right-margin_offset)+"px";
+            this.submenu_current_width -= offset;
+            this.submenu_current_margin_right -= margin_offset;
+            this.document.getElementById(this.submenu_name).style.width = String(this.submenu_current_width)+"px";
+            this.document.getElementById(this.submenu_name).style.marginRight = String(this.submenu_current_margin_right)+"px";
             requestAnimationFrame(this.close_slider_animation.bind(this));
         }
         else{
@@ -295,25 +298,24 @@ class VerticalSlider{
     }
 
     open_slider_animation(){
-        let element_width = this.document.getElementById(this.submenu_name).offsetWidth;
-        let element_margin_right = getComputedStyle(this.document.getElementById(this.submenu_name)).getPropertyValue("margin-right");
-        element_margin_right = Number(element_margin_right.substring(0, element_margin_right.indexOf("px")));
         if(!this.init_open_anim){
-            element_width = this.initial_submenu_width;
-            element_margin_right = this.initial_submenu_margin_right;
+            this.submenu_current_width = this.initial_submenu_width;
+            this.submenu_current_margin_right = this.initial_submenu_margin_right;
             this.init_open_anim = true;
         }
-        if(element_width < this.submenu_width || element_margin_right < this.submenu_margin_right){
-            let offset = 20;
-            let margin_offset = 1;
-            if(element_width + offset > this.submenu_width){
-                offset = this.submenu_width - element_width;
+        if(this.submenu_current_width < this.submenu_width || this.submenu_current_margin_right < this.submenu_margin_right){
+            let offset = 10;
+            let margin_offset = 0.4;
+            if(this.submenu_current_width + offset > this.submenu_width){
+                offset = this.submenu_width - this.submenu_current_width;
             }
-            if(element_margin_right + margin_offset > 20){
-                margin_offset = this.submenu_margin_right - element_margin_right;
+            if(this.submenu_current_margin_right + margin_offset > this.submenu_margin_right){
+                margin_offset = this.submenu_margin_right - this.submenu_current_margin_right;
             }
-            this.document.getElementById(this.submenu_name).style.width = String(element_width+offset)+"px";
-            this.document.getElementById(this.submenu_name).style.marginRight = String(element_margin_right+margin_offset)+"px";
+            this.submenu_current_width += offset;
+            this.submenu_current_margin_right += margin_offset;
+            this.document.getElementById(this.submenu_name).style.width = String(this.submenu_current_width)+"px";
+            this.document.getElementById(this.submenu_name).style.marginRight = String(this.submenu_current_margin_right)+"px";
             requestAnimationFrame(this.open_slider_animation.bind(this));
         }
         else{
