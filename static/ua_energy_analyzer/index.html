@@ -18,48 +18,93 @@
     <div class = "container-fluid">
         <div class = "d-flex justify-content-center align-content-center">
             <div id= "section_title">
-                <div class="d-flex d-lg-none drop-button" id = "main-drop-button">
-                    <div class="line-drop-button"></div>
-                    <div class="line-drop-button"></div>
-                    <div class="line-drop-button"></div>
+                <div class = "app-logo">
+                    <img src = "/static/ua_energy_analyzer/img/app_icon.ico" class = "app-logo-image" />
+                    <h5 class = "app-logo-text" id = "app_logo_text"></h5>
                 </div>
-                <h5 id ="title"></h5>
-                <span class = "time-date-text" id = "time_date_text" hidden></span>
+                <div class = "main-nav-div">
+                    <nav class = "main-nav" id = "main_nav">
+                        <a class = "link main-nav-link first-main-nav-link" href="/energy-analyzer/realtime" onclick="loadRealTime()">Dados em tempo real</a>
+                        <a class = "link main-nav-link" href="/energy-analyzer/consumption" onclick="loadConsumption()">Consumo</a>
+                        <a class = "link main-nav-link" href="/energy-analyzer/quality" onclick="loadQuality()">Qualidade de Energia</a>
+                        <a class = "link main-nav-link" href="/energy-analyzer/config" onclick="loadConfig()">Configuração</a>
+                        <a class = "link main-nav-link" href="/energy-analyzer/history" onclick="loadHistory()">Histórico</a>
+                    </nav>
+                </div>
+                <div class="acess-div">
+                    <div class = "help-button-div" title="Ajuda">
+                        <img src= "/static/ua_energy_analyzer/img/help.png" class = "help-button" />
+                    </div>
+                    <div class = "notification-button-div" title="Notificações">
+                        <span class = "notification-counter">0</span>
+                        <img src="/static/ua_energy_analyzer/img/notification-bell.png" class = "notification-button" />
+                    </div>
+                    <div class = "user-button-div" title = "Perfil">
+                        <img src="/static/ua_energy_analyzer/img/user.png" class = "user-button" />
+                    </div>
+                    <div class="language-select-div">
+                        <img src="/static/ua_energy_analyzer/img/earth.png" class = "language-icon" />
+                        <div class = "language-select-option">EN</div>
+                        <span class = "arrow arrow-bottom arrow-language"></span>
+                        <div class="language-dropdown-button">
+                            <div class="language-select-option">EN</div>
+                            <div class="language-select-option">ES</div>
+                            <div class="language-select-option">PT</div>
+                        </div>
+                    </div>
+                    <div class="dropdown-button-div" id = "dropdown_button_div" title = "Painel">
+                        <button class = "dropdown-button"></button>
+                        <div class="dropdown-content" hidden>
+                            <a href="#">Option 1</a>
+                            <a href="#">Option 2</a>
+                            <a href="#">Option 3</a>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                <div class="d-flex d-lg-none drop-button" id = "main-drop-button" hidden>
+                    <div class="line-drop-button"></div>
+                    <div class="line-drop-button"></div>
+                    <div class="line-drop-button"></div>
+                </div>-->
             </div>
         </div>
     </div>
-    <div class = "container-fluid" class = "nav-bar" id = "main-nav-bar">
-        <span class = "time-date-text-xs" id = "time_date_text_xs" hidden></span>
-        <div class = "d-flex flex-column flex-lg-row justify-content-evenly align-content-center">
-            <input type="button" class="nav_button" value="Dados em tempo real" onclick="loadRealTime()"></input>
-            <input type="button" class="nav_button" value="Consumo energético" onclick="loadConsumption()"></input>
-            <input type="button" class="nav_button" value="Qualidade de energia" onclick="loadQuality()"></input>
-            <input type="button" class="nav_button" value="Configuração" onclick="loadConfig()"></input>
-            <input type="button" class="nav_button" value="Histórico" onclick="loadHistory()"></input>
-        </div>
-    </div>
-    <div class = "container-fluid" id= "content">
+    <div class = "container-fluid main-content">
+        <div class = "container-fluid" id= "content">
 
-        <!--REALTIME CONTENT-->
-        <div class = "section-content" id = "realtime_content" hidden>
-        </div>
+            <!--REALTIME CONTENT-->
+            <div class = "section-content" id = "realtime_content" hidden>
+            </div>
 
-        <!--CONSUMPTION CONTENT-->
-        <div class = "section-content" id = "consumption_content" hidden>
-        </div>
+            <!--CONSUMPTION CONTENT-->
+            <div class = "section-content" id = "consumption_content" hidden>
+            </div>
 
-        <!--QUALITY CONTENT-->
-        <div class = "section-content" id = "quality_content" hidden>
-        </div>
+            <!--QUALITY CONTENT-->
+            <div class = "section-content" id = "quality_content" hidden>
+            </div>
 
-        <!--CONFIG CONTENT-->
-        <div class = "section-content" id = "config_content" hidden>
-        </div>
+            <!--CONFIG CONTENT-->
+            <div class = "section-content" id = "config_content" hidden>
+            </div>
 
-        <!--HISTORY CONTENT-->
-        <div class = "section-content" id = "history_content" hidden>
-        </div>
+            <!--HISTORY CONTENT-->
+            <div class = "section-content" id = "history_content" hidden>
+            </div>
 
+        </div>
+        <div class = "dashboard closed" id = "main_dashboard">
+            <div class = "main-dashboard-nav-div">
+                <nav class = "main-dashboard-nav" id = "main_dashboard_nav">
+                    <a class = "link main-dashboard-nav-link" href="/energy-analyzer/realtime" onclick="loadRealTime()">Dados em tempo real</a>
+                    <a class = "link main-dashboard-nav-link" href="/energy-analyzer/consumption" onclick="loadConsumption()">Consumo</a>
+                    <a class = "link main-dashboard-nav-link" href="/energy-analyzer/quality" onclick="loadQuality()">Qualidade de Energia</a>
+                    <a class = "link main-dashboard-nav-link" href="/energy-analyzer/config" onclick="loadConfig()">Configuração</a>
+                    <a class = "link main-dashboard-nav-link" href="/energy-analyzer/history" onclick="loadHistory()">Histórico</a>
+                </nav>
+            </div>
+        </div>
     </div>
     <div class = "container-fluid">
         <div class = "d-flex flex-row justify-content-evenly align-content-center">

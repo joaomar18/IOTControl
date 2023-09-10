@@ -367,9 +367,6 @@ class HorizontalSlider{
         }
     }
 
-
-
-
     close_slider(){
         this.document.getElementById(this.down_arrow_name).style.display = "none";
         this.document.getElementById(this.button_name).style.bottom = "3.1rem";

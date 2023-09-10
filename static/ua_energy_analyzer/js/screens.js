@@ -1,63 +1,25 @@
-let title = document.getElementById("title");
 let full_loader = document.getElementById("full-loader");
 let connect_display = document.getElementById("connecting-div");
 let warning_display = document.getElementById("connect-error-div");
 let connect_error_message = document.getElementById("error_text_message");
 let content_div = document.getElementById("content");
-
-let mainNavBar = document.getElementById("main-nav-bar");
-let mainDropButton = document.getElementById("main-drop-button");
+let main_app_section = document.getElementById("app_logo_text");
 
 let statePopup = document.getElementById("state-footer");
 let buttonState = document.getElementById("controller-state-footer");
 
-class DateTimeWidget{
-    constructor(document, element, element_xs, initial_date){
-        this.document = document;
-        this.element = element;
-        this.element_xs = element_xs;
-        this.date = initial_date;
-        this.date_string = null;
-        this.last_update_time_stamp = 0;
-        this.update_element_handler();
+let dropdown_button_div = document.getElementById("dropdown_button_div");
+
+let main_dashboard = document.getElementById("main_dashboard");
+
+dropdown_button_div.addEventListener("click", function(){
+    if(main_dashboard.classList.contains("closed")){
+        main_dashboard.classList.remove("closed");
     }
-
-    format_date_time(date){
-        let full_year = date.getFullYear();
-        let month = date.getMonth();
-        let day = date.getDate();
-        let day_of_week = date.getDay();
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let seconds = date.getSeconds();   
-        let month_str;
-        let day_str;
-        const months_str = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-        const days_str = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
-        month_str = months_str[month];
-        day_str = days_str[day_of_week];
-        let date_str = String(hours).padStart(2, '0') + ":" + String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0') + ", " + day_str + " " + String(day) + " de " + String(month_str) + " " + String(full_year);
-        return date_str;
+    else{
+        main_dashboard.classList.add("closed");
     }
-
-    
-
-    update_element_handler = () => {
-        const current_time_stamp = performance.now();
-        if((current_time_stamp - this.last_update_time_stamp) >= 1000){
-            this.last_update_time_stamp = current_time_stamp;
-            this.date.setSeconds(this.date.getSeconds() + 1);
-            if(this.document.getElementById(this.element) != null){
-                this.document.getElementById(this.element).innerText = this.format_date_time(this.date);
-            }
-            if(this.document.getElementById(this.element_xs) != null){
-                this.document.getElementById(this.element_xs).innerText = this.format_date_time(this.date);
-            }
-        }
-        requestAnimationFrame(this.update_element_handler.bind(this));
-    }
-}
-
+});
 
 class PopoverUtil{
     constructor(document){
@@ -98,39 +60,6 @@ class PopoverUtil{
             this.active_popovers.push(new_popover);
             return new_popover;
         });
-    }
-}
-
-class DropDownMenu{
-    constructor(window, drop_down_element, button_element){
-        this.window = window;
-        this.drop_down_element = drop_down_element;
-        this.button_element = button_element;
-        this.drop_down_visible = false;
-        this.button_element.addEventListener("click", () => {
-            if(this.drop_down_visible){
-                this.drop_down_visible = false;
-            }
-            else{
-                this.drop_down_visible = true;
-            }
-        });
-        this.check_window = setInterval(this.check_window_handler.bind(this), 10);
-    }
-    check_window_handler = () => {
-        let window_width = this.window.innerWidth;
-        if(window_width >= 992){
-            this.drop_down_visible = false;
-            this.drop_down_element.style.display = "block";
-        }
-        else{
-            if(this.drop_down_visible){
-                this.drop_down_element.style.display = "block";
-            }
-            else{
-                this.drop_down_element.style.display = "none";
-            }
-        }
     }
 }
 
@@ -306,11 +235,11 @@ class ContentLoader{
 }
 
 class ContentScreen{
-    constructor(window, screen_loader, title_element, screen_titles, control_elements,  content_elements, content_loader, initial_screen_number){
+    constructor(window, screen_loader, main_app_section, main_screen_names, control_elements,  content_elements, content_loader, initial_screen_number){
         this.window = window; //window element
         this.screen_loader = screen_loader; //screen loader
-        this.title_element = title_element; //title element
-        this.screen_titles = screen_titles;
+        this.main_app_section = main_app_section;
+        this.main_screen_names = main_screen_names;
         this.control_elements = document.getElementsByClassName(control_elements);
         this.control_elements = Array.from(this.control_elements);
         this.initial_screen_number = initial_screen_number;
@@ -318,6 +247,7 @@ class ContentScreen{
         this.content_elements = content_elements;
         this.content_loader = content_loader;
         this.check_active_device = setInterval(this.check_active_device_handler.bind(this), 10);
+        this.load_control_elements = setInterval(this.load_control_elements_handler.bind(this), 10);
         this.init_running = false;
     }
 
@@ -325,6 +255,15 @@ class ContentScreen{
         if(active_device != null){
             this.init();
         }
+    }  
+    
+    load_control_elements_handler = () => {
+        for(let control of this.control_elements){
+            control.addEventListener("click", function(event){
+                event.preventDefault();
+            })
+        }
+        clearInterval(this.load_control_elements);
     }    
 
     async init(){
@@ -350,19 +289,16 @@ class ContentScreen{
         if(this.screen_number != screen_number){
             if(this.content_loader.elements_loaded[screen_number]){
                 active_device.valid_elements = false;
-                for(let control_element of this.control_elements){
-                    control_element.style.fontWeight = "400";
-                    control_element.style.boxShadow = "none";
-                }
-    
                 if(this.screen_number != null){
-
+                    this.control_elements[this.screen_number].textDecoration = "none";
                     this.content_elements[this.screen_number].hidden = true;
                 }
+
+                this.main_app_section.innerText = this.main_screen_names[screen_number];
     
                 this.content_elements[screen_number].hidden = false;
-                this.title_element.innerText = this.screen_titles[screen_number];
-    
+
+                this.control_elements[screen_number].textDecoration = "underline";
     
                 if(screen_number == 0){ //Ecra de dados em tempo real
                     active_device.set_elements(get_real_time_nodes());
@@ -378,8 +314,6 @@ class ContentScreen{
                 }
                 else if(screen_number == 4){ //Ecra de historico
                 }
-                this.control_elements[screen_number].style.fontWeight = "500";
-                this.control_elements[screen_number].style.boxShadow = "4px 4px 4px rgba(0, 0, 0, 0.1)";
                 active_device.valid_elements = true;
                 active_device.set_active_section(screen_number+1);
                 this.screen_number = screen_number;
@@ -392,8 +326,6 @@ class ContentScreen{
     }
 }
 
-
-let date_time_widget = new DateTimeWidget(document, "time_date_text", "time_date_text_xs", new Date());
 let popovers = new PopoverUtil(document);
 let screen_loader = new ScreenLoader(full_loader, connect_display, warning_display, connect_error_message, 5000);
 
@@ -467,12 +399,10 @@ let subcontent_files_directory = "/static/ua_energy_analyzer/section/"
 let content_css_files_directory = "/static/ua_energy_analyzer/css/";
 let content_js_files_directory = "/static/ua_energy_analyzer/js/";
 
-
-let content_screen_titles = ["Dados em tempo real", "Consumo energético", "Qualidade de energia", "Configuração", "Histórico"];
+let screen_names = ["Dados em tempo Real", "Consumo", "Qualidade de Energia", "Configuração", "Histórico"];
 
 let content_loader = new ContentLoader(document, content_elements_array, content_files, subcontent_files, content_css_files, content_js_files, content_files_directory, subcontent_files_directory, content_css_files_directory, content_js_files_directory);
-let content_screen = new ContentScreen(window, screen_loader, title, content_screen_titles, "nav_button", content_elements_array, content_loader, 3);
-let nav_drop_down = new DropDownMenu(window, mainNavBar, mainDropButton);
+let content_screen = new ContentScreen(window, screen_loader, main_app_section, screen_names, "link", content_elements_array, content_loader, 0);
 let footer_drop_down = new DropDownMenuExit(document, statePopup, buttonState);
 let device_info = new DeviceInfo(document, "device_name", "device_type");
 

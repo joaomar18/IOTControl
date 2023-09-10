@@ -49,26 +49,3 @@ let config_temporary_alerts = new TemporaryAlert(document, "config_subcontent_di
 
 /************************************* END ALERTS *************************************/
 /**************************************************************************************/
-
-/*
-let config_section_display_checker = setInterval(config_section_display_checker_handler, 10);
-let config_section_content = "config_content";
-let config_section_valid = false;
-
-function config_section_display_checker_handler(){
-    if(content_loader.elements_loaded[3]){
-        if(!document.getElementById(config_section_content).hidden){
-            if(!config_section_valid){
-                config_section_valid = true;
-                init_hour_period_display();
-                init_protection_display();
-            }
-        }
-        else{
-            if(config_section_valid){
-                config_section_valid = false;
-            }
-        }
-    }
-}
-*/
