@@ -4,6 +4,7 @@ html{
 
 body{
 background-color: whitesmoke;
+min-width: 320px;
 }
 
 /* For Chrome, Safari, and newer versions of Edge */
@@ -780,7 +781,7 @@ input[type="number"] {
     }
 }
 
-@media screen and (min-width: 992px) and (max-width: 1600px) {
+@media screen and (min-width: 992px) and (max-width: 1599px) {
     .dashboard{
         display:block;
     }

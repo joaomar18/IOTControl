@@ -86,7 +86,7 @@
     height:400px;
     min-width: 21rem;
     text-align: center;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: start;
     flex-direction: column;
@@ -324,11 +324,4 @@
 #realtime-image-animation{
     position: absolute;
     left:72px;
-}
-
-
-@media screen and (min-width: 1600px) {
-    .realtime-animation{
-        display: flex;
-    }
 }
