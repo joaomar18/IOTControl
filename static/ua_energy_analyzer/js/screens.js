@@ -234,6 +234,85 @@ class ContentLoader{
     }
 }
 
+
+class ContentOrganizer{
+    constructor(document, content, grid_container, grid_elements, width_triggers, configuration, special){
+        this.document = document;
+        this.content = content;
+        this.grid_container = grid_container;
+        this.grid_elements = grid_elements;
+        this.width_triggers = width_triggers;
+        this.configuration = configuration;
+        this.special = special;
+
+        this.set_configuration = null;
+        this.check_content_width = setInterval(this.check_content_width_handler.bind(this), 10);
+
+    }
+
+    check_content_width_handler = () => {
+            let width = this.document.getElementById(this.content).offsetWidth;
+            let configuration = null;
+            let new_configuration = null;
+            let i = 0;
+            for(let width_trigger of this.width_triggers){
+                if(i == 0){
+                    
+                    if(width < width_trigger){
+                        break;
+                    }
+                }
+                else{
+                    if(this.width_triggers[i-1] <= width && width < width_trigger){
+                        break;
+                    }
+                }
+                i++;
+            }
+            console.log(i);
+            configuration = this.configuration[i];
+            new_configuration = i;
+
+            if(this.set_configuration != new_configuration){
+                console.log(configuration);
+                this.document.getElementById(this.grid_container).style.gridTemplateRows = "repeat(" + String(configuration[0]) + ", fit-content)";
+                this.document.getElementById(this.grid_container).style.gridTemplateColumns = "repeat(" + String(configuration[1]) + ", 1fr)";
+
+                if(this.set_configuration != null){
+                    if(this.special[this.set_configuration] == "move-up-last"){
+                        if(this.special[new_configuration] != "move-up-last"){
+                            let elements = this.document.getElementsByClassName(this.elements);
+                            elements = Array.from(elements);
+                            elements[this.elements.length-1].style.gridRow = String(configuration[0]);
+                            elements[this.elements.length-1].style.gridColumn = String(configuration[1]);
+                        }
+                    }
+                }
+
+                if(this.special[new_configuration] != ""){
+                    if(this.special[new_configuration] == "move-up-last"){
+                        let elements = this.document.getElementsByClassName(this.elements);
+                        elements = Array.from(elements);
+                        if(configuration[0] > 1){
+                            elements[this.elements.length-1].style.gridRow = String(configuration[0]-1);
+                        }  
+                        else{
+                            elements[this.elements.length-1].style.gridRow = String(configuration[0]);
+
+                        }
+                        if(configuration[1] > 1){
+                            elements[this.elements.length-1].style.gridColumn = String(configuration[1]-1);
+                        }
+                        else{
+                            elements[this.elements.length-1].style.gridColumn = String(configuration[1]);
+                        }
+                    }
+                }
+                this.set_configuration = new_configuration;
+            }
+    }  
+}
+
 class ContentScreen{
     constructor(window, screen_loader, main_app_section, main_screen_names, control_elements,  content_elements, content_loader, initial_screen_number){
         this.window = window; //window element
@@ -402,6 +481,13 @@ let content_js_files_directory = "/static/ua_energy_analyzer/js/";
 let screen_names = ["Dados em tempo Real", "Consumo", "Qualidade de Energia", "Configuração", "Histórico"];
 
 let content_loader = new ContentLoader(document, content_elements_array, content_files, subcontent_files, content_css_files, content_js_files, content_files_directory, subcontent_files_directory, content_css_files_directory, content_js_files_directory);
+
+let realtime_width_triggers = [1100, 1600];
+let realtime_grid_configuration = [[5, 1], [3, 2], [3, 3]];
+let realtime_grid_special = ["move-up-last", "move-up-last", ""];
+
+let realtime_divs_organizer = new ContentOrganizer(document, "content", "realtime_content_grid", "realtime-content-grid-item", realtime_width_triggers, realtime_grid_configuration, realtime_grid_special);
+
 let content_screen = new ContentScreen(window, screen_loader, main_app_section, screen_names, "link", content_elements_array, content_loader, 0);
 let footer_drop_down = new DropDownMenuExit(document, statePopup, buttonState);
 let device_info = new DeviceInfo(document, "device_name", "device_type");

@@ -24,11 +24,35 @@
                 </div>
                 <div class = "main-nav-div">
                     <nav class = "main-nav" id = "main_nav">
-                        <a class = "link main-nav-link first-main-nav-link" href="/energy-analyzer/realtime" onclick="loadRealTime()">Dados em tempo real</a>
-                        <a class = "link main-nav-link" href="/energy-analyzer/consumption" onclick="loadConsumption()">Consumo</a>
-                        <a class = "link main-nav-link" href="/energy-analyzer/quality" onclick="loadQuality()">Qualidade de Energia</a>
-                        <a class = "link main-nav-link" href="/energy-analyzer/config" onclick="loadConfig()">Configuração</a>
-                        <a class = "link main-nav-link" href="/energy-analyzer/history" onclick="loadHistory()">Histórico</a>
+                        <div class = "nav-entry main-nav-entry">
+                            <a class = "link main-nav-link first-main-nav-link" href="/energy-analyzer/realtime" onclick="loadRealTime()">
+                                Dados em tempo real
+                            </a>
+                        </div>
+                        <div class = "nav-entry main-nav-entry">
+                            <span class = "arrow arrow-bottom arrow-main-nav"></span>
+                            <a class = "link main-nav-link" href="/energy-analyzer/consumption" onclick="loadConsumption()">
+                                Consumo
+                            </a>
+                        </div>
+                        <div class = "nav-entry main-nav-entry">
+                            <span class = "arrow arrow-bottom arrow-main-nav"></span>
+                            <a class = "link main-nav-link" href="/energy-analyzer/quality" onclick="loadQuality()">
+                                Qualidade de Energia
+                            </a>
+                        </div>
+                        <div class = "nav-entry main-nav-entry">
+                            <span class = "arrow arrow-bottom arrow-main-nav"></span>
+                            <a class = "link main-nav-link" href="/energy-analyzer/config" onclick="loadConfig()">
+                                Configuração
+                            </a>
+                        </div>
+                        <div class = "nav-entry main-nav-entry">
+                            <span class = "arrow arrow-bottom arrow-main-nav"></span>
+                            <a class = "link main-nav-link" href="/energy-analyzer/history" onclick="loadHistory()">
+                                Histórico
+                            </a>
+                        </div>
                     </nav>
                 </div>
                 <div class="acess-div">
@@ -70,6 +94,43 @@
             </div>
         </div>
     </div>
+    <div class = "container-fluid">
+            <div class = "dashboard-small-nav-div">
+                <nav class = "dashboard-small-nav" id = "dashboard_small_nav">
+                    <div class = "nav-entry small-nav-entry">
+                        <span class = "arrow arrow-bottom arrow-small-nav"></span>
+                        <a class = "link dashboard-small-nav-link" href="/energy-analyzer/realtime" onclick="loadRealTime()">
+                            Dados em tempo real
+                        </a>
+                    </div>
+                    <div class = "nav-entry small-nav-entry">
+                        <span class = "arrow arrow-bottom arrow-small-nav"></span>
+                        <a class = "link dashboard-small-nav-link" href="/energy-analyzer/consumption" onclick="loadConsumption()">
+                            Consumo
+                        </a>
+                    </div>
+                    <div class = "nav-entry small-nav-entry">
+                        <span class = "arrow arrow-bottom arrow-small-nav"></span>
+                        <a class = "link dashboard-small-nav-link" href="/energy-analyzer/quality" onclick="loadQuality()">
+                            Qualidade de Energia
+                        </a>
+                    </div>
+                    <div class = "nav-entry small-nav-entry">
+                        <span class = "arrow arrow-bottom arrow-small-nav"></span>
+                        <a class = "link dashboard-small-nav-link" href="/energy-analyzer/config" onclick="loadConfig()">
+                            Configuração
+                        </a>
+                    </div>
+                    <div class = "nav-entry small-nav-entry">
+                        <span class = "arrow arrow-bottom arrow-small-nav"></span>
+                        <a class = "link dashboard-small-nav-link" href="/energy-analyzer/history" onclick="loadHistory()">
+                            Histórico
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
     <div class = "container-fluid main-content">
         <div class = "container-fluid" id= "content">
 
@@ -94,14 +155,41 @@
             </div>
 
         </div>
-        <div class = "dashboard closed" id = "main_dashboard">
+        <div class = "dashboard" id = "main_dashboard">
             <div class = "main-dashboard-nav-div">
                 <nav class = "main-dashboard-nav" id = "main_dashboard_nav">
-                    <a class = "link main-dashboard-nav-link" href="/energy-analyzer/realtime" onclick="loadRealTime()">Dados em tempo real</a>
-                    <a class = "link main-dashboard-nav-link" href="/energy-analyzer/consumption" onclick="loadConsumption()">Consumo</a>
-                    <a class = "link main-dashboard-nav-link" href="/energy-analyzer/quality" onclick="loadQuality()">Qualidade de Energia</a>
-                    <a class = "link main-dashboard-nav-link" href="/energy-analyzer/config" onclick="loadConfig()">Configuração</a>
-                    <a class = "link main-dashboard-nav-link" href="/energy-analyzer/history" onclick="loadHistory()">Histórico</a>
+                    <div class = "nav-entry dashboard-nav-entry">
+                        <span class = "arrow arrow-left arrow-dashboard-nav"></span>
+                        <a class = "link main-dashboard-nav-link" href="/energy-analyzer/realtime" onclick="loadRealTime()">
+                            Dados em tempo real
+                        </a>
+                    </div>
+                    <div class = "nav-entry dashboard-nav-entry">
+                        <span class = "arrow arrow-left arrow-dashboard-nav"></span>
+                        <a class = "link main-dashboard-nav-link" href="/energy-analyzer/consumption" onclick="loadConsumption()">
+                            Consumo
+                        </a>
+
+                    </div>
+                    <div class = "nav-entry dashboard-nav-entry">
+                        <span class = "arrow arrow-left arrow-dashboard-nav"></span>
+                        <a class = "link main-dashboard-nav-link" href="/energy-analyzer/quality" onclick="loadQuality()">
+                            Qualidade de Energia
+                        </a>
+                    </div>
+                    <div class = "nav-entry dashboard-nav-entry">
+                        <span class = "arrow arrow-left arrow-dashboard-nav"></span>
+                        <a class = "link main-dashboard-nav-link" href="/energy-analyzer/config" onclick="loadConfig()">
+                            Configuração
+                        </a>
+
+                    </div>
+                    <div class = "nav-entry dashboard-nav-entry">
+                        <span class = "arrow arrow-left arrow-dashboard-nav"></span>
+                        <a class = "link main-dashboard-nav-link" href="/energy-analyzer/history" onclick="loadHistory()">
+                            Histórico
+                        </a>
+                    </div>
                 </nav>
             </div>
         </div>
