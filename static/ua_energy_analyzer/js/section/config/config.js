@@ -12,33 +12,10 @@ function outputManualInvert(){
 /************************************ END CONTROLS ************************************/
 /**************************************************************************************/
 
-/************************************ MENU SLIDERS ************************************/
-
-let config_vertical_slider = new VerticalSlider(document, window, "vertical_config_submenu","vertical_config_slider", "vertical_config_submenu_buttons", "config_slider_left_arrow", "config_slider_right_arrow", "config_subcontent_div", "config_content");
-let config_horizontal_slider = new HorizontalSlider(document, window, "config_content", "horizontal_config_submenu", "horizontal_config_slider", "horizontal_config_submenu_buttons", "config_slider_down_arrow", "config_slider_up_arrow", "config_content");
-
-/********************************** END MENU SLIDERS **********************************/
-/**************************************************************************************/
-
 /****************************** SUB SCREEN MANIPULATION *******************************/
 
 let config_sub_screen_names = ["Controlo de Carga", "Proteção e Limitação", "Dispositivo"];
 let config_sub_screen_containers = ["controlo_carga_content", "protecao_limitacao_content", "device_content"];
-let config_sub_screen = new SubScreen(document, "config_subcontent_title", "sub-nav-button-config", "sub-nav-button-small-config", config_sub_screen_names, config_sub_screen_containers, 1);
-
-
-
-function setControlSubScreen(){
-    config_sub_screen.changeSubScreen(0);
-}
-
-function setSafeLimitSubScreen(){
-    config_sub_screen.changeSubScreen(1);
-}
-
-function setDeviceSubScreen(){
-    config_sub_screen.changeSubScreen(2);
-}
 
 /**************************** END SUB SCREEN MANIPULATION *****************************/
 /**************************************************************************************/

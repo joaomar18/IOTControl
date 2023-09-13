@@ -325,6 +325,19 @@ class ContentOrganizer{
     }  
 }
 
+
+
+class NavButtons{
+    constructor(document, buttons){
+        this.buttons = buttons;
+    }
+}
+
+
+
+
+
+
 class ContentScreen{
     constructor(window, screen_loader, main_app_section, main_screen_names, control_elements,  content_elements, content_loader, initial_screen_number){
         this.window = window; //window element
@@ -524,4 +537,26 @@ function loadConfig(){
 
 function loadHistory(){
     content_screen.change_screen(4);
+}
+
+
+
+let navigation_buttons = document.getElementsByClassName("nav-entry");
+navigation_buttons = Array.from(navigation_buttons);
+
+
+let navigation_content = document.getElementsByClassName("nav-content");
+navigation_content = Array.from(navigation_content);
+
+let i = 0;
+for(let navigation_button of navigation_buttons){
+    navigation_button.addEventListener("click", function(){
+        if(navigation_content[i].classList.contains("active")){
+            navigation_content[i].classList.remove("active");
+        }
+        else{
+            navigation_content[i].classList.add("active");
+        }
+    });
+    i++;
 }
