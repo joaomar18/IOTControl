@@ -97,7 +97,7 @@ class ScreenLoader{
         this.warning_display = warning_display;
         this.connect_error_message = connect_error_message;
         this.loaded = false;
-        this.check_loading = setInterval(this.loading_handler.bind(this), 100);
+        this.check_loading = setInterval(this.loading_handler.bind(this), 10);
         this.loader_timeout = setTimeout(this.timeout_handler.bind(this), timeout);
         this.final_load_timeout = null;
         this.error_message = null;
@@ -326,18 +326,6 @@ class ContentOrganizer{
 }
 
 
-
-class NavButtons{
-    constructor(document, buttons){
-        this.buttons = buttons;
-    }
-}
-
-
-
-
-
-
 class ContentScreen{
     constructor(window, screen_loader, main_app_section, main_screen_names, control_elements,  content_elements, content_loader, initial_screen_number){
         this.window = window; //window element
@@ -540,23 +528,73 @@ function loadHistory(){
 }
 
 
+class NavButtons{
+    constructor(buttons, content){
+        this.buttons = buttons;
+        this.content = content;
+        this.content_heights = [];
+        this.assign_events = setInterval(this.assign_events_handler.bind(this), 10);
+        this.current_sublink = null;
+    }
+
+    assign_events_handler = () => {
+        for(let i = 0; i < this.buttons.length; i++){
+            let sublink_number = Number(this.content[i].getElementsByTagName("a").length);
+            console.log(sublink_number);
+            let content_height;
+            if(sublink_number > 2){
+                content_height = ((sublink_number-2)*3.5)+ 2*4;
+            }
+            else{
+                content_height = sublink_number*4;
+            }
+            console.log(content_height);
+            this.content_heights.push(String(content_height)+"rem");
+            this.assign_event(i);
+        }
+        document.addEventListener("click", (event) => {
+            if (!event.target.closest(".nav-entry")){
+                this.hide_content();
+            }
+        });
+        clearInterval(this.assign_events);
+        this.assign_events = null;
+    }  
+
+    assign_event(el_number){
+        this.buttons[el_number].addEventListener("click", (event) => {
+            this.assign_event_function(el_number, event);
+        });
+    }
+
+    assign_event_function(el_number, event){
+        if(this.content[el_number].classList.contains("active")){
+            this.hide_content();
+        }
+        else{
+            this.hide_content();
+            this.content[el_number].style.height = this.content_heights[el_number];
+            this.content[el_number].classList.add("active");
+            this.current_sublink = el_number;
+        }
+    }
+
+    hide_content(){
+        if(this.current_sublink != null){
+            this.content[this.current_sublink].classList.remove("active");
+            this.content[this.current_sublink].style.height = String("0px");
+            this.current_sublink = null;
+        }
+    }
+
+}
+
+
 
 let navigation_buttons = document.getElementsByClassName("nav-entry");
 navigation_buttons = Array.from(navigation_buttons);
 
-
 let navigation_content = document.getElementsByClassName("nav-content");
 navigation_content = Array.from(navigation_content);
 
-let i = 0;
-for(let navigation_button of navigation_buttons){
-    navigation_button.addEventListener("click", function(){
-        if(navigation_content[i].classList.contains("active")){
-            navigation_content[i].classList.remove("active");
-        }
-        else{
-            navigation_content[i].classList.add("active");
-        }
-    });
-    i++;
-}
+let nav_buttons = new NavButtons(navigation_buttons, navigation_content);
