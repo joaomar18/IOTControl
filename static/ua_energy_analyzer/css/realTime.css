@@ -13,19 +13,6 @@
 
 */
 
-.content-grid{
-    display:grid;
-    row-gap: 20px;
-    align-items: start; /* Center vertically */
-    justify-content: center;
-}
-
-.content-grid-item{
-    display: grid;
-    align-items: flex-start;
-    justify-items: center;
-}
-
 .L_container {
     min-width: 300px;
     max-width: 450px;

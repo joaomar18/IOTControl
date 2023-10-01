@@ -226,6 +226,8 @@ input[type="number"] {
 
 .dashboard-nav-entry{
     width: 100%;
+    overflow:visible;
+
 }
 
 
@@ -439,6 +441,7 @@ input[type="number"] {
 
 .dashboard.closed{
     width:0;
+    
 }
 
 .dashboard-small-nav-div{

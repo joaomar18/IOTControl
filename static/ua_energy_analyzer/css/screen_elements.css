@@ -4,7 +4,6 @@
   height: fit-content;
   min-height: 300px;
   width: 100%;
-  margin-bottom: 7.1rem;
   position:relative;
   transition: margin-bottom 0.5s;
 }
@@ -93,6 +92,24 @@
   min-width:300px;
   width:50%;
   z-index: 9999;
+}
+
+.content-grid{
+  display:grid;
+  width: 100%;
+  row-gap: 20px;
+  align-items: start; /* Center vertically */
+  justify-content: center;
+}
+
+.content-grid-item{
+  display: grid;
+  align-items: flex-start;
+  justify-items: center;
+}
+
+.content-grid-item-span-3{
+  grid-column: span 3;
 }
 
 @media screen and (min-width: 992px) { /* Above Large Screen */

@@ -334,7 +334,7 @@ class ContentOrganizer{
 
 
 class ContentScreen{
-    constructor(document, window, screen_loader, main_app_section, main_screen_names, screens_section, sub_screen_names, subscreens, control_elements, sub_control_elements,  content_elements, content_loader, initial_screen_number){
+    constructor(document, window, screen_loader, main_app_section, main_screen_names, screens_section, sub_screen_names, subscreens, subscreens_titles, control_elements, sub_control_elements,  content_elements, content_loader, initial_screen_number){
         this.document = document;
         this.window = window; //window element
         this.screen_loader = screen_loader; //screen loader
@@ -343,13 +343,14 @@ class ContentScreen{
         this.screens_section = screens_section;
         this.sub_screen_names = sub_screen_names;
         this.subscreens = subscreens;
+        this.subscreens_titles = subscreens_titles;
         this.control_elements = document.getElementsByClassName(control_elements);
         this.control_elements = Array.from(this.control_elements);
         this.sub_control_elements = document.getElementsByClassName(sub_control_elements);
         this.sub_control_elements = Array.from(this.sub_control_elements);
         this.initial_screen_number = initial_screen_number;
         this.screen_number = null;
-        this.screen_section = null;
+        this.section_number = null;
         this.content_elements = content_elements;
         this.content_loader = content_loader;
         this.check_active_device = setInterval(this.check_active_device_handler.bind(this), 10);
@@ -392,8 +393,10 @@ class ContentScreen{
         }
         this.load_first_element_running = true;
         try{
-            let first_section = Number((String(this.initial_screen_number))[0]);
-            await this.content_loader.load_element(first_section-1);
+            let section_number = String(this.initial_screen_number);
+            section_number = section_number.substring(0, (section_number.length)-1);
+            section_number = Number(section_number);
+            await this.content_loader.load_element(section_number-1);
             this.first_element_loaded = true;
         }
         finally{
@@ -408,7 +411,10 @@ class ContentScreen{
         this.init_running = true;
         try{
             if(!this.screen_loader.loaded){
-                await this.change_screen(this.initial_screen_number); //Initialize the screen with screen number
+                let section_number = String(this.initial_screen_number);
+                section_number = section_number.substring(0, (section_number.length)-1);
+                section_number = Number(section_number);
+                await this.change_screen(this.initial_screen_number, section_number); //Initialize the screen with screen number
                 this.screen_loader.set_loaded();
                 this.content_loader.startLoadingOthers();
                 clearInterval(this.check_active_device);
@@ -419,52 +425,50 @@ class ContentScreen{
         }
     }
 
-    async change_screen(screen_number){
+    async change_screen(screen_number, section_number){
         if(this.screen_number != screen_number){
-            let section = Number((String(screen_number))[0]);
-            if(this.content_loader.elements_loaded[section-1]){
+            if(this.content_loader.elements_loaded[section_number-1]){
                 active_device.valid_elements = false;
-                if(this.section != null){
-                    this.control_elements[this.section-1].textDecoration = "none";
-                    this.document.getElementById(this.subscreens[this.section-1]).hidden = true;
+
+
+                if(this.subscreens_titles[section_number] != null){
+                    this.document.getElementById(this.subscreens_titles[section_number]).innerText = this.sub_screen_names[screen_number];
+                }
+
+
+                if(this.screen_number != null){
+                    if(this.document.getElementById(this.subscreens[this.screen_number]) != null){
+                        this.document.getElementById(this.subscreens[this.screen_number]).hidden = true;
+                    }
                 }
 
                 if(this.document.getElementById(this.subscreens[screen_number]) != null){
                     this.document.getElementById(this.subscreens[screen_number]).hidden = false;
                 }
+                
 
-                if(this.screen_section != section){
-                    if(this.screen_section != null){
-                        this.document.getElementById(this.screens_section[this.screen_section]).hidden = true;
+                if(this.section_number != section_number){
+                    if(this.section_number != null){
+                        this.document.getElementById(this.screens_section[this.section_number]).hidden = true;
                     }
-                    this.document.getElementById(this.screens_section[section]).hidden = false;
+                    this.document.getElementById(this.screens_section[section_number]).hidden = false;
                 }
 
-                this.main_app_section.innerText = this.main_screen_names[section-1];
-                console.log(this.main_screen_names[section-1]);
     
-                this.content_elements[section-1].hidden = false;
+                this.main_app_section.innerText = this.main_screen_names[section_number-1];
 
-                this.control_elements[section-1].textDecoration = "underline";
-    
-                if(section == 1){ //Ecra de dados em tempo real
+
+                if(section_number == 1){ //Ecra de dados em tempo real
                     active_device.set_elements(get_real_time_nodes());
                     device_animation.set_elements(get_real_time_animation_nodes());
                 }
-                else if(section == 2){ //Ecra de consumo energetico
+                else if(section_number == 2){ //Ecra de consumo energetico
                     active_device.set_elements(get_consumption_nodes());
                 }
-                else if(section == 3){ //Ecra de qualidade de energia
-                }
-                else if(section == 4){ //Ecra de parametros
-    
-                }
-                else if(section == 5){ //Ecra de historico
-                }
                 active_device.valid_elements = true;
-                active_device.set_active_section(section);
+                active_device.set_active_section(section_number);
                 this.screen_number = screen_number;
-                this.screen_section = section;
+                this.section_number = section_number;
                 popovers.update_dynamic_elements(); //update popover elements
             }
             else{
@@ -552,10 +556,10 @@ let screen_names = ["Dados em tempo Real", "Consumo", "Qualidade de Energia", "C
 let screens_section = {};
 
 screens_section[1] = "realtime_content";
-screens_section[2] = "consumption_subcontent";
-screens_section[3] = "quality_subcontent";
-screens_section[4] = "config_subcontent";
-screens_section[5] = "history_subcontent";
+screens_section[2] = "consumption_content";
+screens_section[3] = "quality_content";
+screens_section[4] = "config_content";
+screens_section[5] = "history_content";
 
 let sub_screen_names = {};
 
@@ -576,7 +580,6 @@ sub_screen_names[53] = "Dispositivo";
  
 
 let subscreens = {};
-subscreens[10] = "active_consumption_content";
 
 subscreens[21] = "active_consumption_content";
 subscreens[22] = "past_consumption_content";
@@ -593,23 +596,52 @@ subscreens[51] = "activation_history_content";
 subscreens[52] = "protection_history_content";
 subscreens[53] = "device_history_content";
 
+let subscreens_titles = {};
+
+subscreens_titles[2] = "consumption_subcontent_title"; 
+subscreens_titles[3] = "quality_subcontent_title";
+subscreens_titles[4] = "config_subcontent_title";
+subscreens_titles[5] = "history_subcontent_title"; 
+
 
 let content_loader = new ContentLoader(document, content_elements_array, content_files, subcontent_files, content_css_files, content_js_files, content_files_directory, subcontent_files_directory, content_css_files_directory, content_js_files_directory);
+
+
+///////////////////////CONTENT ORGANIZERS///////////////////////
+
+
 
 let realtime_width_triggers = [1100, 1600];
 let realtime_grid_configuration = [[5, 1], [3, 2], [2, 3]];
 let realtime_grid_config_hide_elements = [[5], [5], []];
 
-let realtime_divs_organizer = new ContentOrganizer(document, "content", "realtime_content_grid", "realtime-content-grid-item", realtime_width_triggers, realtime_grid_configuration, realtime_grid_config_hide_elements);
+let realtime_divs_organizer = new ContentOrganizer(document, "content", "realtime_content_grid", "realtime-content-grid-item", 
+                                                   realtime_width_triggers, realtime_grid_configuration, realtime_grid_config_hide_elements);
 
-let content_screen = new ContentScreen(document, window, screen_loader, main_app_section, screen_names, screens_section, sub_screen_names, subscreens, "link", "sublink", content_elements_array, content_loader, 10);
+
+
+let load_control_config_width_triggers = [1100, 1300];
+let load_control_config_configuration = [[4, 1], [4, 1], [2, 3]];
+let load_control_config_hide_elements = [[4, 5], [4, 6], [5, 6]];
+
+let load_control_config_divs_organizer = new ContentOrganizer(document, "content", "load_control_config_content_grid", "load-control-config-content-grid-item", 
+                                                              load_control_config_width_triggers, load_control_config_configuration, load_control_config_hide_elements);
+
+
+
+////////////////////////////////////////////////////////////////
+
+
+let content_screen = new ContentScreen(document, window, screen_loader, main_app_section, screen_names, screens_section, sub_screen_names, subscreens, subscreens_titles, "link", "sublink", content_elements_array, content_loader, 41);
 let footer_drop_down = new DropDownMenuExit(document, statePopup, buttonState);
 let device_info = new DeviceInfo(document, "device_name", "device_type");
 
 
 function activate_screen(screen_number){
-    content_screen.change_screen(screen_number)
-    console.log(screen_number);
+    let section_number = String(screen_number);
+    section_number = section_number.substring(0, (section_number.length)-1);
+    section_number = Number(section_number);
+    content_screen.change_screen(screen_number, section_number);
 }
 
 

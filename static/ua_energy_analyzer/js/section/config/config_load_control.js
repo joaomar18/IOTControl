@@ -3,6 +3,7 @@
 class HourPeriodDisplay{
     constructor(document, entries, scrolls, add_period_show_btn, remove_period_show_btn, add_period_cancel_btn, remove_period_cancel_btn, mask, add_popup, remove_popup, day_of_week_xs_view, add_day_of_week_selector, remove_day_of_week_selector, timepickers_class, section){ 
         this.document = document;   
+        
         //ENTRIES//
         this.entries = entries;
         this.entries_valid = false;

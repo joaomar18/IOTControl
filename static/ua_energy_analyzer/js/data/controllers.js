@@ -242,7 +242,7 @@ class HourPeriods{
             }
         }
         else{
-            if(this.document.getElementById(this.s_content_table).style == 'none'){
+            if(this.document.getElementById(this.s_content_table).style.display == 'none'){
                 this.small_view = false;
                 if(this.update_s_periods != null){
                     clearInterval(this.update_s_periods);

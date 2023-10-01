@@ -1,199 +1,212 @@
-<div class = "flex-row">
-    <div class = "manual-control-div">
-        <h6 id = "manual-control-title">Controlo Manual</h6>
-        <div class = "control-element">
-            <span class = "element">
-                <span class = "element-name">OFF</span>
-                <div class="checkbox-selector">
-                    <input type="checkbox" id = "manual_selector">
-                </div>
-                <span class = "element-name">ON</span>
-            </span>
-            <span class = "element">
-                <input type = "button" value = "Ligar" class="btn btn-secondary" id = "manual_button" onclick="outputManualInvert()"></input>
-            </span>
+<div class = "content-grid" id = "load_control_config_content_grid">
+
+    <div class = "content-grid-item load-control-config-content-grid-item">
+        <div class = "manual-control-div">
+            <h6 id = "manual-control-title">Controlo Manual</h6>
+            <div class = "control-element">
+                <span class = "element">
+                    <span class = "element-name">OFF</span>
+                    <div class="checkbox-selector">
+                        <input type="checkbox" id = "manual_selector">
+                    </div>
+                    <span class = "element-name">ON</span>
+                </span>
+                <span class = "element">
+                    <input type = "button" value = "Ligar" class="btn btn-secondary" id = "manual_button" onclick="outputManualInvert()"></input>
+                </span>
+            </div>
         </div>
     </div>
 
-    <div class = "hour-control-div">
-        <h6 id = "hour-control-title">Controlo Horário</h6>
-        <div class = "control-element">
-            <span class = "element">
-                <span class = "element-name">OFF</span>
-                <div class="checkbox-selector">
-                    <input type="checkbox" id = "hour_control_selector">
-                </div>
-                <span class = "element-name">ON</span>
-            </span>
+    <div class = "content-grid-item load-control-config-content-grid-item">
+        <div class = "hour-control-div">
+            <h6 id = "hour-control-title">Controlo Horário</h6>
+            <div class = "control-element">
+                <span class = "element">
+                    <span class = "element-name">OFF</span>
+                    <div class="checkbox-selector">
+                        <input type="checkbox" id = "hour_control_selector">
+                    </div>
+                    <span class = "element-name">ON</span>
+                </span>
+            </div>
         </div>
     </div>
 
-    <div class = "special-control-div">
-        <h6 id = "hour-control-title">Controlo Especial</h6>
-        <img src="/static/ua_energy_analyzer/img/settings.svg" class = "settings-button" id = "special_control_settings_btn"/>
-        <div class = "control-element">
-            <span class = "element">
-                <span class = "element-name">OFF</span>
-                <div class="checkbox-selector">
-                    <input type="checkbox" id = "special_control_selector">
+
+    <div class = "content-grid-item load-control-config-content-grid-item">
+        <div class = "special-control-div">
+            <h6 id = "hour-control-title">Controlo Especial</h6>
+            <img src="/static/ua_energy_analyzer/img/settings.svg" class = "settings-button" id = "special_control_settings_btn"/>
+            <div class = "control-element">
+                <span class = "element">
+                    <span class = "element-name">OFF</span>
+                    <div class="checkbox-selector">
+                        <input type="checkbox" id = "special_control_selector">
+                    </div>
+                    <span class = "element-name">ON</span>
+                </span>
+                <span class = "element">
+                    <span class = "element-name">Tipo:</span>
+                    <select class="form-select form-select-sm select-control" name="special_control_options" id="special_control_select_type">
+                        <option value="step">Passo</option>
+                        <option value="persistent">Persistente</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class = "content-grid-item content-grid-item-span-3 load-control-config-content-grid-item" id ="hour_control_table_large_container">
+        <div class = "hour-control-table-large" id = "hour_control_table_large">
+            <div class = "table-title">
+                <span class = "table-large-title-text">Períodos de tempo para o controlo horário</span>
+            </div>
+            <div class = "table-large-row">
+                <div class = "table-y-axis-identifiers">
+                    <span class = "y-axis-identifier first-y-axis-identifier">Segunda-Feira</span>
+                    <span class = "y-axis-identifier">Terça-Feira</span>
+                    <span class = "y-axis-identifier">Quarta-Feira</span>
+                    <span class = "y-axis-identifier">Quinta-Feira</span>
+                    <span class = "y-axis-identifier">Sexta-Feira</span>
+                    <span class = "y-axis-identifier">Sábado</span>
+                    <span class = "y-axis-identifier last-y-axis-identifier">Domingo</span>
                 </div>
-                <span class = "element-name">ON</span>
-            </span>
-            <span class = "element">
-                <span class = "element-name">Tipo:</span>
-                <select class="form-select form-select-sm select-control" name="special_control_options" id="special_control_select_type">
-                    <option value="step">Passo</option>
-                    <option value="persistent">Persistente</option>
-                </select>
-            </span>
+                <div class = "table-large-content">
+                        <div class = "table-horizontal-row" id = "monday_horizontal_row">
+                            <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_monday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_monday_hp"></span></div>
+                            <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_monday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_monday_hp"></span></div>
+                            <div class = "table-horizontal-row-content" id = "monday_horizontal_row-content">
+                            </div>
+                        </div>
+                        <div class = "table-horizontal-row" id = "tuesday_horizontal_row">
+                            <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_tuesday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_tuesday_hp"></span></div>
+                            <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_tuesday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_tuesday_hp"></span></div>
+                            <div class = "table-horizontal-row-content" id = "tuesday_horizontal_row-content">
+                            </div>
+                        </div>
+                        <div class = "table-horizontal-row" id = "wednesday_horizontal_row">
+                            <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_wednesday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_wednesday_hp"></span></div>
+                            <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_wednesday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_wednesday_hp"></span></div>
+                            <div class = "table-horizontal-row-content" id = "wednesday_horizontal_row-content">
+                            </div>
+                        </div>
+                        <div class = "table-horizontal-row" id = "thursday_horizontal_row">
+                            <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_thursday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_thursday_hp"></span></div>
+                            <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_thursday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_thursday_hp"></span></div>
+                            <div class = "table-horizontal-row-content" id = "thursday_horizontal_row-content">
+                            </div>
+                        </div>
+                        <div class = "table-horizontal-row" id = "friday_horizontal_row">
+                            <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_friday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_friday_hp"></span></div>
+                            <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_friday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_friday_hp"></span></div>
+                            <div class = "table-horizontal-row-content" id = "friday_horizontal_row-content">
+                            </div>
+                        </div>
+                        <div class = "table-horizontal-row" id = "saturday_horizontal_row">
+                            <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_saturday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_saturday_hp"></span></div>
+                            <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_saturday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_saturday_hp"></span></div>
+                            <div class = "table-horizontal-row-content" id = "saturday_horizontal_row-content">
+                            </div>
+                        </div>
+                        <div class = "table-horizontal-row" id = "sunday_horizontal_row">
+                            <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_sunday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_sunday_hp"></span></div>
+                            <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_sunday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_sunday_hp"></span></div>
+                            <div class = "table-horizontal-row-content" id = "sunday_horizontal_row-content">
+                            </div>
+                        </div>
+                </div>
+                <div class = "table-large-buttons">
+                    <button class="icon-btn add-btn add-table-period-btn" id = "show_add_period_popup_btn">
+                        <div class="add-icon"></div>
+                        <div class="btn-txt">Adicionar Período</div>
+                    </button>
+                    <button class="icon-btn add-btn remove-table-period-btn" id = "show_remove_period_popup_btn">  
+                            <div class="btn-txt">Remover Período</div>
+                    </button>
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    <div class = "content-grid-item load-control-config-content-grid-item">
+        <div class = "hour-control-table-small" id = "hour_control_table_small">
+            <div class = "table-small-title">
+                <span class = "table-small-title-text">Períodos de tempo para o controlo horário</span>
+            </div>
+            <button class="table-slide-button table-left-slide-button" id = "hour_control_table_small_left_btn">
+                <span class = "left-arrow left-arrow-slide"></span>
+            </button>
+            <button class="table-slide-button table-right-slide-button" id = "hour_control_table_small_right_btn">
+                <span class = "right-arrow right-arrow-slide"></span>
+            </button>
+            <div class = "table-x-axis-identifiers">
+                <span class = "x-axis-identifier first-x-axis-identifer">Segunda-Feira</span>
+                <span class = "x-axis-identifier">Terça-Feira</span>
+                <span class = "x-axis-identifier">Quarta-Feira</span>
+            </div>
+            <div class = "table-small-control">
+                <button type="button" class="btn btn-primary" id = "show_add_period_popup_btn_s">Adicionar Período</button>      
+                <button type="button" class="btn btn-danger" id = "show_remove_period_popup_btn_s">Remover Período</button>  
+            </div>
+            <div class = "table-small-content">
+                    <div class = "table-vertical-col" id = "first_vertical_col">
+                        <div class = "arrow-container arrow-container-top" id = "btn_top_scroll_first_hp"><span class="arrow arrow-top" id = "btn_top_scroll_first_hp"></span></div>
+                        <div class = "arrow-container arrow-container-bottom" id = "btn_bottom_scroll_first_hp"><span class="arrow arrow-bottom" id = "btn_bottom_scroll_first_hp"></span></div>
+                        <div class = "table-vertical-col-content" id = "first_vertical_col_content">
+                        </div>
+                    </div>
+                    <div class = "table-vertical-col" id = "second_vertical_col">
+                        <div class = "arrow-container arrow-container-top" id = "btn_top_scroll_second_hp"><span class="arrow arrow-top" id = "btn_top_scroll_second_hp"></span></div>
+                        <div class = "arrow-container arrow-container-bottom" id = "btn_bottom_scroll_second_hp"><span class="arrow arrow-bottom" id = "btn_bottom_scroll_second_hp"></span></div>
+                        <div class = "table-vertical-col-content" id = "second_vertical_col_content">
+                        </div>
+                    </div>
+                    <div class = "table-vertical-col" id = "third_vertical_col">
+                        <div class = "arrow-container arrow-container-top" id = "btn_top_scroll_third_hp"><span class="arrow arrow-top" id = "btn_top_scroll_third_hp"></span></div>
+                        <div class = "arrow-container arrow-container-bottom" id = "btn_bottom_scroll_third_hp"><span class="arrow arrow-bottom" id = "btn_bottom_scroll_third_hp"></span></div>
+                        <div class = "table-vertical-col-content" id = "third_vertical_col_content">
+                        </div>
+                    </div>
+            </div> 
+        </div>
+    </div>
+
+    <div class = "content-grid-item load-control-config-content-grid-item">
+        <div class = "hour-control-table-extra-small" id = "hour_control_table_extra_small">
+            <div class = "table-extra-small-title">
+                <span class = "table-extra-small-title-text">Períodos de tempo para o controlo horário</span>
+            </div>
+            <div class = "table-extra-small-control">
+                <div class= "flex-row-xs">
+                    <span class = "element-name">Dia da semana</span>
+                    <select class="form-select element-select  element-select-small" name="day_of_week_selector_xs" id="day_of_week_selector_xs">
+                        <option value="monday" selected>Segunda-feira</option>
+                        <option value="tuesday">Terça-feira</option>
+                        <option value="wednesday">Quarta-Feira</option>
+                        <option value="thursday">Quinta-Feira</option>
+                        <option value="friday">Sexta-feira</option>
+                        <option value="saturday">Sábado</option>
+                        <option value="sunday">Domingo</option>
+                    </select>  
+                </div>
+                <div class= "flex-row-xs">
+                    <button type="button" class="btn btn-primary add-table-period-btn-small" id = "show_add_period_popup_btn_xs">Adicionar Período</button>      
+                    <button type="button" class="btn btn-danger remove-table-period-btn-small" id = "show_remove_period_popup_btn_xs">Remover Período</button>  
+                </div>
+            </div>
+            <div class = "table-extra-small" id = "table_extra_small">
+                <div class = "arrow-container arrow-container-top-xs" id = "btn_top_scroll_xs_hp"><span class="arrow arrow-top" id = "btn_top_scroll_xs_hp"></span></div>
+                <div class = "arrow-container arrow-container-bottom-xs" id = "btn_bottom_scroll_xs_hp"><span class="arrow arrow-bottom" id = "btn_bottom_scroll_xs_hp"></span></div>
+                <div class = "table-extra-small-content" id = "table_extra_small_content">
+                </div>     
+            </div>
         </div>
     </div>
 </div>
 
-<div class = "flex-row second-flex-row">
-    <div class = "hour-control-table-large" id = "hour_control_table_large">
-        <div class = "table-title">
-            <span class = "table-large-title-text">Períodos de tempo para o controlo horário</span>
-        </div>
-        <div class = "table-y-axis-identifiers">
-            <span class = "y-axis-identifier first-y-axis-identifier">Segunda-Feira</span>
-            <span class = "y-axis-identifier">Terça-Feira</span>
-            <span class = "y-axis-identifier">Quarta-Feira</span>
-            <span class = "y-axis-identifier">Quinta-Feira</span>
-            <span class = "y-axis-identifier">Sexta-Feira</span>
-            <span class = "y-axis-identifier">Sábado</span>
-            <span class = "y-axis-identifier last-y-axis-identifier">Domingo</span>
-        </div>
-        <div class = "table-large-content">
-                <button class="icon-btn add-btn add-table-period-btn" id = "show_add_period_popup_btn">
-                <div class="add-icon"></div>
-                <div class="btn-txt">Adicionar Período</div>
-                </button>
-                <button class="icon-btn add-btn remove-table-period-btn" id = "show_remove_period_popup_btn">  
-                    <div class="btn-txt">Remover Período</div>
-                </button>
-                <div class = "table-horizontal-row" id = "monday_horizontal_row">
-                    <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_monday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_monday_hp"></span></div>
-                    <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_monday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_monday_hp"></span></div>
-                    <div class = "table-horizontal-row-content" id = "monday_horizontal_row-content">
-                    </div>
-                </div>
-                <div class = "table-horizontal-row" id = "tuesday_horizontal_row">
-                    <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_tuesday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_tuesday_hp"></span></div>
-                    <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_tuesday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_tuesday_hp"></span></div>
-                    <div class = "table-horizontal-row-content" id = "tuesday_horizontal_row-content">
-                    </div>
-                </div>
-                <div class = "table-horizontal-row" id = "wednesday_horizontal_row">
-                    <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_wednesday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_wednesday_hp"></span></div>
-                    <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_wednesday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_wednesday_hp"></span></div>
-                    <div class = "table-horizontal-row-content" id = "wednesday_horizontal_row-content">
-                    </div>
-                </div>
-                <div class = "table-horizontal-row" id = "thursday_horizontal_row">
-                    <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_thursday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_thursday_hp"></span></div>
-                    <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_thursday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_thursday_hp"></span></div>
-                    <div class = "table-horizontal-row-content" id = "thursday_horizontal_row-content">
-                    </div>
-                </div>
-                <div class = "table-horizontal-row" id = "friday_horizontal_row">
-                    <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_friday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_friday_hp"></span></div>
-                    <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_friday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_friday_hp"></span></div>
-                    <div class = "table-horizontal-row-content" id = "friday_horizontal_row-content">
-                    </div>
-                </div>
-                <div class = "table-horizontal-row" id = "saturday_horizontal_row">
-                    <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_saturday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_saturday_hp"></span></div>
-                    <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_saturday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_saturday_hp"></span></div>
-                    <div class = "table-horizontal-row-content" id = "saturday_horizontal_row-content">
-                    </div>
-                </div>
-                <div class = "table-horizontal-row" id = "sunday_horizontal_row">
-                    <div class = "arrow-container arrow-container-left" id = "btn_left_scroll_sunday_hp"><span class="arrow arrow-left" id = "btn_left_scroll_sunday_hp"></span></div>
-                    <div class = "arrow-container arrow-container-right" id = "btn_right_scroll_sunday_hp"><span class="arrow arrow-right" id = "btn_right_scroll_sunday_hp"></span></div>
-                    <div class = "table-horizontal-row-content" id = "sunday_horizontal_row-content">
-                    </div>
-                </div>
-        </div> 
-    </div>
 
 
-    <div class = "hour-control-table-small" id = "hour_control_table_small">
-        <div class = "table-small-title">
-            <span class = "table-small-title-text">Períodos de tempo para o controlo horário</span>
-        </div>
-        <button class="table-slide-button table-left-slide-button" id = "hour_control_table_small_left_btn">
-            <span class = "left-arrow left-arrow-slide"></span>
-        </button>
-        <button class="table-slide-button table-right-slide-button" id = "hour_control_table_small_right_btn">
-            <span class = "right-arrow right-arrow-slide"></span>
-        </button>
-        <div class = "table-x-axis-identifiers">
-            <span class = "x-axis-identifier first-x-axis-identifer">Segunda-Feira</span>
-            <span class = "x-axis-identifier">Terça-Feira</span>
-            <span class = "x-axis-identifier">Quarta-Feira</span>
-        </div>
-        <div class = "table-small-control">
-            <button type="button" class="btn btn-primary" id = "show_add_period_popup_btn_s">Adicionar Período</button>      
-            <button type="button" class="btn btn-danger" id = "show_remove_period_popup_btn_s">Remover Período</button>  
-        </div>
-        <div class = "table-small-content">
-                <div class = "table-vertical-col" id = "first_vertical_col">
-                    <div class = "arrow-container arrow-container-top" id = "btn_top_scroll_first_hp"><span class="arrow arrow-top" id = "btn_top_scroll_first_hp"></span></div>
-                    <div class = "arrow-container arrow-container-bottom" id = "btn_bottom_scroll_first_hp"><span class="arrow arrow-bottom" id = "btn_bottom_scroll_first_hp"></span></div>
-                    <div class = "table-vertical-col-content" id = "first_vertical_col_content">
-                    </div>
-                </div>
-                <div class = "table-vertical-col" id = "second_vertical_col">
-                    <div class = "arrow-container arrow-container-top" id = "btn_top_scroll_second_hp"><span class="arrow arrow-top" id = "btn_top_scroll_second_hp"></span></div>
-                    <div class = "arrow-container arrow-container-bottom" id = "btn_bottom_scroll_second_hp"><span class="arrow arrow-bottom" id = "btn_bottom_scroll_second_hp"></span></div>
-                    <div class = "table-vertical-col-content" id = "second_vertical_col_content">
-                    </div>
-                </div>
-                <div class = "table-vertical-col" id = "third_vertical_col">
-                    <div class = "arrow-container arrow-container-top" id = "btn_top_scroll_third_hp"><span class="arrow arrow-top" id = "btn_top_scroll_third_hp"></span></div>
-                    <div class = "arrow-container arrow-container-bottom" id = "btn_bottom_scroll_third_hp"><span class="arrow arrow-bottom" id = "btn_bottom_scroll_third_hp"></span></div>
-                    <div class = "table-vertical-col-content" id = "third_vertical_col_content">
-                    </div>
-                </div>
-        </div> 
-    </div>
-    
-
-
-    <div class = "hour-control-table-extra-small" id = "hour_control_table_extra_small">
-        <div class = "table-extra-small-title">
-            <span class = "table-extra-small-title-text">Períodos de tempo para o controlo horário</span>
-        </div>
-        <div class = "table-extra-small-control">
-            <div class= "flex-row-xs">
-                <span class = "element-name">Dia da semana</span>
-                <select class="form-select element-select  element-select-small" name="day_of_week_selector_xs" id="day_of_week_selector_xs">
-                    <option value="monday" selected>Segunda-feira</option>
-                    <option value="tuesday">Terça-feira</option>
-                    <option value="wednesday">Quarta-Feira</option>
-                    <option value="thursday">Quinta-Feira</option>
-                    <option value="friday">Sexta-feira</option>
-                    <option value="saturday">Sábado</option>
-                    <option value="sunday">Domingo</option>
-                </select>  
-            </div>
-            <div class= "flex-row-xs">
-                <button type="button" class="btn btn-primary add-table-period-btn-small" id = "show_add_period_popup_btn_xs">Adicionar Período</button>      
-                <button type="button" class="btn btn-danger remove-table-period-btn-small" id = "show_remove_period_popup_btn_xs">Remover Período</button>  
-            </div>
-        </div>
-        <div class = "table-extra-small" id = "table_extra_small">
-            <div class = "arrow-container arrow-container-top-xs" id = "btn_top_scroll_xs_hp"><span class="arrow arrow-top" id = "btn_top_scroll_xs_hp"></span></div>
-            <div class = "arrow-container arrow-container-bottom-xs" id = "btn_bottom_scroll_xs_hp"><span class="arrow arrow-bottom" id = "btn_bottom_scroll_xs_hp"></span></div>
-            <div class = "table-extra-small-content" id = "table_extra_small_content">
-            </div>     
-        </div>
-    </div>
-
-
-
-</div>
 <div id = "hour_period_mask"></div>
 <div class = "add-period-popup" id = "add_period_popup">
     <span class = "add-period-popup-title">Adicionar novo período horário</span>
