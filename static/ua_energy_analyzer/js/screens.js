@@ -1,5 +1,4 @@
 let full_loader = document.getElementById("full-loader");
-let connect_display = document.getElementById("connecting-div");
 let warning_display = document.getElementById("connect-error-div");
 let connect_error_message = document.getElementById("error_text_message");
 let content_div = document.getElementById("content");
@@ -91,15 +90,15 @@ class DropDownMenuExit { //Drop down that exits when another element on the wind
 }
 
 class ScreenLoader{
-    constructor(loader_element,connect_display, warning_display,connect_error_message, timeout){
+    constructor(loader_element, warning_display,connect_error_message, timeout){
         this.loader_element = loader_element;
-        this.connect_display = connect_display;
         this.warning_display = warning_display;
         this.connect_error_message = connect_error_message;
         this.loaded = false;
         this.check_loading = setInterval(this.loading_handler.bind(this), 10);
         this.loader_timeout = setTimeout(this.timeout_handler.bind(this), timeout);
         this.final_load_timeout = null;
+        this.end_loader = null;
         this.error_message = null;
     }
 
@@ -107,25 +106,33 @@ class ScreenLoader{
         if(this.loaded && this.error_message == null){
             clearInterval(this.check_loading);
             clearTimeout(this.loader_timeout);
-            this.final_load_timeout = setTimeout(this.final_load_handler.bind(this), 100);
+            this.final_load_timeout = setTimeout(this.final_load_handler.bind(this), 0);
         }
         else if(this.error_message != null){
             clearInterval(this.check_loading);
             clearTimeout(this.loader_timeout);
-            this.connect_display.style.display = 'none';
             this.warning_display.style.display = 'flex';
         }
     }
 
     final_load_handler = () => {
-        this.loader_element.style.display = 'none';
+        this.loader_element.style.opacity = "0";
         clearTimeout(this.final_load_timeout);
+        this.final_load_timeout = null;
+        this.end_loader = setTimeout(this.end_loader_handler.bind(this), 300);
+    }
+
+    end_loader_handler = () => {
+        this.loader_element.style.display = "none";
+        clearTimeout(this.end_loader);
+        this.end_loader = null;
     }
 
     timeout_handler = () => {
         this.set_error_message("Não foi possível iniciar a aplicação.");
         clearInterval(this.check_loading);
         clearTimeout(this.loader_timeout);
+        this.warning_display.style.display = 'flex';
     }
 
     set_loaded(){
@@ -327,36 +334,72 @@ class ContentOrganizer{
 
 
 class ContentScreen{
-    constructor(window, screen_loader, main_app_section, main_screen_names, control_elements,  content_elements, content_loader, initial_screen_number){
+    constructor(document, window, screen_loader, main_app_section, main_screen_names, screens_section, sub_screen_names, subscreens, control_elements, sub_control_elements,  content_elements, content_loader, initial_screen_number){
+        this.document = document;
         this.window = window; //window element
         this.screen_loader = screen_loader; //screen loader
         this.main_app_section = main_app_section;
         this.main_screen_names = main_screen_names;
+        this.screens_section = screens_section;
+        this.sub_screen_names = sub_screen_names;
+        this.subscreens = subscreens;
         this.control_elements = document.getElementsByClassName(control_elements);
         this.control_elements = Array.from(this.control_elements);
+        this.sub_control_elements = document.getElementsByClassName(sub_control_elements);
+        this.sub_control_elements = Array.from(this.sub_control_elements);
         this.initial_screen_number = initial_screen_number;
         this.screen_number = null;
+        this.screen_section = null;
         this.content_elements = content_elements;
         this.content_loader = content_loader;
         this.check_active_device = setInterval(this.check_active_device_handler.bind(this), 10);
         this.load_control_elements = setInterval(this.load_control_elements_handler.bind(this), 10);
+
         this.init_running = false;
+        this.load_first_element_running = false;
+        this.first_element_loaded = false;
     }
 
     check_active_device_handler = () => {
         if(active_device != null){
-            this.init();
+            if(!this.first_element_loaded && !this.load_first_element_running){
+                this.load_first_element();
+            }
+            if(active_device.first_connection_fb && this.first_element_loaded){
+                this.init();
+            }
         }
     }  
     
     load_control_elements_handler = () => {
+        let i = 0;
         for(let control of this.control_elements){
             control.addEventListener("click", function(event){
                 event.preventDefault();
-            })
+            });
+        }
+        for(let sub_control of this.sub_control_elements){
+            sub_control.addEventListener("click", function(event){
+                event.preventDefault();
+            });
         }
         clearInterval(this.load_control_elements);
     }    
+
+    async load_first_element(){
+        if(this.load_first_element_running){
+            return;
+        }
+        this.load_first_element_running = true;
+        try{
+            let first_section = Number((String(this.initial_screen_number))[0]);
+            await this.content_loader.load_element(first_section-1);
+            this.first_element_loaded = true;
+        }
+        finally{
+            this.load_first_element_running = false;
+        }
+    }
 
     async init(){
         if(this.init_running){
@@ -365,7 +408,6 @@ class ContentScreen{
         this.init_running = true;
         try{
             if(!this.screen_loader.loaded){
-                await this.content_loader.load_element(this.initial_screen_number);
                 await this.change_screen(this.initial_screen_number); //Initialize the screen with screen number
                 this.screen_loader.set_loaded();
                 this.content_loader.startLoadingOthers();
@@ -379,36 +421,50 @@ class ContentScreen{
 
     async change_screen(screen_number){
         if(this.screen_number != screen_number){
-            if(this.content_loader.elements_loaded[screen_number]){
+            let section = Number((String(screen_number))[0]);
+            if(this.content_loader.elements_loaded[section-1]){
                 active_device.valid_elements = false;
-                if(this.screen_number != null){
-                    this.control_elements[this.screen_number].textDecoration = "none";
-                    this.content_elements[this.screen_number].hidden = true;
+                if(this.section != null){
+                    this.control_elements[this.section-1].textDecoration = "none";
+                    this.document.getElementById(this.subscreens[this.section-1]).hidden = true;
                 }
 
-                this.main_app_section.innerText = this.main_screen_names[screen_number];
-    
-                this.content_elements[screen_number].hidden = false;
+                if(this.document.getElementById(this.subscreens[screen_number]) != null){
+                    this.document.getElementById(this.subscreens[screen_number]).hidden = false;
+                }
 
-                this.control_elements[screen_number].textDecoration = "underline";
+                if(this.screen_section != section){
+                    if(this.screen_section != null){
+                        this.document.getElementById(this.screens_section[this.screen_section]).hidden = true;
+                    }
+                    this.document.getElementById(this.screens_section[section]).hidden = false;
+                }
+
+                this.main_app_section.innerText = this.main_screen_names[section-1];
+                console.log(this.main_screen_names[section-1]);
     
-                if(screen_number == 0){ //Ecra de dados em tempo real
+                this.content_elements[section-1].hidden = false;
+
+                this.control_elements[section-1].textDecoration = "underline";
+    
+                if(section == 1){ //Ecra de dados em tempo real
                     active_device.set_elements(get_real_time_nodes());
                     device_animation.set_elements(get_real_time_animation_nodes());
                 }
-                else if(screen_number == 1){ //Ecra de consumo energetico
+                else if(section == 2){ //Ecra de consumo energetico
                     active_device.set_elements(get_consumption_nodes());
                 }
-                else if(screen_number == 2){ //Ecra de qualidade de energia
+                else if(section == 3){ //Ecra de qualidade de energia
                 }
-                else if(screen_number == 3){ //Ecra de parametros
+                else if(section == 4){ //Ecra de parametros
     
                 }
-                else if(screen_number == 4){ //Ecra de historico
+                else if(section == 5){ //Ecra de historico
                 }
                 active_device.valid_elements = true;
-                active_device.set_active_section(screen_number+1);
+                active_device.set_active_section(section);
                 this.screen_number = screen_number;
+                this.screen_section = section;
                 popovers.update_dynamic_elements(); //update popover elements
             }
             else{
@@ -419,7 +475,7 @@ class ContentScreen{
 }
 
 let popovers = new PopoverUtil(document);
-let screen_loader = new ScreenLoader(full_loader, connect_display, warning_display, connect_error_message, 5000);
+let screen_loader = new ScreenLoader(full_loader, warning_display, connect_error_message, 5000);
 
 let content_elements = document.getElementsByClassName("section-content");
 let content_elements_array = Array.from(content_elements);
@@ -493,6 +549,51 @@ let content_js_files_directory = "/static/ua_energy_analyzer/js/";
 
 let screen_names = ["Dados em tempo Real", "Consumo", "Qualidade de Energia", "Configuração", "Histórico"];
 
+let screens_section = {};
+
+screens_section[1] = "realtime_content";
+screens_section[2] = "consumption_subcontent";
+screens_section[3] = "quality_subcontent";
+screens_section[4] = "config_subcontent";
+screens_section[5] = "history_subcontent";
+
+let sub_screen_names = {};
+
+sub_screen_names[21] = "Consumo Atual";
+sub_screen_names[22] = "Consultar Consumo";
+
+sub_screen_names[31] = "Tensão";
+sub_screen_names[32] = "Frequência";
+sub_screen_names[33] = "Fator de Potência";
+
+sub_screen_names[41] = "Controlo de Carga";
+sub_screen_names[42] = "Proteção e Limitação";
+sub_screen_names[43] = "Dispositivo";
+
+sub_screen_names[51] = "Controlo de Carga";
+sub_screen_names[52] = "Proteção e Limitação";
+sub_screen_names[53] = "Dispositivo";
+ 
+
+let subscreens = {};
+subscreens[10] = "active_consumption_content";
+
+subscreens[21] = "active_consumption_content";
+subscreens[22] = "past_consumption_content";
+
+subscreens[31] = "voltage_quality_content";
+subscreens[32] = "frequency_quality_content";
+subscreens[33] = "pf_quality_content";
+
+subscreens[41] = "controlo_carga_content";
+subscreens[42] = "protecao_limitacao_content";
+subscreens[43] = "device_content";
+
+subscreens[51] = "activation_history_content";
+subscreens[52] = "protection_history_content";
+subscreens[53] = "device_history_content";
+
+
 let content_loader = new ContentLoader(document, content_elements_array, content_files, subcontent_files, content_css_files, content_js_files, content_files_directory, subcontent_files_directory, content_css_files_directory, content_js_files_directory);
 
 let realtime_width_triggers = [1100, 1600];
@@ -501,30 +602,14 @@ let realtime_grid_config_hide_elements = [[5], [5], []];
 
 let realtime_divs_organizer = new ContentOrganizer(document, "content", "realtime_content_grid", "realtime-content-grid-item", realtime_width_triggers, realtime_grid_configuration, realtime_grid_config_hide_elements);
 
-let content_screen = new ContentScreen(window, screen_loader, main_app_section, screen_names, "link", content_elements_array, content_loader, 0);
+let content_screen = new ContentScreen(document, window, screen_loader, main_app_section, screen_names, screens_section, sub_screen_names, subscreens, "link", "sublink", content_elements_array, content_loader, 10);
 let footer_drop_down = new DropDownMenuExit(document, statePopup, buttonState);
 let device_info = new DeviceInfo(document, "device_name", "device_type");
 
 
-
-function loadRealTime(){
-    content_screen.change_screen(0);
-}
-
-function loadConsumption(){
-    content_screen.change_screen(1);
-}
-
-function loadQuality(){
-    content_screen.change_screen(2);
-}
-
-function loadConfig(){
-    content_screen.change_screen(3);
-}
-
-function loadHistory(){
-    content_screen.change_screen(4);
+function activate_screen(screen_number){
+    content_screen.change_screen(screen_number)
+    console.log(screen_number);
 }
 
 

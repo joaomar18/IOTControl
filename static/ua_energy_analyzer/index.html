@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>{{ device_name }}</title>
     <link rel="icon" type="image/x-icon" href="/static/ua_energy_analyzer/img/app_icon.ico">
+    <link rel="stylesheet" href="/static/ua_energy_analyzer/css/reset.css">
     <link rel="stylesheet" href="/static/ua_energy_analyzer/css/lib/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href = "/static/ua_energy_analyzer/css/buttons.css">
@@ -15,6 +16,12 @@
     <link rel="stylesheet" href="/static/ua_energy_analyzer/css/style.css">
 </head>
 <body>
+    <div id = "full-loader">
+        <div id = "connect-error-div">
+            <img src="/static/ua_energy_analyzer/img/warning.png" id = "connect_error_warning">
+            <span class = "popup_text" id = "error_text_message"></span>
+        </div>
+    </div>
     <div class = "container-fluid">
         <div class = "d-flex justify-content-center align-content-center">
             <div id= "section_title">
@@ -25,7 +32,7 @@
                 <div class = "main-nav-div">
                     <nav class = "main-nav" id = "main_nav">
                         <div class = "nav-entry main-nav-entry">
-                            <a class = "link main-nav-link first-main-nav-link" href="/energy-analyzer/realtime" onclick="loadRealTime()">
+                            <a class = "link main-nav-link first-main-nav-link" onclick="activate_screen(10)">
                                 Dados em tempo real
                             </a>
                             <div class = "nav-content">
@@ -37,41 +44,41 @@
                                 Consumo
                             </a>
                             <div class = "nav-content">
-                                <a class = "sublink main-nav-sublink" href = "">Consumo Atual</a>
-                                <a class = "sublink main-nav-sublink" href = "">Consultar Consumo</a>
+                                <a class = "sublink main-nav-sublink" href = "" onclick="activate_screen(21)">Consumo Atual</a>
+                                <a class = "sublink main-nav-sublink" href = "" onclick="activate_screen(22)">Consultar Consumo</a>
                             </div>
                         </div>
                         <div class = "nav-entry main-nav-entry">
                             <span class = "arrow arrow-bottom arrow-link arrow-main-nav"></span>
-                            <a class = "link main-nav-link" href="/energy-analyzer/quality" onclick="loadQuality()">
+                            <a class = "link main-nav-link">
                                 Qualidade de Energia
                             </a>
                             <div class = "nav-content">
-                                <a class = "sublink main-nav-sublink" href = "">Tensão</a>
-                                <a class = "sublink main-nav-sublink" href = "">Frequência</a>
-                                <a class = "sublink main-nav-sublink" href = "">Fator de Potência</a>
+                                <a class = "sublink main-nav-sublink" href = "" onclick="activate_screen(31)">Tensão</a>
+                                <a class = "sublink main-nav-sublink" href = "" onclick="activate_screen(32)">Frequência</a>
+                                <a class = "sublink main-nav-sublink" href = "" onclick="activate_screen(33)">Fator de Potência</a>
                             </div>
                         </div>
                         <div class = "nav-entry main-nav-entry">
                             <span class = "arrow arrow-bottom arrow-link arrow-main-nav"></span>
-                            <a class = "link main-nav-link" href="/energy-analyzer/config" onclick="loadConfig()">
+                            <a class = "link main-nav-link">
                                 Configuração
                             </a>
                             <div class = "nav-content">
-                                <a class = "sublink main-nav-sublink" href = "">Controlo de Carga</a>
-                                <a class = "sublink main-nav-sublink" href = "">Proteção e Limitação</a>
-                                <a class = "sublink main-nav-sublink" href = "">Dispositivo</a>
+                                <a class = "sublink main-nav-sublink" href = "" onclick="activate_screen(41)">Controlo de Carga</a>
+                                <a class = "sublink main-nav-sublink" href = "" onclick="activate_screen(42)">Proteção e Limitação</a>
+                                <a class = "sublink main-nav-sublink" href = "" onclick="activate_screen(43)">Dispositivo</a>
                             </div>
                         </div>
                         <div class = "nav-entry main-nav-entry">
                             <span class = "arrow arrow-bottom arrow-link arrow-main-nav"></span>
-                            <a class = "link main-nav-link" href="/energy-analyzer/history" onclick="loadHistory()">
+                            <a class = "link main-nav-link">
                                 Histórico
                             </a>
                             <div class = "nav-content">
-                                <a class = "sublink main-nav-sublink" href = "">Controlo de Carga</a>
-                                <a class = "sublink main-nav-sublink" href = "">Proteção e Limitação</a>
-                                <a class = "sublink main-nav-sublink" href = "">Dispositivo</a>
+                                <a class = "sublink main-nav-sublink" href = "" onclick="activate_screen(51)">Controlo de Carga</a>
+                                <a class = "sublink main-nav-sublink" href = "" onclick="activate_screen(52)">Proteção e Limitação</a>
+                                <a class = "sublink main-nav-sublink" href = "" onclick="activate_screen(53)">Dispositivo</a>
                             </div>
                         </div>
                     </nav>
@@ -119,7 +126,7 @@
             <div class = "dashboard-small-nav-div">
                 <nav class = "dashboard-small-nav" id = "dashboard_small_nav">
                     <div class = "nav-entry small-nav-entry">
-                        <a class = "link dashboard-small-nav-link" href="/energy-analyzer/realtime" onclick="loadRealTime()">
+                        <a class = "link dashboard-small-nav-link" onclick="activate_screen(10)">
                             Dados em tempo real
                         </a>
                         <div class = "nav-content">
@@ -127,45 +134,45 @@
                     </div>
                     <div class = "nav-entry small-nav-entry">
                         <span class = "arrow arrow-bottom arrow-link arrow-small-nav"></span>
-                        <a class = "link dashboard-small-nav-link" href="/energy-analyzer/consumption" onclick="loadConsumption()">
+                        <a class = "link dashboard-small-nav-link">
                             Consumo
                         </a>
                         <div class = "nav-content">
-                            <a class = "sublink dashboard-small-nav-sublink" href = "">Consumo Atual</a>
-                            <a class = "sublink dashboard-small-nav-sublink" href = "">Consultar Consumo</a>
+                            <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(21)">Consumo Atual</a>
+                            <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(22)">Consultar Consumo</a>
                         </div>
                     </div>
                     <div class = "nav-entry small-nav-entry">
                         <span class = "arrow arrow-bottom arrow-link arrow-small-nav"></span>
-                        <a class = "link dashboard-small-nav-link" href="/energy-analyzer/quality" onclick="loadQuality()">
+                        <a class = "link dashboard-small-nav-link">
                             Qualidade de Energia
                         </a>
                         <div class = "nav-content">
-                            <a class = "sublink dashboard-small-nav-sublink" href = "">Tensão</a>
-                            <a class = "sublink dashboard-small-nav-sublink" href = "">Frequência</a>
-                            <a class = "sublink dashboard-small-nav-sublink" href = "">Fator de Potência</a>
+                            <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(31)">Tensão</a>
+                            <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(32)">Frequência</a>
+                            <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(33)">Fator de Potência</a>
                         </div>
                     </div>
                     <div class = "nav-entry small-nav-entry">
                         <span class = "arrow arrow-bottom arrow-link arrow-small-nav"></span>
-                        <a class = "link dashboard-small-nav-link" href="/energy-analyzer/config" onclick="loadConfig()">
+                        <a class = "link dashboard-small-nav-link">
                             Configuração
                         </a>
                         <div class = "nav-content">
-                            <a class = "sublink dashboard-small-nav-sublink" href = "">Controlo de Carga</a>
-                            <a class = "sublink dashboard-small-nav-sublink" href = "">Proteção e Limitação</a>
-                            <a class = "sublink dashboard-small-nav-sublink" href = "">Dispositivo</a>
+                            <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(41)">Controlo de Carga</a>
+                            <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(42)">Proteção e Limitação</a>
+                            <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(43)">Dispositivo</a>
                         </div>
                     </div>
                     <div class = "nav-entry small-nav-entry">
                         <span class = "arrow arrow-bottom arrow-link arrow-small-nav"></span>
-                        <a class = "link dashboard-small-nav-link" href="/energy-analyzer/history" onclick="loadHistory()">
+                        <a class = "link dashboard-small-nav-link">
                             Histórico
                         </a>
                         <div class = "nav-content">
-                            <a class = "sublink dashboard-small-nav-sublink" href = "">Controlo de Carga</a>
-                            <a class = "sublink dashboard-small-nav-sublink" href = "">Proteção e Limitação</a>
-                            <a class = "sublink dashboard-small-nav-sublink" href = "">Dispositivo</a>
+                            <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(51)">Controlo de Carga</a>
+                            <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(52)">Proteção e Limitação</a>
+                            <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(53)">Dispositivo</a>
                         </div>
                     </div>
                 </nav>
@@ -200,53 +207,53 @@
             <div class = "main-dashboard-nav-div">
                 <nav class = "main-dashboard-nav" id = "main_dashboard_nav">
                     <div class = "nav-entry dashboard-nav-entry">
-                        <a class = "link main-dashboard-nav-link" href="/energy-analyzer/realtime" onclick="loadRealTime()">
+                        <a class = "link main-dashboard-nav-link" onclick="activate_screen(10)">
                             Dados em tempo real
                         </a>
-                        <div class = "nav-content">
+                        <div class = "nav-content dashboard-nav-content">
                         </div>
                     </div>
                     <div class = "nav-entry dashboard-nav-entry">
                         <span class = "arrow arrow-left arrow-link arrow-dashboard-nav"></span>
-                        <a class = "link main-dashboard-nav-link" href="/energy-analyzer/consumption" onclick="loadConsumption()">
+                        <a class = "link main-dashboard-nav-link">
                             Consumo
                         </a>
-                        <div class = "nav-content">
-                            <a class = "sublink dashboard-nav-sublink" href = "">Consumo Atual</a>
-                            <a class = "sublink dashboard-nav-sublink" href = "">Consultar Consumo</a>
+                        <div class = "nav-content dashboard-nav-content">
+                            <a class = "sublink dashboard-nav-sublink" href = "" onclick="activate_screen(21)">Consumo Atual</a>
+                            <a class = "sublink dashboard-nav-sublink" href = "" onclick="activate_screen(22)">Consultar Consumo</a>
                         </div>
                     </div>
                     <div class = "nav-entry dashboard-nav-entry">
                         <span class = "arrow arrow-left arrow-link arrow-dashboard-nav"></span>
-                        <a class = "link main-dashboard-nav-link" href="/energy-analyzer/quality" onclick="loadQuality()">
+                        <a class = "link main-dashboard-nav-link">
                             Qualidade de Energia
                         </a>
-                        <div class = "nav-content">
-                            <a class = "sublink dashboard-nav-sublink" href = "">Tensão</a>
-                            <a class = "sublink dashboard-nav-sublink" href = "">Frequência</a>
-                            <a class = "sublink dashboard-nav-sublink" href = "">Fator de Potência</a>
+                        <div class = "nav-content dashboard-nav-content">
+                            <a class = "sublink dashboard-nav-sublink" href = "" onclick="activate_screen(31)">Tensão</a>
+                            <a class = "sublink dashboard-nav-sublink" href = "" onclick="activate_screen(32)">Frequência</a>
+                            <a class = "sublink dashboard-nav-sublink" href = "" onclick="activate_screen(33)">Fator de Potência</a>
                         </div>
                     </div>
                     <div class = "nav-entry dashboard-nav-entry">
                         <span class = "arrow arrow-left arrow-link arrow-dashboard-nav"></span>
-                        <a class = "link main-dashboard-nav-link" href="/energy-analyzer/config" onclick="loadConfig()">
+                        <a class = "link main-dashboard-nav-link">
                             Configuração
                         </a>
-                        <div class = "nav-content">
-                            <a class = "sublink dashboard-nav-sublink" href = "">Controlo de Carga</a>
-                            <a class = "sublink dashboard-nav-sublink" href = "">Proteção e Limitação</a>
-                            <a class = "sublink dashboard-nav-sublink" href = "">Dispositivo</a>
+                        <div class = "nav-content dashboard-nav-content">
+                            <a class = "sublink dashboard-nav-sublink" href = "" onclick="activate_screen(41)">Controlo de Carga</a>
+                            <a class = "sublink dashboard-nav-sublink" href = "" onclick="activate_screen(42)">Proteção e Limitação</a>
+                            <a class = "sublink dashboard-nav-sublink" href = "" onclick="activate_screen(43)">Dispositivo</a>
                         </div>
                     </div>
                     <div class = "nav-entry dashboard-nav-entry">
                         <span class = "arrow arrow-left arrow-link arrow-dashboard-nav"></span>
-                        <a class = "link main-dashboard-nav-link" href="/energy-analyzer/history" onclick="loadHistory()">
+                        <a class = "link main-dashboard-nav-link">
                             Histórico
                         </a>
-                        <div class = "nav-content">
-                            <a class = "sublink dashboard-nav-sublink" href = "">Controlo de Carga</a>
-                            <a class = "sublink dashboard-nav-sublink" href = "">Proteção e Limitação</a>
-                            <a class = "sublink dashboard-nav-sublink" href = "">Dispositivo</a>
+                        <div class = "nav-content dashboard-nav-content">
+                            <a class = "sublink dashboard-nav-sublink" href = "" onclick="activate_screen(51)">Controlo de Carga</a>
+                            <a class = "sublink dashboard-nav-sublink" href = "" onclick="activate_screen(52)">Proteção e Limitação</a>
+                            <a class = "sublink dashboard-nav-sublink" href = "" onclick="activate_screen(53)">Dispositivo</a>
                         </div>
                     </div>
                 </nav>
@@ -300,22 +307,6 @@
                     <span class = "footer_text" id = "device_type">Analisador de Energia</span>
                 </div>
             </div>
-        </div>
-    </div>
-    <div id = "full-loader">
-        <div class = "loader-header">
-
-        </div>
-        <div id = "connecting-div">
-            <span class = "popup_text">A Carregar</span>
-            <div id = "loader" ></div>
-        </div>
-        <div id = "connect-error-div">
-            <img src="/static/ua_energy_analyzer/img/warning.png" id = "connect_error_warning">
-            <span class = "popup_text" id = "error_text_message"></span>
-        </div>
-        <div class = "loader-footer">
-
         </div>
     </div>
     <div id = "mask_wPriority">

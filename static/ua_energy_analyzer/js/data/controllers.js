@@ -814,6 +814,8 @@ class Device{
         this.first_check = false;
         this.init_sent = false;
         this.output = false;
+
+        this.first_connection_fb = false
     }
     
     clear_elements_handler = () => {
@@ -887,6 +889,9 @@ class Device{
                     manual_control.set_control_off();
                 }
             }
+        }
+        else if (parameter == "connection_fb"){
+            this.first_connection_fb = true;
         }
     }
 

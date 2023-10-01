@@ -17,7 +17,6 @@ import data.general as general
 template_dir = str(os.path.abspath('./static'))
 app = Flask(__name__, static_folder=template_dir, template_folder= template_dir)
 
-
 @app.route('/')
 def index():
     return render_template('index.html')

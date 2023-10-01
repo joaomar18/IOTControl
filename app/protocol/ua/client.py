@@ -203,6 +203,7 @@ class UAClient(UADevice):
             await self.send_queue.put([2, self.name, "connection", "ON"])
         else:
             await self.send_queue.put([2, self.name, "connection", "OFF"])
+        await self.send_queue.put([2, self.name, "connection_fb", "ON"])
 
     async def send_to_controller(self, ua_node:str, value, data_type):
         variant_type = None
