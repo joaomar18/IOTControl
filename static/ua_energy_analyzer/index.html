@@ -96,21 +96,18 @@
                     </div>
                     <div class="language-select-div">
                         <img src="/static/ua_energy_analyzer/img/earth.png" class = "language-icon" />
-                        <div class = "language-select-option">EN</div>
+                        <div class = "language-select-option">PT</div>
                         <span class = "arrow arrow-bottom arrow-language"></span>
                         <div class="language-dropdown-button">
-                            <div class="language-select-option">EN</div>
-                            <div class="language-select-option">ES</div>
                             <div class="language-select-option">PT</div>
+                            <div class="language-select-option">ES</div>
+                            <div class="language-select-option">EN</div>
                         </div>
                     </div>
                     <div class="dropdown-button-div" id = "dropdown_button_div" title = "Painel">
-                        <button class = "dropdown-button"></button>
-                        <div class="dropdown-content" hidden>
-                            <a href="#">Option 1</a>
-                            <a href="#">Option 2</a>
-                            <a href="#">Option 3</a>
-                        </div>
+                        <button class = "dropdown-button hamburger-button" id = "dropdown_hamburger_icon"></button>
+                        <button class = "dropdown-button up-arrow-button" id = "dropdown_up_arrow_icon"></button>
+                        <button class = "dropdown-button right-arrow-button" id = "dropdown_right_arrow_icon"></button>
                     </div>
                 </div>
                 <!--
@@ -123,7 +120,7 @@
         </div>
     </div>
     <div class = "container-fluid">
-            <div class = "dashboard-small-nav-div">
+            <div class = "dashboard-small-nav-div" id = "dashboard_small_nav_div">
                 <nav class = "dashboard-small-nav" id = "dashboard_small_nav">
                     <div class = "nav-entry small-nav-entry">
                         <a class = "link dashboard-small-nav-link" onclick="activate_screen(10)">
@@ -137,7 +134,7 @@
                         <a class = "link dashboard-small-nav-link">
                             Consumo
                         </a>
-                        <div class = "nav-content">
+                        <div class = "nav-content small-nav-content">
                             <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(21)">Consumo Atual</a>
                             <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(22)">Consultar Consumo</a>
                         </div>
@@ -147,7 +144,7 @@
                         <a class = "link dashboard-small-nav-link">
                             Qualidade de Energia
                         </a>
-                        <div class = "nav-content">
+                        <div class = "nav-content small-nav-content">
                             <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(31)">Tensão</a>
                             <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(32)">Frequência</a>
                             <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(33)">Fator de Potência</a>
@@ -158,7 +155,7 @@
                         <a class = "link dashboard-small-nav-link">
                             Configuração
                         </a>
-                        <div class = "nav-content">
+                        <div class = "nav-content small-nav-content">
                             <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(41)">Controlo de Carga</a>
                             <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(42)">Proteção e Limitação</a>
                             <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(43)">Dispositivo</a>
@@ -169,7 +166,7 @@
                         <a class = "link dashboard-small-nav-link">
                             Histórico
                         </a>
-                        <div class = "nav-content">
+                        <div class = "nav-content small-nav-content">
                             <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(51)">Controlo de Carga</a>
                             <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(52)">Proteção e Limitação</a>
                             <a class = "sublink dashboard-small-nav-sublink" href = "" onclick="activate_screen(53)">Dispositivo</a>

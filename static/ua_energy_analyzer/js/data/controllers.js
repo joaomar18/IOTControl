@@ -202,7 +202,7 @@ class HourPeriod{
 }
 
 class HourPeriods{
-    constructor(document, window, content, s_content_table, s_content, s_content_identifiers, s_content_inital_display, btn_left_s_content, btn_right_s_content, xs_content, xs_week_day){
+    constructor(document, window, large_table, small_table, extra_small_table, content, s_content, s_content_identifiers, s_content_inital_display, btn_left_s_content, btn_right_s_content, xs_content, xs_week_day){
         this.monday_periods = [];
         this.tuesday_periods = [];
         this.wednesday_periods = [];
@@ -212,8 +212,10 @@ class HourPeriods{
         this.sunday_periods = [];
         this.document = document;
         this.window = window;
+        this.large_table = large_table;
+        this.small_table = small_table;
+        this.extra_small_table = extra_small_table;
         this.content = content;
-        this.s_content_table = s_content_table;
         this.s_content = s_content;
         this.s_content_identifiers = s_content_identifiers;
         this.s_content_display = s_content_inital_display; //1: monday, tuesday, wednesay
@@ -234,7 +236,7 @@ class HourPeriods{
     }
 
     update_s_content_handler = () => {
-        if(this.document.getElementById(this.s_content_table) == null){
+        if(this.document.getElementById(this.small_table) == null){
             this.small_view = false;
             if(this.update_s_periods != null){
                 clearInterval(this.update_s_periods);
@@ -242,7 +244,7 @@ class HourPeriods{
             }
         }
         else{
-            if(this.document.getElementById(this.s_content_table).style.display == 'none'){
+            if(this.document.getElementById(this.small_table).style.display == 'none'){
                 this.small_view = false;
                 if(this.update_s_periods != null){
                     clearInterval(this.update_s_periods);
@@ -275,9 +277,13 @@ class HourPeriods{
 
 
     update_xs_content_handler = () => {
-        let screenWidth = this.window.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth;
-        if(screenWidth < 729){
-            this.extra_small_view = true;
+        if(this.document.getElementById(this.extra_small_table) != null){
+            if(this.document.getElementById(this.extra_small_table).style.display != 'none'){
+                this.extra_small_view = true;
+            }
+            else{
+                this.extra_small_view = false;
+            }
         }
         else{
             this.extra_small_view = false;
@@ -1059,7 +1065,7 @@ class Device{
 
 
 let device_animation = new DeviceAnimation(document, "realtime-image-animation", "openc-line", "closec-line", "warning-line", "closec-arrow", "warning-arrow");
-let device_hour_periods = new HourPeriods(document, window, "table-horizontal-row-content", "hour_control_table_small", "table-vertical-col-content", "x-axis-identifier", 1, "hour_control_table_small_left_btn", "hour_control_table_small_right_btn","table_extra_small_content", "day_of_week_selector_xs");
+let device_hour_periods = new HourPeriods(document, window, "hour_control_table_large_container", "hour_control_table_small_container", "hour_control_table_extra_small_container" ,"table-horizontal-row-content", "table-vertical-col-content", "x-axis-identifier", 1, "hour_control_table_small_left_btn", "hour_control_table_small_right_btn","table_extra_small_content", "day_of_week_selector_xs");
 
 let devices = {}; //dictionary with all working devices
 let active_device = null;

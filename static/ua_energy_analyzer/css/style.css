@@ -222,6 +222,7 @@ input[type="number"] {
 
 .small-nav-entry{
     width:50%;
+    min-width: 220px;
 }
 
 .dashboard-nav-entry{
@@ -339,7 +340,7 @@ input[type="number"] {
 }
 
 /* Dropdown button style */
-.dropdown-button {
+.dropdown-button{
     height:2.1rem;
     width: 2.1rem;
     color: #333;
@@ -351,11 +352,11 @@ input[type="number"] {
     font-size: 1rem;
     transition: background-color 0.3s ease;
     position: relative; /* Create space for the icon */
+    display: none;
 }
 
 /* Hamburger icon style */
 .dropdown-button::before {
-    content: "\2630"; /* Unicode character for three horizontal lines */
     position: absolute;
     top: 50%;
     left: 50%;
@@ -365,6 +366,18 @@ input[type="number"] {
 
 .dropdown-button:hover{
     background-color: #cacacac0;
+}
+
+.hamburger-button::before{
+    content: "\2630";
+}
+
+.right-arrow-button::before{
+    content: "\2192";
+}
+
+.up-arrow-button::before{
+    content: "\2191";
 }
 
 .nav-content{
@@ -383,11 +396,10 @@ input[type="number"] {
 
 .dashboard-nav-content{
     position:absolute;
-    width: 200px;
     height: 0;
     top: 0;
-    left:-200px;
-    width: fit-content;
+    right:250px;
+    width: 0px;
     border-radius: 5px;
     overflow: hidden;
     z-index: 1;
@@ -396,6 +408,9 @@ input[type="number"] {
     transition: width 0.2s;
 }
 
+.dashboard-nav-content.active{
+    width:344px;
+}
 
 
 .sublink{
@@ -432,16 +447,16 @@ input[type="number"] {
     height:auto;
     background-color: #B2CCE7;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width:264px;
+    min-width:250px;
+    max-width:250px;
+    box-sizing: border-box;
     border-radius: 5px;
-    overflow: hidden;
-    transition: width 0.5s;
+    /*overflow: hidden;*/
     display: none;
 }
 
 .dashboard.closed{
-    width:0;
-    
+    display:none;
 }
 
 .dashboard-small-nav-div{
@@ -450,12 +465,15 @@ input[type="number"] {
     background-color: #B2CCE7;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    overflow: hidden;
     transition: height 0.5s;
 }
 
 .dashboard-small-nav-div.closed{
-    height:0;
+    display:none;
+}
+
+.small-nav-content{
+    left:0;
 }
 
 .dashboard-small-nav{
@@ -473,8 +491,13 @@ input[type="number"] {
     border-bottom: 1px solid #888;
 }
 
+.main-dashboard-nav-div{
+    width: 100%;
+}
+
 
 .main-dashboard-nav{
+    width: 100%;
     display:flex;
     flex-direction: column;
 }

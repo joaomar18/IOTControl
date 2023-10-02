@@ -11,14 +11,73 @@ let dropdown_button_div = document.getElementById("dropdown_button_div");
 
 let main_dashboard = document.getElementById("main_dashboard");
 
-dropdown_button_div.addEventListener("click", function(){
-    if(main_dashboard.classList.contains("closed")){
-        main_dashboard.classList.remove("closed");
+let small_dashboard = document.getElementById("dashboard_small_nav_div");
+
+let hamburger_dashboard_icon = document.getElementById("dropdown_hamburger_icon");
+let right_arrow_dashboard_icon = document.getElementById("dropdown_right_arrow_icon");
+let up_arrow_dashboard_icon = document.getElementById("dropdown_up_arrow_icon");
+
+let dashboard_icons = [hamburger_dashboard_icon, right_arrow_dashboard_icon, up_arrow_dashboard_icon];
+
+class DropdownMenu{
+    constructor(dropdown_button, main_dashboard, small_dashboard, dashboard_icons){
+        this.dropdown_button = dropdown_button;
+        this.main_dashboard = main_dashboard;
+        this.small_dashboard = small_dashboard;
+        this.dashboard_icons = dashboard_icons;
+        this.check_active_menu = setInterval(this.active_menu_handler.bind(this), 10);
+
+        this.current_active_icon = null;
+        this.add_dropdown_event();
     }
-    else{
-        main_dashboard.classList.add("closed");
+
+    active_menu_handler = () => {
+        if(this.main_dashboard.offsetWidth > 0){
+            if(this.current_active_icon != null){
+                if(this.current_active_icon != 1){
+                    this.dashboard_icons[this.current_active_icon].style.display = 'none';
+                }
+            }
+            this.dashboard_icons[1].style.display = 'block';
+            this.current_active_icon = 1;
+        }
+        else if(this.small_dashboard.offsetWidth > 0){
+            if(this.current_active_icon != null){
+                if(this.current_active_icon != 2){
+                    this.dashboard_icons[this.current_active_icon].style.display = 'none';
+                }            }
+            this.dashboard_icons[2].style.display = 'block';
+            this.current_active_icon = 2;
+        }
+        else{
+            if(this.current_active_icon != null){
+                if(this.current_active_icon != 0){
+                    this.dashboard_icons[this.current_active_icon].style.display = 'none';
+                }            }
+            this.dashboard_icons[0].style.display = 'block';
+            this.current_active_icon = 0;
+        }
     }
-});
+
+    add_dropdown_event(){
+        this.dropdown_button.addEventListener("click", () => {
+            if(this.main_dashboard.classList.contains("closed")){
+                this.main_dashboard.classList.remove("closed");
+            }
+            else{
+                this.main_dashboard.classList.add("closed");
+            }
+            if(this.small_dashboard.classList.contains("closed")){
+                this.small_dashboard.classList.remove("closed");
+            }
+            else{
+                this.small_dashboard.classList.add("closed");
+            }
+        });
+    }
+}
+
+let dropdown_menu = new DropdownMenu(dropdown_button_div, main_dashboard, small_dashboard, dashboard_icons);
 
 class PopoverUtil{
     constructor(document){
@@ -255,7 +314,7 @@ class ContentOrganizer{
         this.initial_validation = false;
         this.set_configuration = null;
         this.check_initial_validation = setInterval(this.check_initial_validation_handler.bind(this), 10);
-        this.check_content_width = setInterval(this.check_content_width_handler.bind(this), 10);
+        this.check_content_width = setInterval(this.check_content_width_handler.bind(this), 1);
     }
 
 
@@ -620,7 +679,7 @@ let realtime_divs_organizer = new ContentOrganizer(document, "content", "realtim
 
 
 
-let load_control_config_width_triggers = [1100, 1300];
+let load_control_config_width_triggers = [700, 1300];
 let load_control_config_configuration = [[4, 1], [4, 1], [2, 3]];
 let load_control_config_hide_elements = [[4, 5], [4, 6], [5, 6]];
 
@@ -699,7 +758,9 @@ class NavButtons{
     hide_content(){
         if(this.current_sublink != null){
             this.content[this.current_sublink].classList.remove("active");
-            this.content[this.current_sublink].style.height = String("0px");
+            if(!this.content[this.current_sublink].classList.contains("dashboard-nav-content")){
+                this.content[this.current_sublink].style.height = String("0px");
+            }
             this.current_sublink = null;
         }
     }
