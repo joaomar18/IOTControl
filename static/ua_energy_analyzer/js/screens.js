@@ -688,6 +688,14 @@ let load_control_config_divs_organizer = new ContentOrganizer(document, "content
 
 
 
+let protection_control_config_width_triggers = [1200, 1400];
+let protection_control_config_configuration = [[3,1], [2,2],[1, 3]];
+let protection_control_config_hide_elements = [[], [], []];
+
+let protection_control_config_divs_organizer = new ContentOrganizer(document, "content", "protection_control_config_content_grid", "protection-control-config-content-grid-item",
+                                                                    protection_control_config_width_triggers, protection_control_config_configuration, protection_control_config_hide_elements);
+
+
 ////////////////////////////////////////////////////////////////
 
 
