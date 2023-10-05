@@ -237,16 +237,18 @@ class HourPeriods{
 
     update_s_content_handler = () => {
         if(this.document.getElementById(this.small_table) == null){
-            this.small_view = false;
             if(this.update_s_periods != null){
+                this.small_view = false;
                 clearInterval(this.update_s_periods);
                 this.update_s_periods = null;
             }
         }
         else{
-            if(this.document.getElementById(this.small_table).style.display == 'none'){
-                this.small_view = false;
+            let computed_style = window.getComputedStyle(this.document.getElementById(this.small_table));
+            let display_value = computed_style.getPropertyValue("display");
+            if(display_value == 'none'){
                 if(this.update_s_periods != null){
+                    this.small_view = false;
                     clearInterval(this.update_s_periods);
                     this.update_s_periods = null;
                 }
