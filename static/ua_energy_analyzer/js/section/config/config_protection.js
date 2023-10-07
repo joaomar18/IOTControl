@@ -1,7 +1,8 @@
 /*************************** PROTECTION DISPLAY MANAGEMENT ***************************/
 
 class ProtectionDisplay{
-    constructor(document ,text_values ,bar_values, bar_containers, adjust_select, initial_upper_limits, initial_lower_limits, initial_triggers){
+    constructor(document ,text_values ,bar_values, bar_containers, adjust_select, initial_values,
+                limits_max, limits_min, limits_max_unit, limits_min_unit){
         this.document = document;
 
         this.text_values = text_values;
@@ -23,6 +24,7 @@ class ProtectionDisplay{
         this.adjust_select_element = null;
         this.check_valid_adjust_select = setInterval(this.check_valid_adjust_select_handler.bind(this), 10);
         this.adjust_select_valid = false;
+        this.adjust_select_last_index = null;
 
 
         this.new_bar_markers = [];
@@ -36,11 +38,18 @@ class ProtectionDisplay{
 
         this.run = null;
 
-        this.initial_upper_limits = initial_upper_limits;
-        this.initial_lower_limits = initial_lower_limits;
-        this.initial_triggers = initial_triggers;
+        this.initial_values = initial_values;
+
+        this.limits_max = limits_max;
+        this.limits_min = limits_min;
+        this.limits_max_unit = limits_max_unit;
+        this.limits_min_unit = limits_min_unit;
 
         this.elements_ready = [false, false, false, false];
+
+        this.last_upper_limit_value = null;
+        this.last_lower_limit_value = null;
+        this.last_trigger_time_value = null;
     }
 
     check_valid_text_values_handler = () => {
@@ -175,16 +184,61 @@ class ProtectionDisplay{
                 this.current_bar_markers.push(current_bar_marker);
                 this.new_bar_markers_text.push(new_bar_marker_text);
                 this.current_bar_markers_text.push(current_bar_marker_text);
+
             }
+
             this.bar_markers_init = true;
         
         }
-        else{
-            let upper_limit_value = Number(this.bar_value_elements[0].value);
-            this.new_bar_markers[0].style.left = "calc( " + String(upper_limit_value)+"% " + "- 2.25rem )";
-            this.new_bar_markers_text[0].innerText = String(upper_limit_value);
+
+        let adjust_select_index = this.adjust_select_element.selectedIndex;
+
+        if(adjust_select_index != this.adjust_select_last_index){
+            let i = 0;
+            for(let bar of this.bar_value_elements){
+                bar.value = this.initial_values[i][adjust_select_index]; 
+                i++; 
+            }
+            this.adjust_select_last_index = adjust_select_index;
         }
 
+        this.process();
+
+    }
+
+    process(){
+        //Values//
+        let upper_limit_value = Number(this.bar_value_elements[0].value);
+        let lower_limit_value = Number(this.bar_value_elements[1].value);
+        let trigger_time_value = Number(this.bar_value_elements[2].value);
+        let value = null;
+
+        if(this.last_upper_limit_value != upper_limit_value){
+            this.new_bar_markers[0].style.left = "calc( " + String(upper_limit_value)+"% " + "- 2.25rem )";
+            value = this.get_bar_value(upper_limit_value, this.limits_max[0][this.adjust_select_last_index], this.limits_min[0][this.adjust_select_last_index]);
+            this.new_bar_markers_text[0].innerText = value.toFixed(2);
+            this.last_upper_limit_value = upper_limit_value;
+        }
+
+        if(this.last_lower_limit_value != lower_limit_value){
+            this.new_bar_markers[1].style.left = "calc( " + String(lower_limit_value)+"% " + "- 2.25rem )";
+            value = this.get_bar_value(lower_limit_value, this.limits_max[1][this.adjust_select_last_index], this.limits_min[1][this.adjust_select_last_index]);
+            this.new_bar_markers_text[1].innerText = value.toFixed(2);
+            this.last_lower_limit_value = lower_limit_value;
+        }
+
+        if(this.last_trigger_time_value != trigger_time_value){
+            this.new_bar_markers[2].style.left = "calc( " + String(trigger_time_value)+"% " + "- 2.25rem )";
+            value = this.get_bar_value(trigger_time_value, this.limits_max[2][this.adjust_select_last_index], this.limits_min[2][this.adjust_select_last_index]);
+            this.new_bar_markers_text[2].innerText = value.toFixed(2);
+            this.last_trigger_time_value = trigger_time_value;
+        }
+    }
+    
+    
+    get_bar_value(value, max, min){
+        let range = max - min;
+        return ((value/100)*range)+min;
     }
 
 }
@@ -197,5 +251,34 @@ let voltage_initial_upper_limits = [250, 260, 280];
 let voltage_initial_lower_limits = [215, 205, 195];
 let voltage_initial_triggers = [10, 5, 3];
 
+let voltage_initial_values = [voltage_initial_upper_limits, voltage_initial_lower_limits, voltage_initial_triggers];
+
+let voltage_initial_upper_limits_max = [270, 310, 330];
+let voltage_initial_upper_limits_min = [230, 210, 230];
+
+let voltage_initial_upper_limits_max_unit = ["V", "V", "V"];
+let voltage_initial_upper_limits_min_unit = ["V", "V", "V"];
+
+let voltage_initial_lower_limits_max = [265, 255, 245];
+let voltage_initial_lower_limits_min = [165, 155, 145];
+
+let voltage_initial_lower_limits_max_unit = ["V", "V", "V"];
+let voltage_initial_lower_limits_min_unit = ["V", "V", "V"];
+
+let voltage_initial_triggers_max = [12, 7, 5];
+let voltage_initial_triggers_min = [8, 3, 1];
+
+let voltage_initial_triggers_max_unit = ["s", "s", "s"];
+let voltage_initial_triggers_min_unit = ["s", "s", "s"];
+
+let voltage_limits_max = [voltage_initial_upper_limits_max, voltage_initial_lower_limits_max, voltage_initial_triggers_max];
+let voltage_limits_min = [voltage_initial_upper_limits_min, voltage_initial_lower_limits_min, voltage_initial_triggers_min];
+
+let voltage_limits_max_unit = [voltage_initial_upper_limits_max_unit, voltage_initial_lower_limits_max_unit, voltage_initial_triggers_max_unit];  
+let voltage_limits_min_unit = [voltage_initial_upper_limits_min_unit, voltage_initial_lower_limits_min_unit, voltage_initial_triggers_min_unit];
+
+
+
 let voltage_protection_display = new ProtectionDisplay(document, voltage_text_values, voltage_bar_values, voltage_bar_containers, 
-                                                       voltage_adjust_select, voltage_initial_upper_limits, voltage_initial_lower_limits, voltage_initial_triggers);
+                                                       voltage_adjust_select, voltage_initial_values,
+                                                       voltage_limits_max, voltage_limits_min, voltage_limits_max_unit, voltage_limits_min_unit);
