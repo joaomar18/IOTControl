@@ -215,28 +215,28 @@ class ProtectionDisplay{
 
         if(this.last_upper_limit_value != upper_limit_value){
             this.new_bar_markers[0].style.left = "calc( " + String(upper_limit_value)+"% " + "- 2.25rem )";
-            value = this.get_bar_value(upper_limit_value, this.limits_max[0][this.adjust_select_last_index], this.limits_min[0][this.adjust_select_last_index]);
+            value = this.percentage_to_value(upper_limit_value, this.limits_max[0][this.adjust_select_last_index], this.limits_min[0][this.adjust_select_last_index]);
             this.new_bar_markers_text[0].innerText = value.toFixed(2);
             this.last_upper_limit_value = upper_limit_value;
         }
 
         if(this.last_lower_limit_value != lower_limit_value){
             this.new_bar_markers[1].style.left = "calc( " + String(lower_limit_value)+"% " + "- 2.25rem )";
-            value = this.get_bar_value(lower_limit_value, this.limits_max[1][this.adjust_select_last_index], this.limits_min[1][this.adjust_select_last_index]);
+            value = this.percentage_to_value(lower_limit_value, this.limits_max[1][this.adjust_select_last_index], this.limits_min[1][this.adjust_select_last_index]);
             this.new_bar_markers_text[1].innerText = value.toFixed(2);
             this.last_lower_limit_value = lower_limit_value;
         }
 
         if(this.last_trigger_time_value != trigger_time_value){
             this.new_bar_markers[2].style.left = "calc( " + String(trigger_time_value)+"% " + "- 2.25rem )";
-            value = this.get_bar_value(trigger_time_value, this.limits_max[2][this.adjust_select_last_index], this.limits_min[2][this.adjust_select_last_index]);
+            value = this.percentage_to_value(trigger_time_value, this.limits_max[2][this.adjust_select_last_index], this.limits_min[2][this.adjust_select_last_index]);
             this.new_bar_markers_text[2].innerText = value.toFixed(2);
             this.last_trigger_time_value = trigger_time_value;
         }
     }
     
     
-    get_bar_value(value, max, min){
+    percentage_to_value(value, max, min){
         let range = max - min;
         return ((value/100)*range)+min;
     }
