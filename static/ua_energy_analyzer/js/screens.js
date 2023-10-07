@@ -699,7 +699,7 @@ let protection_control_config_divs_organizer = new ContentOrganizer(document, "c
 ////////////////////////////////////////////////////////////////
 
 
-let content_screen = new ContentScreen(document, window, screen_loader, main_app_section, screen_names, screens_section, sub_screen_names, subscreens, subscreens_titles, "link", "sublink", content_elements_array, content_loader, 41);
+let content_screen = new ContentScreen(document, window, screen_loader, main_app_section, screen_names, screens_section, sub_screen_names, subscreens, subscreens_titles, "link", "sublink", content_elements_array, content_loader, 42);
 let footer_drop_down = new DropDownMenuExit(document, statePopup, buttonState);
 let device_info = new DeviceInfo(document, "device_name", "device_type");
 
@@ -724,7 +724,6 @@ class NavButtons{
     assign_events_handler = () => {
         for(let i = 0; i < this.buttons.length; i++){
             let sublink_number = Number(this.content[i].getElementsByTagName("a").length);
-            console.log(sublink_number);
             let content_height;
             if(sublink_number > 2){
                 content_height = ((sublink_number-2)*3.5)+ 2*4;
@@ -732,7 +731,6 @@ class NavButtons{
             else{
                 content_height = sublink_number*4;
             }
-            console.log(content_height);
             this.content_heights.push(String(content_height)+"rem");
             this.assign_event(i);
         }

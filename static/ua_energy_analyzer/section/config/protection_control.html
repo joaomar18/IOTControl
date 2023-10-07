@@ -1,25 +1,26 @@
 <div class = "content-grid" id = "protection_control_config_content_grid">
     <div class = "content-grid-item protection-control-config-content-grid-item">
         <div class = "protection-control-div">
-            <img src="/static/ua_energy_analyzer/img/settings.svg" class = "settings-button" id = "protection_settings_btn"/>
+            <img src="/static/ua_energy_analyzer/img/vsymbol.png" class = "measure-symbol"/>
+            <img src="/static/ua_energy_analyzer/img/settings.svg" class = "settings-button" id = "voltage_protection_settings_btn"/>
             <h6 class = "protection-control-title">Controlo de Tensão</h6>
             <div class = "control-element-expanded">
                 <span class = "element">
                     <span class = "element-name">OFF</span>
                     <div class="checkbox-selector">
-                        <input type="checkbox" id = "protection_selector">
+                        <input type="checkbox" id = "voltage_protection_selector">
                     </div>
                     <span class = "element-name">ON</span>
                 </span>
                 <span class = "element-main">
                     <span class = "element-name">Ajustar</span>
-                    <select class="form-select element-protection-select" name="protection_adjust_select" id="protection_adjust_select">
+                    <select class="form-select element-protection-select" name="protection_adjust_select" id="voltage_protection_adjust_select">
                         <option value="warning_adjust" selected>Aviso</option>
                         <option value="slow_trigger_adjust">Atuação Lenta</option>
                         <option value="fast_trigger_adjust">Atuação Rápida</option>
                     </select>      
                 </span>
-                <div class = "protection-format-div" id = "protection_text_format">
+                <div class = "protection-format-div protection-text-format" id = "voltage_protection_text_format">
                     <span class = "element-parameter">
                         <span class = "element-parameter-field-name"></span>
                         <span class = "element-parameter-field">Atual</span>
@@ -35,29 +36,29 @@
                         <span class = "element-fixed-name">Tempo de Atuação</span>
                     </span>
                 </div>
-                <div class = "protection-format-div" id = "protection_bar_format">
-                    <span class = "element">
+                <div class = "protection-format-div protection-bar-format" id = "voltage_protection_bar_format">
+                    <span class = "element big-margin-element">
                         <span class = "element-fixed-name">Limite Superior</span>
-                        <div class = "element-position-container" id = "protection_upper_limit_container">
-                            <input type="range" class="form-range range-element" id = "protection_upper_limit">
+                        <div class = "element-position-container" id = "voltage_protection_upper_limit_container">
+                            <input type="range" class="form-range range-element" id = "voltage_protection_upper_limit_bar">
                         </div>
                     </span>
-                    <span class = "element">
+                    <span class = "element big-margin-element">
                         <span class = "element-fixed-name">Limite Inferior</span>
-                        <div class = "element-position-container" id = "protection_lower_limit_container">
-                            <input type="range" class="form-range range-element" id = "protection_lower_limit">
+                        <div class = "element-position-container" id = "voltage_protection_lower_limit_container">
+                            <input type="range" class="form-range range-element" id = "voltage_protection_lower_limit_bar">
                         </div>
                     </span>
-                    <span class = "element">
+                    <span class = "element big-margin-element">
                         <span class = "element-fixed-name">Tempo de Atuação</span>
-                        <div class = "element-position-container" id = "protection_trigger_container">
-                            <input type="range" class="form-range range-element" id = "protection_trigger_time">
+                        <div class = "element-position-container" id = "voltage_protection_trigger_container">
+                            <input type="range" class="form-range range-element" id = "voltage_protection_trigger_time_bar">
                         </div>
                     </span>
                 </div>
-                <span class = "element">
-                    <input type = "button" id = "update_voltage_protection_btn" class = "btn btn-primary element-button" value = "Atualizar" onclick = "updateVoltageProtection()">
-                    <input type = "button" id = "cancel_update_voltage_protection_btn" class = "btn btn-secondary element-button" value = "Cancelar" onclick = "cancelUpdateVoltageProtection()">
+                <span class = "element big-margin-element">
+                    <input type = "button" id = "update_voltage_protection_btn" class = "btn btn-primary element-button" value = "Atualizar">
+                    <input type = "button" id = "cancel_update_voltage_protection_btn" class = "btn btn-secondary element-button" value = "Cancelar">
                 </span>
             </div>
         </div>
@@ -65,25 +66,26 @@
 
     <div class = "content-grid-item protection-control-config-content-grid-item">
         <div class = "protection-control-div">
-            <img src="/static/ua_energy_analyzer/img/settings.svg" class = "settings-button" id = "protection_settings_btn"/>
+            <img src="/static/ua_energy_analyzer/img/fsymbol.png" class = "measure-symbol"/>
+            <img src="/static/ua_energy_analyzer/img/settings.svg" class = "settings-button" id = "frequency_protection_settings_btn"/>
             <h6 class = "protection-control-title">Controlo de Frequência</h6>
             <div class = "control-element-expanded">
                 <span class = "element">
                     <span class = "element-name">OFF</span>
                     <div class="checkbox-selector">
-                        <input type="checkbox" id = "protection_selector">
+                        <input type="checkbox" id = "frequency_protection_selector">
                     </div>
                     <span class = "element-name">ON</span>
                 </span>
                 <span class = "element-main">
                     <span class = "element-name">Ajustar</span>
-                    <select class="form-select element-protection-select" name="protection_adjust_select" id="protection_adjust_select">
+                    <select class="form-select element-protection-select" name="protection_adjust_select" id="frequency_protection_adjust_select">
                         <option value="warning_adjust" selected>Aviso</option>
                         <option value="slow_trigger_adjust">Atuação Lenta</option>
                         <option value="fast_trigger_adjust">Atuação Rápida</option>
                     </select>      
                 </span>
-                <div class = "protection-format-div" id = "protection_text_format">
+                <div class = "protection-format-div protection-text-format" id = "frequency_protection_text_format">
                     <span class = "element-parameter">
                         <span class = "element-parameter-field-name"></span>
                         <span class = "element-parameter-field">Atual</span>
@@ -99,54 +101,55 @@
                         <span class = "element-fixed-name">Tempo de Atuação</span>
                     </span>
                 </div>
-                <div class = "protection-format-div" id = "protection_bar_format">
+                <div class = "protection-format-div protection-bar-format" id = "frequency_protection_bar_format">
                     <span class = "element">
                         <span class = "element-fixed-name">Limite Superior</span>
-                        <div class = "element-position-container" id = "protection_upper_limit_container">
-                            <input type="range" class="form-range range-element" id = "protection_upper_limit">
+                        <div class = "element-position-container" id = "frequency_protection_upper_limit_container">
+                            <input type="range" class="form-range range-element" id = "frequency_protection_upper_limit">
                         </div>
                     </span>
                     <span class = "element">
                         <span class = "element-fixed-name">Limite Inferior</span>
-                        <div class = "element-position-container" id = "protection_lower_limit_container">
-                            <input type="range" class="form-range range-element" id = "protection_lower_limit">
+                        <div class = "element-position-container" id = "frequency_protection_lower_limit_container">
+                            <input type="range" class="form-range range-element" id = "frequency_protection_lower_limit">
                         </div>
                     </span>
                     <span class = "element">
                         <span class = "element-fixed-name">Tempo de Atuação</span>
-                        <div class = "element-position-container" id = "protection_trigger_container">
-                            <input type="range" class="form-range range-element" id = "protection_trigger_time">
+                        <div class = "element-position-container" id = "frequency_protection_trigger_container">
+                            <input type="range" class="form-range range-element" id = "frequency_protection_trigger_time">
                         </div>
                     </span>
                 </div>
                 <span class = "element">
-                    <input type = "button" id = "update_voltage_protection_btn" class = "btn btn-primary element-button" value = "Atualizar" onclick = "updateVoltageProtection()">
-                    <input type = "button" id = "cancel_update_voltage_protection_btn" class = "btn btn-secondary element-button" value = "Cancelar" onclick = "cancelUpdateVoltageProtection()">
+                    <input type = "button" id = "update_frequency_protection_btn" class = "btn btn-primary element-button" value = "Atualizar">
+                    <input type = "button" id = "cancel_update_frequency_protection_btn" class = "btn btn-secondary element-button" value = "Cancelar">
                 </span>
             </div>
         </div>
     </div>
     <div class = "content-grid-item protection-control-config-content-grid-item">
         <div class = "protection-control-div">
-            <img src="/static/ua_energy_analyzer/img/settings.svg" class = "settings-button" id = "protection_settings_btn"/>
+            <img src="/static/ua_energy_analyzer/img/asymbol.png" class = "measure-symbol"/>
+            <img src="/static/ua_energy_analyzer/img/settings.svg" class = "settings-button" id = "current_protection_settings_btn"/>
             <h6 class = "protection-control-title">Controlo de Corrente</h6>
             <div class = "control-element-expanded">
                 <span class = "element">
                     <span class = "element-name">OFF</span>
                     <div class="checkbox-selector">
-                        <input type="checkbox" id = "protection_selector">
+                        <input type="checkbox" id = "current_protection_selector">
                     </div>
                     <span class = "element-name">ON</span>
                 </span>
                 <span class = "element-main">
                     <span class = "element-name">Ajustar</span>
-                    <select class="form-select element-protection-select" name="protection_adjust_select" id="protection_adjust_select">
+                    <select class="form-select element-protection-select" name="protection_adjust_select" id="current_protection_adjust_select">
                         <option value="warning_adjust" selected>Aviso</option>
                         <option value="slow_trigger_adjust">Atuação Lenta</option>
                         <option value="fast_trigger_adjust">Atuação Rápida</option>
                     </select>      
                 </span>
-                <div class = "protection-format-div" id = "protection_text_format">
+                <div class = "protection-format-div protection-text-format" id = "current_protection_text_format">
                     <span class = "element-parameter">
                         <span class = "element-parameter-field-name"></span>
                         <span class = "element-parameter-field">Atual</span>
@@ -162,29 +165,29 @@
                         <span class = "element-fixed-name">Tempo de Atuação</span>
                     </span>
                 </div>
-                <div class = "protection-format-div" id = "protection_bar_format">
+                <div class = "protection-format-div protection-bar-format" id = "current_protection_bar_format">
                     <span class = "element">
                         <span class = "element-fixed-name">Limite Superior</span>
-                        <div class = "element-position-container" id = "protection_upper_limit_container">
-                            <input type="range" class="form-range range-element" id = "protection_upper_limit">
+                        <div class = "element-position-container" id = "current_protection_upper_limit_container">
+                            <input type="range" class="form-range range-element" id = "current_protection_upper_limit">
                         </div>
                     </span>
                     <span class = "element">
                         <span class = "element-fixed-name">Limite Inferior</span>
-                        <div class = "element-position-container" id = "protection_lower_limit_container">
-                            <input type="range" class="form-range range-element" id = "protection_lower_limit">
+                        <div class = "element-position-container" id = "current_protection_lower_limit_container">
+                            <input type="range" class="form-range range-element" id = "current_protection_lower_limit">
                         </div>
                     </span>
                     <span class = "element">
                         <span class = "element-fixed-name">Tempo de Atuação</span>
-                        <div class = "element-position-container" id = "protection_trigger_container">
-                            <input type="range" class="form-range range-element" id = "protection_trigger_time">
+                        <div class = "element-position-container" id = "current_protection_trigger_container">
+                            <input type="range" class="form-range range-element" id = "current_protection_trigger_time">
                         </div>
                     </span>
                 </div>
                 <span class = "element">
-                    <input type = "button" id = "update_voltage_protection_btn" class = "btn btn-primary element-button" value = "Atualizar" onclick = "updateVoltageProtection()">
-                    <input type = "button" id = "cancel_update_voltage_protection_btn" class = "btn btn-secondary element-button" value = "Cancelar" onclick = "cancelUpdateVoltageProtection()">
+                    <input type = "button" id = "update_current_protection_btn" class = "btn btn-primary element-button" value = "Atualizar">
+                    <input type = "button" id = "cancel_update_current_protection_btn" class = "btn btn-secondary element-button" value = "Cancelar">
                 </span>
             </div>
         </div>

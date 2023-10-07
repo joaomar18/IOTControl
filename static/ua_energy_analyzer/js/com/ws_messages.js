@@ -82,7 +82,6 @@ async function process_message(message) {
         await process_controller(controller, parameter, value);
     }
     else if(message_code == 4){ //about a node: [controller: string, node: string, value: any]
-        console.log(message);
         controller = message_elements[1];
         node = message_elements[2];
         value = message_elements[3];

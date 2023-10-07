@@ -688,7 +688,6 @@ class HourPeriods{
                 let new_hour_periods = [];
                 if(week_day == "monday" && this.init_hour_periods[0]){
                     new_hour_periods = this.monday_periods;
-                    console.log(new_hour_periods);
                 }
                 else if(week_day == "tuesday" && this.init_hour_periods[1]){
                     new_hour_periods = this.tuesday_periods;
@@ -878,7 +877,6 @@ class Device{
             else{
                 if(ws_client.connected){
                     let message = this.name+";"+"update_section"+";"+String(this.active_section);
-                    console.log(message);
                     ws_client.send(message);
                 }
             }
@@ -961,7 +959,6 @@ class Device{
                 }
             }
             else if(this.active_section == 4){
-                console.log(node);
                 if(node == "ModeManual"){
                     if(value == "False"){
                         manual_selector.set_selector_off();
@@ -994,7 +991,7 @@ class Device{
                 manual_control.feedback_done();
             }
         }
-        else if(this.valid_elements){ //nodes that can be received when the device is not connected
+        if(this.valid_elements){ //nodes that can be received when the device is not connected
             if(this.active_section == 1){
 
             }
