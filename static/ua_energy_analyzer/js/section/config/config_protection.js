@@ -2,7 +2,7 @@
 
 class ProtectionDisplay{
     constructor(document ,text_values ,bar_values, bar_containers, adjust_select, initial_values,
-                limits_max, limits_min, limits_unit){
+                limits_max, limits_min, limits_unit, update_btn, cancel_btn){
         this.document = document;
 
         this.text_values = text_values;
@@ -44,7 +44,20 @@ class ProtectionDisplay{
         this.limits_min = limits_min;
         this.limits_unit = limits_unit;
 
-        this.elements_ready = [false, false, false, false];
+
+        this.update_btn = update_btn;
+        this.update_btn_element = null;
+        this.check_valid_update_btn = setInterval(this.check_valid_update_btn_handler.bind(this), 10);
+        this.update_btn_valid = false;
+
+
+        this.cancel_btn = cancel_btn;
+        this.cancel_btn_element = null;
+        this.check_valid_cancel_btn = setInterval(this.check_valid_cancel_btn_handler.bind(this), 10);
+        this.cancel_btn_valid = false;
+        
+
+        this.elements_ready = [false, false, false, false, false, false];
 
         this.last_limit_value = [null, null, null];
     }
@@ -128,6 +141,30 @@ class ProtectionDisplay{
         }   
     }
 
+    check_valid_update_btn_handler = () => {
+        if(!this.update_btn_valid){
+            if(this.document.getElementById(this.update_btn) != null){
+                this.update_btn_element = this.document.getElementById(this.update_btn);
+                this.update_btn_valid = true;
+                clearInterval(this.check_valid_update_btn);
+                this.elements_ready[4] = true;
+                this.check_valid_update_btn = null;
+            }
+        }   
+    }
+
+    check_valid_cancel_btn_handler = () => {
+        if(!this.cancel_btn_valid){
+            if(this.document.getElementById(this.cancel_btn) != null){
+                this.cancel_btn_element = this.document.getElementById(this.cancel_btn);
+                this.cancel_btn_valid = true;
+                clearInterval(this.check_valid_cancel_btn);
+                this.elements_ready[5] = true;
+                this.check_valid_cancel_btn = null;
+            }
+        }   
+    }
+
     check_valid_elements_handler = () => {
         if(this.check_valid_elements){
             let elements_valid = true;
@@ -153,7 +190,7 @@ class ProtectionDisplay{
                 let new_bar_marker_content = this.document.createElement("div");
                 new_bar_marker_content.className = "protection-bar-marker-content";
                 let new_bar_marker_text = this.document.createElement("span");
-                new_bar_marker_text.className = "protection-bar-marker-text";
+                new_bar_marker_text.className = "protection-bar-marker-text protection-new-bar-marker-text";
                 let new_bar_marker_line = this.document.createElement("div");
                 new_bar_marker_line.className = "protection-bar-marker-line protection-new-bar-marker-line";
                 new_bar_marker_content.appendChild(new_bar_marker_text);
@@ -166,7 +203,7 @@ class ProtectionDisplay{
                 let current_bar_marker_content = this.document.createElement("div");
                 current_bar_marker_content.className = "protection-bar-marker-content";
                 let current_bar_marker_text = this.document.createElement("span");
-                current_bar_marker_text.className = "protection-bar-marker-text";
+                current_bar_marker_text.className = "protection-bar-marker-text protection-current-bar-marker-text";
                 let current_bar_marker_line = this.document.createElement("div");
                 current_bar_marker_line.className = "protection-bar-marker-line protection-current-bar-marker-line";
                 current_bar_marker_content.appendChild(current_bar_marker_text);
@@ -174,8 +211,8 @@ class ProtectionDisplay{
                 current_bar_marker.appendChild(current_bar_marker_content);
 
 
-                bar_container.appendChild(new_bar_marker);
                 bar_container.appendChild(current_bar_marker);
+                bar_container.appendChild(new_bar_marker);
 
                 this.new_bar_markers.push(new_bar_marker);
                 this.current_bar_markers.push(current_bar_marker);
@@ -209,6 +246,7 @@ class ProtectionDisplay{
         this.update_new_bar(0, this.adjust_select_last_index, false);
         this.update_new_bar(1, this.adjust_select_last_index, false);
         this.update_new_bar(2, this.adjust_select_last_index, false);
+        this.update_changes();
     }
     
     
@@ -238,6 +276,33 @@ class ProtectionDisplay{
         this.current_bar_markers[number].style.left = "calc( " + String(limit_value)+"% " + "- 2.25rem )";
         let value = this.percentage_to_value(limit_value, this.limits_max[number][index], this.limits_min[number][index]);
         this.current_bar_markers_text[number].innerText = value.toFixed(2) + " " + this.limits_unit[number][index];
+    }
+
+    update_changes(){
+        let changes_available = false;
+        for(let i = 0; i < this.new_bar_markers_text.length; i++){
+            if(this.new_bar_markers_text[i].innerText != this.current_bar_markers_text[i].innerText){
+                changes_available = true;
+            }
+        }
+        if(changes_available){
+            if(!this.update_btn_element.classList.contains("btn-primary")){
+                this.update_btn_element.classList.add("btn-primary");
+                this.update_btn_element.classList.remove("btn-light");
+
+                this.cancel_btn_element.classList.add("btn-warning");
+                this.cancel_btn_element.classList.remove("btn-secondary");
+            }
+        }
+        else{
+            if(this.update_btn_element.classList.contains("btn-primary")){
+                this.update_btn_element.classList.remove("btn-primary");
+                this.update_btn_element.classList.add("btn-light");
+
+                this.cancel_btn_element.classList.remove("btn-warning");
+                this.cancel_btn_element.classList.add("btn-secondary");
+            }
+        }
     }
 
 }
@@ -270,10 +335,15 @@ let voltage_initial_triggers_unit = ["s", "s", "s"];
 let voltage_limits_max = [voltage_initial_upper_limits_max, voltage_initial_lower_limits_max, voltage_initial_triggers_max];
 let voltage_limits_min = [voltage_initial_upper_limits_min, voltage_initial_lower_limits_min, voltage_initial_triggers_min];
 
-let voltage_limits_unit = [voltage_initial_upper_limits_unit, voltage_initial_lower_limits_unit, voltage_initial_triggers_unit];  
+let voltage_limits_unit = [voltage_initial_upper_limits_unit, voltage_initial_lower_limits_unit, voltage_initial_triggers_unit]; 
+
+let voltage_protection_update_btn =  "update_voltage_protection_btn";
+let voltage_protection_cancel_btn = "cancel_update_voltage_protection_btn";
 
 
 
 let voltage_protection_display = new ProtectionDisplay(document, voltage_text_values, voltage_bar_values, voltage_bar_containers, 
                                                        voltage_adjust_select, voltage_initial_values,
-                                                       voltage_limits_max, voltage_limits_min, voltage_limits_unit);
+                                                       voltage_limits_max, voltage_limits_min, voltage_limits_unit,
+                                                       voltage_protection_update_btn, voltage_protection_cancel_btn);
+                                                       
