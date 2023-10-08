@@ -2,7 +2,7 @@
 
 class ProtectionDisplay{
     constructor(document ,text_values ,bar_values, bar_containers, adjust_select, initial_values,
-                limits_max, limits_min, limits_max_unit, limits_min_unit){
+                limits_max, limits_min, limits_unit){
         this.document = document;
 
         this.text_values = text_values;
@@ -42,14 +42,11 @@ class ProtectionDisplay{
 
         this.limits_max = limits_max;
         this.limits_min = limits_min;
-        this.limits_max_unit = limits_max_unit;
-        this.limits_min_unit = limits_min_unit;
+        this.limits_unit = limits_unit;
 
         this.elements_ready = [false, false, false, false];
 
-        this.last_upper_limit_value = null;
-        this.last_lower_limit_value = null;
-        this.last_trigger_time_value = null;
+        this.last_limit_value = [null, null, null];
     }
 
     check_valid_text_values_handler = () => {
@@ -196,7 +193,9 @@ class ProtectionDisplay{
         if(adjust_select_index != this.adjust_select_last_index){
             let i = 0;
             for(let bar of this.bar_value_elements){
-                bar.value = this.initial_values[i][adjust_select_index]; 
+                bar.value = this.value_to_percentage(this.initial_values[i][adjust_select_index], this.limits_max[i][adjust_select_index], this.limits_min[i][adjust_select_index]); 
+                this.update_current_bar(i, adjust_select_index);
+                this.update_new_bar(i, adjust_select_index, true);
                 i++; 
             }
             this.adjust_select_last_index = adjust_select_index;
@@ -207,38 +206,38 @@ class ProtectionDisplay{
     }
 
     process(){
-        //Values//
-        let upper_limit_value = Number(this.bar_value_elements[0].value);
-        let lower_limit_value = Number(this.bar_value_elements[1].value);
-        let trigger_time_value = Number(this.bar_value_elements[2].value);
-        let value = null;
-
-        if(this.last_upper_limit_value != upper_limit_value){
-            this.new_bar_markers[0].style.left = "calc( " + String(upper_limit_value)+"% " + "- 2.25rem )";
-            value = this.percentage_to_value(upper_limit_value, this.limits_max[0][this.adjust_select_last_index], this.limits_min[0][this.adjust_select_last_index]);
-            this.new_bar_markers_text[0].innerText = value.toFixed(2);
-            this.last_upper_limit_value = upper_limit_value;
-        }
-
-        if(this.last_lower_limit_value != lower_limit_value){
-            this.new_bar_markers[1].style.left = "calc( " + String(lower_limit_value)+"% " + "- 2.25rem )";
-            value = this.percentage_to_value(lower_limit_value, this.limits_max[1][this.adjust_select_last_index], this.limits_min[1][this.adjust_select_last_index]);
-            this.new_bar_markers_text[1].innerText = value.toFixed(2);
-            this.last_lower_limit_value = lower_limit_value;
-        }
-
-        if(this.last_trigger_time_value != trigger_time_value){
-            this.new_bar_markers[2].style.left = "calc( " + String(trigger_time_value)+"% " + "- 2.25rem )";
-            value = this.percentage_to_value(trigger_time_value, this.limits_max[2][this.adjust_select_last_index], this.limits_min[2][this.adjust_select_last_index]);
-            this.new_bar_markers_text[2].innerText = value.toFixed(2);
-            this.last_trigger_time_value = trigger_time_value;
-        }
+        this.update_new_bar(0, this.adjust_select_last_index, false);
+        this.update_new_bar(1, this.adjust_select_last_index, false);
+        this.update_new_bar(2, this.adjust_select_last_index, false);
     }
     
     
     percentage_to_value(value, max, min){
         let range = max - min;
         return ((value/100)*range)+min;
+    }
+
+    value_to_percentage(value, max, min){
+        let value_out = (((value - min) * (100)) / (max - min)).toFixed(0);
+        return value_out;
+    }
+
+    update_new_bar(number, index, force){
+        let limit_value = Number(this.bar_value_elements[number].value);
+
+        if(this.last_limit_value[number] != limit_value || force){
+            this.new_bar_markers[number].style.left = "calc( " + String(limit_value)+"% " + "- 2.25rem )";
+            let value = this.percentage_to_value(limit_value, this.limits_max[number][index], this.limits_min[number][index]);
+            this.new_bar_markers_text[number].innerText = value.toFixed(2) + " " + this.limits_unit[number][index];
+            this.last_limit_value[number] = limit_value;
+        }
+    }
+
+    update_current_bar(number, index){
+        let limit_value = Number(this.bar_value_elements[number].value);
+        this.current_bar_markers[number].style.left = "calc( " + String(limit_value)+"% " + "- 2.25rem )";
+        let value = this.percentage_to_value(limit_value, this.limits_max[number][index], this.limits_min[number][index]);
+        this.current_bar_markers_text[number].innerText = value.toFixed(2) + " " + this.limits_unit[number][index];
     }
 
 }
@@ -248,37 +247,33 @@ let voltage_bar_values = ["voltage_protection_upper_limit_bar", "voltage_protect
 let voltage_bar_containers = ["voltage_protection_upper_limit_container", "voltage_protection_lower_limit_container", "voltage_protection_trigger_container"];
 let voltage_adjust_select = "voltage_protection_adjust_select";
 let voltage_initial_upper_limits = [250, 260, 280];
-let voltage_initial_lower_limits = [215, 205, 195];
+let voltage_initial_lower_limits = [215, 225, 235];
 let voltage_initial_triggers = [10, 5, 3];
 
 let voltage_initial_values = [voltage_initial_upper_limits, voltage_initial_lower_limits, voltage_initial_triggers];
 
-let voltage_initial_upper_limits_max = [270, 310, 330];
-let voltage_initial_upper_limits_min = [230, 210, 230];
+let voltage_initial_upper_limits_max = [270, 280, 300];
+let voltage_initial_upper_limits_min = [230, 240, 260];
 
-let voltage_initial_upper_limits_max_unit = ["V", "V", "V"];
-let voltage_initial_upper_limits_min_unit = ["V", "V", "V"];
+let voltage_initial_upper_limits_unit = ["V", "V", "V"];
 
-let voltage_initial_lower_limits_max = [265, 255, 245];
-let voltage_initial_lower_limits_min = [165, 155, 145];
+let voltage_initial_lower_limits_max = [230, 240, 250];
+let voltage_initial_lower_limits_min = [200, 210, 220];
 
-let voltage_initial_lower_limits_max_unit = ["V", "V", "V"];
-let voltage_initial_lower_limits_min_unit = ["V", "V", "V"];
+let voltage_initial_lower_limits_unit = ["V", "V", "V"];
 
 let voltage_initial_triggers_max = [12, 7, 5];
 let voltage_initial_triggers_min = [8, 3, 1];
 
-let voltage_initial_triggers_max_unit = ["s", "s", "s"];
-let voltage_initial_triggers_min_unit = ["s", "s", "s"];
+let voltage_initial_triggers_unit = ["s", "s", "s"];
 
 let voltage_limits_max = [voltage_initial_upper_limits_max, voltage_initial_lower_limits_max, voltage_initial_triggers_max];
 let voltage_limits_min = [voltage_initial_upper_limits_min, voltage_initial_lower_limits_min, voltage_initial_triggers_min];
 
-let voltage_limits_max_unit = [voltage_initial_upper_limits_max_unit, voltage_initial_lower_limits_max_unit, voltage_initial_triggers_max_unit];  
-let voltage_limits_min_unit = [voltage_initial_upper_limits_min_unit, voltage_initial_lower_limits_min_unit, voltage_initial_triggers_min_unit];
+let voltage_limits_unit = [voltage_initial_upper_limits_unit, voltage_initial_lower_limits_unit, voltage_initial_triggers_unit];  
 
 
 
 let voltage_protection_display = new ProtectionDisplay(document, voltage_text_values, voltage_bar_values, voltage_bar_containers, 
                                                        voltage_adjust_select, voltage_initial_values,
-                                                       voltage_limits_max, voltage_limits_min, voltage_limits_max_unit, voltage_limits_min_unit);
+                                                       voltage_limits_max, voltage_limits_min, voltage_limits_unit);
