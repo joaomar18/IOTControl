@@ -792,6 +792,10 @@ function sort_hour_periods(hour_periods){
     return hours_periods_ordered;
 }
 
+
+
+
+
 class Device{
     constructor(document, id, name, url, port, protocol, state_element, id_element, protocol_element, device_animation){
         this.document = document;

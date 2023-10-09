@@ -1,9 +1,10 @@
 /*************************** PROTECTION DISPLAY MANAGEMENT ***************************/
 
 class ProtectionDisplay{
-    constructor(document ,text_values ,bar_values, bar_containers, adjust_select, initial_values,
+    constructor(document , activated, text_values , bar_values, bar_containers, adjust_select, initial_values,
                 limits_max, limits_min, limits_unit, update_btn, cancel_btn){
         this.document = document;
+        this.activated = activated;
 
         this.text_values = text_values;
         this.text_value_elements = [];
@@ -60,6 +61,11 @@ class ProtectionDisplay{
         this.elements_ready = [false, false, false, false, false, false];
 
         this.last_limit_value = [null, null, null];
+        this.current_limit_value = [null, null, null];
+
+        this.first_run = true;
+
+        this.changes_available = false;
     }
 
     check_valid_text_values_handler = () => {
@@ -225,9 +231,42 @@ class ProtectionDisplay{
         
         }
 
+        if(!this.document.getElementById(this.activated).hidden){
+            if(this.first_run){
+                this.cancel_btn_listener = this.cancel_btn_handler.bind(this);
+                this.cancel_btn_element.addEventListener("click", this.cancel_btn_listener);
+                this.first_run = false;
+            }
+            this.init(false);
+            this.process();
+        }
+        else{
+            if(!this.first_run){
+                this.cancel_btn_element.removeEventListener("click", this.cancel_btn_listener);
+                this.init(true);
+                this.update_changes();
+                this.cancel_btn_listener = null;
+                this.first_run = true;
+            }
+        }
+
+    }
+
+
+
+    cancel_btn_handler(){
+        if(this.changes_available){
+            for(let i = 0; i < this.bar_value_elements.length; i++){
+                this.set_new_bar(i, this.adjust_select_last_index, this.current_limit_value[i]);
+            }
+        }
+    }
+
+    init(force){
+
         let adjust_select_index = this.adjust_select_element.selectedIndex;
 
-        if(adjust_select_index != this.adjust_select_last_index){
+        if(adjust_select_index != this.adjust_select_last_index || force){
             let i = 0;
             for(let bar of this.bar_value_elements){
                 bar.value = this.value_to_percentage(this.initial_values[i][adjust_select_index], this.limits_max[i][adjust_select_index], this.limits_min[i][adjust_select_index]); 
@@ -237,8 +276,6 @@ class ProtectionDisplay{
             }
             this.adjust_select_last_index = adjust_select_index;
         }
-
-        this.process();
 
     }
 
@@ -271,21 +308,28 @@ class ProtectionDisplay{
         }
     }
 
+    set_new_bar(number,index,value_in){
+        this.bar_value_elements[number].value = value_in.toFixed(0);
+        this.new_bar_markers[number].style.left = "calc( " + String(value_in)+"% " + "- 2.25rem )";
+        let value = this.percentage_to_value(value_in, this.limits_max[number][index], this.limits_min[number][index]);
+        this.new_bar_markers_text[number].innerText = value.toFixed(2) + " " + this.limits_unit[number][index];
+    }
+
     update_current_bar(number, index){
-        let limit_value = Number(this.bar_value_elements[number].value);
-        this.current_bar_markers[number].style.left = "calc( " + String(limit_value)+"% " + "- 2.25rem )";
-        let value = this.percentage_to_value(limit_value, this.limits_max[number][index], this.limits_min[number][index]);
+        this.current_limit_value[number] = Number(this.bar_value_elements[number].value);
+        this.current_bar_markers[number].style.left = "calc( " + String(this.current_limit_value[number])+"% " + "- 2.25rem )";
+        let value = this.percentage_to_value(this.current_limit_value[number], this.limits_max[number][index], this.limits_min[number][index]);
         this.current_bar_markers_text[number].innerText = value.toFixed(2) + " " + this.limits_unit[number][index];
     }
 
     update_changes(){
-        let changes_available = false;
+        this.changes_available = false;
         for(let i = 0; i < this.new_bar_markers_text.length; i++){
             if(this.new_bar_markers_text[i].innerText != this.current_bar_markers_text[i].innerText){
-                changes_available = true;
+                this.changes_available = true;
             }
         }
-        if(changes_available){
+        if(this.changes_available){
             if(!this.update_btn_element.classList.contains("btn-primary")){
                 this.update_btn_element.classList.add("btn-primary");
                 this.update_btn_element.classList.remove("btn-light");
@@ -340,9 +384,10 @@ let voltage_limits_unit = [voltage_initial_upper_limits_unit, voltage_initial_lo
 let voltage_protection_update_btn =  "update_voltage_protection_btn";
 let voltage_protection_cancel_btn = "cancel_update_voltage_protection_btn";
 
+let sub_screen_element = "protecao_limitacao_content";
 
 
-let voltage_protection_display = new ProtectionDisplay(document, voltage_text_values, voltage_bar_values, voltage_bar_containers, 
+let voltage_protection_display = new ProtectionDisplay(document, sub_screen_element, voltage_text_values, voltage_bar_values, voltage_bar_containers, 
                                                        voltage_adjust_select, voltage_initial_values,
                                                        voltage_limits_max, voltage_limits_min, voltage_limits_unit,
                                                        voltage_protection_update_btn, voltage_protection_cancel_btn);
